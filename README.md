@@ -1,90 +1,118 @@
-# HollerithEngeryML
+# HollerithEnergyML
 
-**Empower Your AI-Training with Green Efficiency!**
+> **Predict the energy consumption of ML model training before you train.**
 
-*With just a few clicks, you can estimate the energy consumption of your machine learning model training process. Simply input the size of your dataset, the number of numerical and categorical features, and watch as we calculate the energy footprint.*
+Estimate how much electrical energy (in kWh) a scikit-learn training run will
+consume — given only the shape of your dataset. Powered by a meta-model trained
+on a controlled baseline campaign at the
+[Herman Hollerith Zentrum](https://www.hhz.de), Reutlingen University.
 
+![Status](https://img.shields.io/badge/status-rebuild--in--progress-yellow)
+![License](https://img.shields.io/badge/license-MIT-blue)
+![Python](https://img.shields.io/badge/python-3.12-blue)
+![Next.js](https://img.shields.io/badge/next.js-15-black)
+![FastAPI](https://img.shields.io/badge/fastapi-0.115-009688)
 
+---
 
-## Table of Contents
+## How it works
 
-- [HollerithEngeryML](#hollerithengeryml)
-  - [Table of Contents](#table-of-contents)
-  - [Overview](#overview)
-  - [How to use](#how-to-use)
-  - [Demo](#demo)
+1. The user supplies three inputs: number of numerical features, number of
+   categorical features, and total dataset size.
+2. A meta-model (a scikit-learn regressor trained on CodeCarbon measurements
+   across a baseline of classical algorithms) predicts the energy consumption
+   of training five classical algorithms on that input shape:
+   DecisionTree, GaussianNB, KNN, LogisticRegression, RandomForest.
+3. The webapp visualises the comparison so users can pick a greener algorithm
+   before they even start training.
 
+The research foundation — which factors affect training energy, how the
+baseline was measured, what datasets were used — is archived under
+[`research/`](./research/).
 
+## Architecture
 
-## Overview
-![Docker Compose](https://img.shields.io/badge/Docker%20Compose-vX-2496ED.svg?logo=docker)
-![FastAPI](https://img.shields.io/badge/FastAPI-v0.105.0-009688.svg?logo=fastapi)
-![Angular](https://img.shields.io/badge/Angular-vX-DD0031.svg?logo=angular)
-![Scikit-Learn](https://img.shields.io/badge/Scikit--Learn-v1.2.2-F7931E.svg?logo=scikit-learn)
-![NumPy](https://img.shields.io/badge/NumPy-v1.23.5-013243.svg?logo=numpy)
-![Python](https://img.shields.io/badge/Python-3.8%2B-3776AB.svg?logo=python)
-![Anaconda](https://img.shields.io/badge/Anaconda--44A833.svg?logo=anaconda)
-![VS Code](https://img.shields.io/badge/Visual%20Studio%20Code--007ACC.svg?logo=visual-studio-code)
-![Git](https://img.shields.io/badge/Git--F05032.svg?logo=git)
-![Jupyter](https://img.shields.io/badge/Jupyter--F37626.svg?logo=jupyter)
-![Google Colab](https://img.shields.io/badge/Google%20Colab--F9AB00.svg?logo=google-colab)
-![AWS](https://img.shields.io/badge/AWS--232F3E.svg?logo=amazon-aws)
-
-
-The calculation goes as follows:
-
-`1. Input Features & Dataset Sizse`➙`2. Load RandomForrest Model`➙`3. Predict the Energy Consumtion`➙`4. Show Bar Chart with predicted Energy Consumtion`
-
-**Here should be an Image of the Architecture**
-
-
-## How to use
-
-**1. Installations**
-   
-Have <a href="https://docs.docker.com/get-docker/" target="_blank">Docker</a> and <a href="https://nodejs.org/en/download" target="_blank">Node.js</a> installed and running:
-
-- Make sure `docker-compose` is installed:
-```bash
-pip install docker-compose
+```
+┌─────────────────┐    HTTPS     ┌─────────────────┐
+│  Next.js 15     │  ◄────────►  │  FastAPI        │
+│  (web)          │              │  (api)          │
+│  Tailwind +     │              │  Python 3.12    │
+│  shadcn/ui      │              │  scikit-learn   │
+└────────┬────────┘              └────────┬────────┘
+         │                                │
+         └────────── Caddy 2 ─────────────┘
+                         │
+                   Hetzner Cloud
 ```
 
-- Make sure `node.js` is installed:
-```bash
-sudo apt-get install nodejs npm
+See [`docs/ARCHITECTURE.md`](./docs/ARCHITECTURE.md) for the full architectural
+blueprint, API contract, and deployment topology.
+
+## Project structure
+
+```
+apps/
+├── api/          FastAPI backend (Python 3.12, scikit-learn)
+└── web/          Next.js 15 frontend (React 19, Tailwind, shadcn/ui)
+infra/            Docker Compose, Caddy, deployment scripts
+research/         Archived baseline-test notebooks and raw research data
+docs/             Architecture, Model Card, Runbook, Contributing
 ```
 
-**2. Clone the Repository**
+## Quickstart (local development)
 
-create a `.env` file in the project root and configure the necessary environment variables. You can use the `.env.example` file as a template:
+> **Status:** Phase 0 complete. Backend (Phase 1) and frontend (Phase 2)
+> implementations land in subsequent commits.
+
 ```bash
-git clone https://gitlab.reutlingen-university.de/schulza/ml_recommender_system.git
+git clone https://github.com/lukasgro63/hollerithengeryml.git
+cd hollerithengeryml
 
-cd <repository-directory>
+# Backend (once Phase 1 is complete)
+cd apps/api
+uv sync
+uv run uvicorn hollerith_api.main:app --reload
+
+# Frontend (once Phase 2 is complete)
+cd apps/web
+npm install
+npm run dev
 ```
 
-**3. Start your Containers**
-- Build your own images locally by running the `docker-compose.yml` file:
-```bash
-docker-compose up --build -d
-```
-- Alternativly get the images from the GitLab Container Registry (Recommended):
-```bash
-docker login gitlab.reutlingen-university.de:5050
+## Tech stack
 
-# Backend Image
-docker pull gitlab.reutlingen-university.de:5050/schulza ml_recommender_system-backend-base-image:latest
-# Frontend Image
-docker pull gitlab.reutlingen-university.de:5050/schulza ml_recommender_system-frontend-base-image:latest
+| Layer       | Technology                                          |
+|-------------|-----------------------------------------------------|
+| Frontend    | Next.js 15 · React 19 · TypeScript · Tailwind CSS 4 |
+| UI kit      | shadcn/ui · lucide-react · Recharts                 |
+| Forms       | react-hook-form · zod                               |
+| Backend     | FastAPI 0.115 · Python 3.12 · Pydantic v2           |
+| ML runtime  | scikit-learn 1.2.2 (pinned) · joblib                |
+| Tooling     | uv · ruff · pytest                                  |
+| Container   | Docker · Docker Compose v2                          |
+| Proxy       | Caddy 2 (automatic HTTPS)                           |
+| Hosting     | Hetzner Cloud (Nuremberg)                           |
+| CI/CD       | GitHub Actions · ghcr.io                            |
 
-# Start Container
-docker-compose up
-```
+## Model preservation
 
+The production meta-model lives at
+[`apps/api/models/ml_model_package.pkl`](./apps/api/models/). It was trained
+in 2024 and is **not** retrained as part of this rebuild. We pin
+`scikit-learn==1.2.2` to guarantee joblib-load compatibility across Python
+versions.
 
-## Demo
+See [`docs/MODEL_CARD.md`](./docs/MODEL_CARD.md) for model details, training
+methodology, intended use, and known limitations.
 
-<video width="640" height="360" controls>
-  <source src="Docu/video/demo-video.mp4" type="video/mp4">
-  Ihr Browser unterstützt das Video-Tag nicht.
-</video>
+## Contributing
+
+Read [`docs/CONTRIBUTING.md`](./docs/CONTRIBUTING.md) before opening pull
+requests. This project follows GitHub-flow: branch off `main`, open a PR, get
+a review, merge.
+
+## License
+
+[MIT](./LICENSE) © 2024–2026 HollerithEnergyML contributors.
+
+Herman Hollerith Zentrum · Reutlingen University

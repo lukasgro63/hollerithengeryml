@@ -1,8 +1,0 @@
-fastapi==0.105.0
-uvicorn
-numpy==1.23.5
-pandas
-scikit-learn==1.2.2
-httpx
-python-decouple==3.8
-joblib
