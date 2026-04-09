@@ -7,10 +7,10 @@ consume — given only the shape of your dataset. Powered by a meta-model traine
 on a controlled baseline campaign at the
 [Herman Hollerith Zentrum](https://www.hhz.de), Reutlingen University.
 
-![Status](https://img.shields.io/badge/status-rebuild--in--progress-yellow)
+![Status](https://img.shields.io/badge/status-production--ready-success)
 ![License](https://img.shields.io/badge/license-MIT-blue)
 ![Python](https://img.shields.io/badge/python-3.11-blue)
-![Next.js](https://img.shields.io/badge/next.js-15-black)
+![Next.js](https://img.shields.io/badge/next.js-16-black)
 ![FastAPI](https://img.shields.io/badge/fastapi-0.115-009688)
 
 ---
@@ -53,7 +53,7 @@ blueprint, API contract, and deployment topology.
 ```
 apps/
 ├── api/          FastAPI backend (Python 3.12, scikit-learn)
-└── web/          Next.js 15 frontend (React 19, Tailwind, shadcn/ui)
+└── web/          Next.js 16 frontend (React 19, Tailwind CSS 4)
 infra/            Docker Compose, Caddy, deployment scripts
 research/         Archived baseline-test notebooks and raw research data
 docs/             Architecture, Model Card, Runbook, Contributing
@@ -61,19 +61,27 @@ docs/             Architecture, Model Card, Runbook, Contributing
 
 ## Quickstart (local development)
 
-> **Status:** Phase 0 complete. Backend (Phase 1) and frontend (Phase 2)
-> implementations land in subsequent commits.
+Spin up both services locally with one command:
 
 ```bash
 git clone https://github.com/lukasgro63/hollerithengeryml.git
 cd hollerithengeryml
+docker compose -f infra/docker-compose.yml up --build
+```
 
+The api comes up on `http://localhost:8000` and the web on
+`http://localhost:3000`.
+
+For focused single-service development without Docker, run each app
+directly:
+
+```bash
 # Backend
 cd apps/api
 uv sync
 uv run uvicorn hollerith_api.main:app --reload
 
-# Frontend (once Phase 2 is complete)
+# Frontend
 cd apps/web
 npm install
 npm run dev
@@ -83,8 +91,8 @@ npm run dev
 
 | Layer       | Technology                                          |
 |-------------|-----------------------------------------------------|
-| Frontend    | Next.js 15 · React 19 · TypeScript · Tailwind CSS 4 |
-| UI kit      | shadcn/ui · lucide-react · Recharts                 |
+| Frontend    | Next.js 16 · React 19 · TypeScript · Tailwind CSS 4 |
+| UI kit      | lucide-react · Recharts · clsx + tailwind-merge     |
 | Forms       | react-hook-form · zod                               |
 | Backend     | FastAPI 0.115 · Python 3.11 · Pydantic v2           |
 | ML runtime  | scikit-learn 1.2.2 (pinned) · joblib                |
@@ -104,6 +112,25 @@ versions.
 
 See [`docs/MODEL_CARD.md`](./docs/MODEL_CARD.md) for model details, training
 methodology, intended use, and known limitations.
+
+## Self-hosting
+
+HollerithEnergyML is designed to self-host on a small Hetzner Cloud VPS
+(CX22 in Nuremberg is the reference target) behind Caddy with automatic
+HTTPS. The full Docker Compose stack, the Caddyfile, and the host
+provisioning and deploy scripts live under [`infra/`](./infra/). For the
+operational playbook — first-time setup, deploys, rollbacks, log access,
+TLS rotation, and incident response — see
+[`docs/RUNBOOK.md`](./docs/RUNBOOK.md).
+
+## Documentation
+
+- [`docs/ARCHITECTURE.md`](./docs/ARCHITECTURE.md) — runtime topology, API contract, security posture
+- [`docs/MODEL_CARD.md`](./docs/MODEL_CARD.md) — meta-model details, training data, known limitations
+- [`docs/RUNBOOK.md`](./docs/RUNBOOK.md) — first-time setup, deploys, rollbacks, incident response
+- [`docs/CONTRIBUTING.md`](./docs/CONTRIBUTING.md) — dev workflow and code style
+- [`SECURITY.md`](./SECURITY.md) — responsible disclosure policy
+- [`research/README.md`](./research/README.md) — archived 2024 baseline campaign
 
 ## Contributing
 

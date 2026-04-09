@@ -1,9 +1,21 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowLeft, ExternalLink } from "lucide-react";
+import { ArrowLeft, ExternalLink, FileText } from "lucide-react";
 import { Container } from "@/components/ui/Container";
 import { PageHeader } from "@/components/marketing/PageHeader";
-import { GITHUB_URL, HHZ_URL, REUTLINGEN_UNIVERSITY_URL } from "@/lib/site";
+import {
+  GITHUB_URL,
+  HHZ_URL,
+  PAPER_AUTHORS,
+  PAPER_DOI,
+  PAPER_DOI_URL,
+  PAPER_PAGES,
+  PAPER_PDF_URL,
+  PAPER_TITLE,
+  PAPER_VENUE,
+  PAPER_YEAR,
+  REUTLINGEN_UNIVERSITY_URL,
+} from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "About",
@@ -87,23 +99,75 @@ export default function AboutPage() {
 
           <section>
             <h2 className="text-h3 font-bold tracking-tight text-ink-900">
-              Credits
+              The original team
             </h2>
             <p className="mt-4 leading-relaxed">
-              The 2024 baseline campaign, notebooks, and meta-model training
-              were the work of the original HHZ project team. Their raw
-              measurements and methodology notes live under{" "}
+              The 2024 prototype was developed at the Herman Hollerith Zentrum
+              and peer-reviewed at INFORMATIK 2024 in Bonn. The paper lists
+              the following contributors:
+            </p>
+            <ul className="mt-4 grid grid-cols-1 gap-1.5 text-sm sm:grid-cols-2">
+              {PAPER_AUTHORS.map((author) => (
+                <li key={author} className="flex items-center gap-2">
+                  <span
+                    aria-hidden="true"
+                    className="inline-block h-1.5 w-1.5 rounded-full bg-brand-yellow"
+                  />
+                  {author}
+                </li>
+              ))}
+            </ul>
+            <p className="mt-5 leading-relaxed">
+              Their raw measurements and methodology notes live under{" "}
               <code className="rounded-sm bg-surface-100 px-1.5 py-0.5 text-sm">
                 research/
               </code>{" "}
               in the repository, preserved as an immutable archive so future
-              contributors can audit and extend the work.
+              contributors can audit and extend the work. The 2026 rebuild&apos;s
+              application layer — the FastAPI service, the Next.js frontend,
+              the infrastructure scaffolding, and the documentation you&apos;re
+              reading now — was implemented as a standalone modernisation
+              project on top of that archive.
             </p>
+          </section>
+
+          <section>
+            <h2 className="text-h3 font-bold tracking-tight text-ink-900">
+              Citation
+            </h2>
             <p className="mt-4 leading-relaxed">
-              The 2026 rebuild&apos;s application layer — the FastAPI service,
-              the Next.js frontend, the infrastructure scaffolding, and the
-              documentation you&apos;re reading now — was implemented as a
-              standalone modernisation project on top of that archive.
+              If you reference this project in academic work, cite the
+              INFORMATIK 2024 paper:
+            </p>
+            <blockquote className="mt-5 rounded-sm border-l-4 border-brand-yellow bg-surface-50 p-5 text-sm leading-relaxed text-ink-700">
+              <p>
+                {PAPER_AUTHORS.slice(0, -1).join(", ")}, and{" "}
+                {PAPER_AUTHORS[PAPER_AUTHORS.length - 1]} ({PAPER_YEAR}).{" "}
+                <em>{PAPER_TITLE}.</em> In {PAPER_VENUE}, pp.{" "}
+                {PAPER_PAGES}.
+              </p>
+              <p className="mt-3 font-mono text-xs text-ink-600">
+                DOI:{" "}
+                <a
+                  href={PAPER_DOI_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-semibold text-ink-800 underline decoration-brand-yellow decoration-2 underline-offset-4 hover:text-ink-900"
+                >
+                  {PAPER_DOI}
+                </a>
+              </p>
+            </blockquote>
+            <p className="mt-6">
+              <a
+                href={PAPER_PDF_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 text-sm font-semibold text-ink-700 underline decoration-brand-yellow decoration-2 underline-offset-4 hover:text-ink-900"
+              >
+                <FileText className="h-4 w-4" aria-hidden="true" />
+                Download the paper (PDF, 5 pp.)
+              </a>
             </p>
           </section>
 

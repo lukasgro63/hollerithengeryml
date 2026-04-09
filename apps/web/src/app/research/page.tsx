@@ -1,9 +1,19 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowLeft, ExternalLink } from "lucide-react";
+import { ArrowLeft, ExternalLink, FileText } from "lucide-react";
 import { Container } from "@/components/ui/Container";
 import { PageHeader } from "@/components/marketing/PageHeader";
-import { GITHUB_URL } from "@/lib/site";
+import {
+  GITHUB_URL,
+  PAPER_AUTHORS,
+  PAPER_DOI,
+  PAPER_DOI_URL,
+  PAPER_PAGES,
+  PAPER_PDF_URL,
+  PAPER_TITLE,
+  PAPER_VENUE,
+  PAPER_YEAR,
+} from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Research",
@@ -68,16 +78,22 @@ export default function ResearchPage() {
                     Classifiers
                   </h3>
                   <ul className="mt-3 space-y-1.5 text-sm">
-                    <li>DecisionTreeClassifier</li>
-                    <li>GaussianNB</li>
-                    <li>KNeighborsClassifier</li>
                     <li>LogisticRegression</li>
+                    <li>KNeighborsClassifier</li>
+                    <li>DecisionTreeClassifier</li>
                     <li>RandomForestClassifier</li>
+                    <li>XGBoost</li>
                   </ul>
                   <p className="mt-3 text-xs text-ink-500">
-                    The original campaign also measured XGBoost; it was excluded
-                    from the production meta-model for consistency with
-                    scikit-learn&apos;s estimator API.
+                    These five classifiers are the ones named in the published
+                    paper. The production meta-model serves a slightly
+                    different set — it replaces XGBoost with GaussianNB for
+                    scikit-learn-API consistency — but the measurement archive
+                    under{" "}
+                    <code className="rounded-sm bg-surface-100 px-1 text-xs">
+                      research/baseline-tests/results/
+                    </code>{" "}
+                    contains emission CSVs for all six.
                   </p>
                 </div>
                 <div>
@@ -85,13 +101,15 @@ export default function ResearchPage() {
                     Datasets
                   </h3>
                   <ul className="mt-3 space-y-1.5 text-sm">
-                    <li>Diabetes Binary Health Indicators</li>
-                    <li>Bank Marketing Campaign</li>
-                    <li>Heart Disease 2020 (CDC)</li>
+                    <li>Diabetes Health Indicators — ~250,000 rows, 22 features (Kaggle)</li>
+                    <li>Bank Marketing — ~11,000 rows, 17 features (UCI)</li>
+                    <li>Heart Disease 2020 — ~320,000 rows, 17 features (Kaggle / CDC)</li>
                   </ul>
                   <p className="mt-3 text-xs text-ink-500">
-                    Three public tabular classification datasets chosen to cover
-                    different feature mixes and row counts.
+                    Every dataset was sampled at 100 %, 80 %, 60 %, 40 %, and
+                    20 % of its original row count, with features reduced
+                    randomly step by step, producing dense energy-versus-shape
+                    curves per classifier.
                   </p>
                 </div>
               </div>
@@ -148,10 +166,18 @@ export default function ResearchPage() {
               <p className="mt-4 leading-relaxed">
                 The aggregated CodeCarbon measurements became the training data
                 for a meta-model that predicts the energy cost of training a
-                given algorithm on a given dataset shape. Two regressors were
-                fitted: a Random Forest for inputs inside the measured envelope
-                and a Linear Regression as a fallback for extrapolation beyond
-                it.
+                given algorithm on a given dataset shape. The paper evaluated
+                four candidate regressors on the held-out set and selected the
+                Random Forest Regressor for its strong fit: R² = 0.996, versus
+                0.982 for Gradient Boosting, 0.884 for a degree-3 polynomial
+                regression, and 0.714 for plain Linear Regression.
+              </p>
+              <p className="mt-4 leading-relaxed">
+                The production backend packages both the chosen Random Forest
+                and a linear fallback side-by-side in the same joblib archive,
+                so large-input requests beyond the measured envelope still
+                return an answer — the linear one, clearly labelled as such in
+                the response.
               </p>
 
               <div className="mt-6 overflow-hidden rounded-sm border border-surface-200">
@@ -198,8 +224,17 @@ export default function ResearchPage() {
               <p className="mt-4 leading-relaxed">
                 The Random Forest path is taken when <em>all three</em> of the
                 following hold: at most 50 numerical features, at most 50
-                categorical features, and at most 50,000 rows. For larger inputs
-                the linear fallback extrapolates.
+                categorical features, and at most 50,000 rows. For larger
+                inputs the linear fallback extrapolates.
+              </p>
+              <p className="mt-4 text-sm text-ink-500">
+                Note: the paper documents a measured envelope of 25 numerical
+                features, 25 categorical features, and 350,000 rows — the
+                range in which training data was actually collected. The
+                production code&apos;s switch-over thresholds (50 / 50 /
+                50,000) are a slightly different, implementation-level choice
+                about where to fall through to the linear extrapolator. Read
+                predictions between the two bands with some extra skepticism.
               </p>
             </section>
 
@@ -255,6 +290,47 @@ export default function ResearchPage() {
                   </p>
                 </li>
               </ul>
+            </section>
+
+            <section>
+              <h2 className="text-h3 font-bold tracking-tight text-ink-900">
+                Citation
+              </h2>
+              <p className="mt-4 leading-relaxed">
+                The research behind HollerithEnergyML was peer-reviewed and
+                published as a prototype demo paper at INFORMATIK 2024 in
+                Bonn. If you cite this work, please cite the paper:
+              </p>
+              <blockquote className="mt-5 rounded-sm border-l-4 border-brand-yellow bg-surface-50 p-5 text-sm leading-relaxed text-ink-700">
+                <p>
+                  {PAPER_AUTHORS.slice(0, -1).join(", ")}, and{" "}
+                  {PAPER_AUTHORS[PAPER_AUTHORS.length - 1]} ({PAPER_YEAR}).{" "}
+                  <em>{PAPER_TITLE}.</em> In {PAPER_VENUE}, pp.{" "}
+                  {PAPER_PAGES}.
+                </p>
+                <p className="mt-3 font-mono text-xs text-ink-600">
+                  DOI:{" "}
+                  <a
+                    href={PAPER_DOI_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="font-semibold text-ink-800 underline decoration-brand-yellow decoration-2 underline-offset-4 hover:text-ink-900"
+                  >
+                    {PAPER_DOI}
+                  </a>
+                </p>
+              </blockquote>
+              <p className="mt-6">
+                <a
+                  href={PAPER_PDF_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 text-sm font-semibold text-ink-700 underline decoration-brand-yellow decoration-2 underline-offset-4 hover:text-ink-900"
+                >
+                  <FileText className="h-4 w-4" aria-hidden="true" />
+                  Download the paper (PDF, 5 pp.)
+                </a>
+              </p>
             </section>
 
             <section>
@@ -323,6 +399,11 @@ export default function ResearchPage() {
                 <li>
                   <a href="#" className="text-ink-600 hover:text-ink-900">
                     Known limitations
+                  </a>
+                </li>
+                <li>
+                  <a href="#" className="text-ink-600 hover:text-ink-900">
+                    Citation
                   </a>
                 </li>
                 <li>

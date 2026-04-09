@@ -1,7 +1,5 @@
 # Model Card — HollerithEnergyML Meta-Model
 
-> **Status:** Placeholder. To be finalised in Phase 6 during project handoff.
-
 ## Model details
 
 - **Artefact:** `apps/api/models/ml_model_package.pkl`
@@ -50,8 +48,30 @@ Heart 2020 datasets across the five algorithms.
 
 ## Known limitations
 
-- **TODO Phase 6:** document algorithm coverage, hardware dependence, model
-  staleness, and extrapolation behaviour beyond measured ranges.
+1. **Hardware-calibrated.** The baseline was measured on a dual-core Intel
+   Xeon at 2.20 GHz with 12.6 GB of RAM running Linux (Python 3.10.12).
+   Training on different CPU architectures (Apple Silicon, AMD, ARM
+   servers) or on a GPU will deviate — sometimes by an order of magnitude
+   — from these predictions. Treat the output as a reference value
+   anchored to that one machine, not a universal physical estimate.
+2. **Default hyperparameters only.** Every measurement was taken with
+   scikit-learn 1.2.2 default hyperparameters across all five classifiers.
+   Custom hyperparameters — Random Forest tree depth and `n_estimators`,
+   KNN `n_neighbors`, LogisticRegression regularisation strength,
+   DecisionTree max depth — are invisible to the meta-model and will shift
+   real energy consumption in ways the predictions do not capture.
+3. **Linear extrapolation beyond the envelope.** Inputs larger than 50
+   numerical features, 50 categorical features, or 50,000 rows fall
+   through to the LinearRegression fallback, which is exactly a linear
+   extrapolation of the measured surface. Treat large-data predictions as
+   rough directional guidance, not precise estimates.
+4. **No XGBoost.** The original 2024 campaign did measure XGBoost
+   alongside the five scikit-learn classifiers, but it was excluded from
+   the production meta-model for scikit-learn-API consistency. If you need
+   an XGBoost estimate, this model will not give you one.
+5. **Small-data sparsity.** The training set is thin for very small
+   datasets (under a few hundred rows). Predictions in that regime carry
+   more uncertainty than the average error rate suggests.
 
 ## Maintenance
 

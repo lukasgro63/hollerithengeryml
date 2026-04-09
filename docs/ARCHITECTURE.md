@@ -121,6 +121,63 @@ fallback.
 
 ## Deployment
 
-See [`../infra/`](../infra/) for Docker Compose files, the Caddyfile, and the
-Hetzner provisioning script. CI/CD workflows live under
-[`../.github/workflows/`](../.github/workflows/).
+### Runtime topology
+
+See the ASCII diagram in the [Runtime topology](#runtime-topology) section
+above. In production this stack runs on a single Hetzner Cloud CX22 in
+Nuremberg with Caddy fronting the `web` and `api` containers on the same
+Docker network.
+
+### CI/CD flow
+
+```
+git push main
+   │
+   ▼
+.github/workflows/ci.yml          (lint + typecheck + tests + build)
+   │
+   ▼
+.github/workflows/deploy.yml      (reuses ci.yml via workflow_call)
+   │
+   ├── docker buildx → ghcr.io/lukasgro63/hollerithengeryml/web:<sha>
+   └── docker buildx → ghcr.io/lukasgro63/hollerithengeryml/api:<sha>
+   │
+   ▼
+ssh + scp infra/docker-compose.prod.yml infra/Caddyfile to host
+   │
+   ▼
+ssh hollerith@<host> sudo /opt/hollerith/deploy.sh <sha>
+   │
+   ├── pull new tag
+   ├── docker compose up -d
+   ├── poll /api/v1/health and /api/health
+   ├── on failure → rollback to previous tag
+   └── on success → record tag in /opt/hollerith/.state/previous_tag
+   │
+   ▼
+smoke test https://<domain>/api/v1/health from the runner
+```
+
+### What lives where
+
+| Concern                  | File                              |
+|--------------------------|-----------------------------------|
+| Local dev stack          | `infra/docker-compose.yml`        |
+| Production stack         | `infra/docker-compose.prod.yml`   |
+| Reverse proxy + HTTPS    | `infra/Caddyfile`                 |
+| One-time host bootstrap  | `infra/deploy/provision.sh`       |
+| CI-triggered deploy      | `infra/deploy/deploy.sh`          |
+| CI checks                | `.github/workflows/ci.yml`        |
+| Build, push, deploy      | `.github/workflows/deploy.yml`    |
+| Dependency updates       | `.github/dependabot.yml`          |
+
+## Next steps for contributors
+
+- [`docs/RUNBOOK.md`](./RUNBOOK.md) — operational playbook: first-time
+  setup, deploys, rollbacks, incident response.
+- [`docs/MODEL_CARD.md`](./MODEL_CARD.md) — meta-model details, training
+  data, intended use, and known limitations.
+- [`docs/CONTRIBUTING.md`](./CONTRIBUTING.md) — dev workflow, code style,
+  pull-request process.
+- [`research/README.md`](../research/README.md) — archived 2024 baseline
+  campaign that produced the meta-model.

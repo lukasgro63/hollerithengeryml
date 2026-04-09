@@ -1,6 +1,7 @@
 import Link from "next/link";
-import { ArrowRight, FlaskConical } from "lucide-react";
+import { ArrowRight, FileText, FlaskConical } from "lucide-react";
 import { Container } from "@/components/ui/Container";
+import { PAPER_DOI, PAPER_DOI_URL } from "@/lib/site";
 
 export function ResearchTeaser() {
   return (
@@ -22,7 +23,7 @@ export function ResearchTeaser() {
               instrumented with CodeCarbon, sweeping across feature counts and
               row counts to map the energy-versus-shape surface.
             </p>
-            <div className="mt-7">
+            <div className="mt-7 flex flex-wrap items-center gap-x-6 gap-y-3">
               <Link
                 href="/research"
                 className="inline-flex items-center gap-1.5 text-sm font-semibold text-ink-800 underline decoration-brand-yellow decoration-2 underline-offset-4 hover:text-ink-900"
@@ -30,6 +31,15 @@ export function ResearchTeaser() {
                 Read the methodology
                 <ArrowRight className="h-4 w-4" aria-hidden="true" />
               </Link>
+              <a
+                href={PAPER_DOI_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 text-sm text-ink-600 hover:text-ink-900"
+              >
+                <FileText className="h-4 w-4" aria-hidden="true" />
+                INFORMATIK 2024 · doi:{PAPER_DOI}
+              </a>
             </div>
           </div>
 
