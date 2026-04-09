@@ -1,0 +1,17 @@
+# Python Virtual Environment
+myenv/
+
+# PyCharm files
+.idea/
+
+# Python cache files
+__pycache__/
+
+# Compiled Python files
+*.pyc
+*.pyo
+__pycache__/
+
+# Editor-specific temp files
+*~
+

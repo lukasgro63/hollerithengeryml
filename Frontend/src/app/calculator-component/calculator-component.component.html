@@ -1,0 +1,50 @@
+<div class="center-container">
+  <h1 class="header-text">Empower Your AI-Training with Green Efficiency!</h1>
+  <p class="short-text">
+    With just a few clicks, you can estimate the energy consumption of your
+    machine learning model training process. Simply input the size of your
+    dataset, the number of numerical and categorical features, and watch as we
+    calculate the energy footprint.
+  </p>
+  <form class="example-form" [formGroup]="inputForm">
+    <div class="input-fields">
+      <mat-form-field
+        class="example-full-width input-field"
+        [style.width.px]="327"
+        appearance="outline"
+      >
+        <mat-label>Number of numerical features</mat-label>
+        <input matInput placeholder="e.g. 25" formControlName="numFeatures" />
+      </mat-form-field>
+
+      <mat-form-field
+        class="example-full-width input-field"
+        [style.width.px]="327"
+        appearance="outline"
+      >
+        <mat-label>Number of categorical features</mat-label>
+        <input matInput placeholder="e.g. 17" formControlName="catFeatures" />
+      </mat-form-field>
+
+      <mat-form-field
+        class="example-full-width input-field"
+        [style.width.px]="327"
+        appearance="outline"
+      >
+        <mat-label>Size of dataset</mat-label>
+        <input matInput placeholder="e.g. 100000" formControlName="dataSize" />
+      </mat-form-field>
+    </div>
+
+    <div class="input-fields">
+      <button
+        mat-raised-button
+        color="primary"
+        (click)="calculate()"
+        [disabled]="!inputForm.valid"
+      >
+        Calculate
+      </button>
+    </div>
+  </form>
+</div>

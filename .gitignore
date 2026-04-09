@@ -1,0 +1,88 @@
+# ---------------------------------------------------------------------------
+# HollerithEnergyML — root .gitignore
+# Subdirectories (Backend/, Frontend/, ML-Notebooks/) keep their own
+# .gitignore files in addition to this one.
+# ---------------------------------------------------------------------------
+
+# --- Environment & secrets -------------------------------------------------
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# --- macOS / Windows / Linux OS junk ---------------------------------------
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon?
+._*
+.Spotlight-V100
+.Trashes
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# --- IDEs / editors --------------------------------------------------------
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+*.swp
+*.swo
+*~
+.project
+.classpath
+.settings/
+
+# --- Python ----------------------------------------------------------------
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.tox/
+.coverage
+.coverage.*
+htmlcov/
+coverage.xml
+*.cover
+.hypothesis/
+
+# --- Python virtual environments -------------------------------------------
+myenv/
+venv/
+.venv/
+env/
+ENV/
+mlflow_env/
+my_new_mlflow_env/
+
+# --- Jupyter / MLflow ------------------------------------------------------
+.ipynb_checkpoints/
+mlruns/
+mlartifacts/
+
+# --- Node / Angular --------------------------------------------------------
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+/Frontend/dist/
+/Frontend/tmp/
+/Frontend/out-tsc/
+/Frontend/bazel-out/
+/Frontend/.angular/
+/Frontend/coverage/
+.sass-cache/
+/Frontend/connect.lock
+/Frontend/libpeerconnection.log
+/Frontend/testem.log
+/Frontend/typings/
+
+# --- Claude Code -----------------------------------------------------------
+.claude/

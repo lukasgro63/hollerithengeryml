@@ -1,0 +1,110 @@
+$background-color: #ffffff;
+$text-color: #333333;
+$hover-color: #ffda44;
+$font-stack: "Roboto", sans-serif;
+$border-radius: 8px;
+$box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+
+@mixin respond-to($media) {
+  @if $media == "medium" {
+    @media (max-width: 992px) {
+      @content;
+    }
+  } @else if $media == "small" {
+    @media (max-width: 768px) {
+      @content;
+    }
+  } @else if $media == "xsmall" {
+    @media (max-width: 576px) {
+      @content;
+    }
+  } @else if $media == "xxsmall" {
+    @media (max-width: 400px) {
+      @content;
+    }
+  }
+}
+
+.popup-container {
+  font-family: $font-stack;
+  background-color: $background-color;
+  border-radius: $border-radius;
+  box-shadow: $box-shadow;
+  padding: 40px;
+  width: 50%;
+  max-width: 640px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1000;
+
+  @include respond-to("medium") {
+    width: 60%;
+  }
+
+  @include respond-to("small") {
+    width: 80%;
+    padding: 20px;
+  }
+
+  @include respond-to("xsmall") {
+    width: 90%;
+    padding: 15px;
+  }
+
+  @include respond-to("xxsmall") {
+    width: 95%;
+    padding: 10px;
+  }
+}
+
+// Stil für den Schließbutton
+.close-button {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  cursor: pointer;
+  font-size: 28px;
+  color: $text-color;
+  transition: color 0.2s;
+
+  &:hover {
+    color: $hover-color;
+  }
+
+  @include respond-to("xsmall") {
+    font-size: 24px;
+  }
+}
+
+.popup-title {
+  font-size: 22px;
+  color: $text-color;
+  margin-bottom: 30px;
+  font-weight: bold;
+
+  @include respond-to("xsmall") {
+    font-size: 18px;
+  }
+}
+
+.popup-text {
+  font-size: 16px;
+  color: darken($text-color, 20%);
+  line-height: 1.5;
+  margin-bottom: 20px;
+
+  @include respond-to("xsmall") {
+    font-size: 14px;
+  }
+}
+
+#barChart {
+  max-width: 100%;
+  height: auto;
+
+  @include respond-to("xsmall") {
+    height: 300px;
+  }
+}
