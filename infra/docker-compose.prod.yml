@@ -1,0 +1,85 @@
+# Production stack for the Hetzner CX22 host.
+#
+# Expected layout on the host:
+#   /opt/hollerith/docker-compose.prod.yml   (this file)
+#   /opt/hollerith/Caddyfile                 (reverse proxy config)
+#   /etc/hollerith/.env                      (runtime env, mode 640 root:hollerith)
+#
+# Usage:
+#   sudo docker compose -f /opt/hollerith/docker-compose.prod.yml --env-file /etc/hollerith/.env pull
+#   sudo docker compose -f /opt/hollerith/docker-compose.prod.yml --env-file /etc/hollerith/.env up -d
+
+name: hollerith
+
+services:
+  caddy:
+    image: caddy:2-alpine
+    container_name: hollerith-caddy
+    restart: unless-stopped
+    depends_on:
+      - web
+      - api
+    ports:
+      - "80:80"
+      - "443:443"
+    env_file:
+      - /etc/hollerith/.env
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    networks:
+      - hollerith
+
+  web:
+    image: ghcr.io/lukasgro63/hollerithengeryml/web:${TAG:-latest}
+    container_name: hollerith-web
+    restart: unless-stopped
+    env_file:
+      - /etc/hollerith/.env
+    expose:
+      - "3000"
+    networks:
+      - hollerith
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - >-
+          node -e "fetch('http://127.0.0.1:3000/api/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 15s
+
+  api:
+    image: ghcr.io/lukasgro63/hollerithengeryml/api:${TAG:-latest}
+    container_name: hollerith-api
+    restart: unless-stopped
+    env_file:
+      - /etc/hollerith/.env
+    expose:
+      - "8000"
+    read_only: true
+    tmpfs:
+      - /tmp
+    networks:
+      - hollerith
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - >-
+          python -c "import urllib.request,sys;
+          sys.exit(0 if urllib.request.urlopen('http://localhost:8000/api/v1/health',timeout=3).getcode()==200 else 1)"
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 15s
+
+networks:
+  hollerith:
+    name: hollerith
+    driver: bridge
+
+volumes:
+  caddy_data:
+  caddy_config:

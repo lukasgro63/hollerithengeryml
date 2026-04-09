@@ -1,0 +1,70 @@
+# Local development stack for HollerithEnergyML.
+#
+# Usage:
+#   docker compose -f infra/docker-compose.yml up --build
+#
+# Both services are built from the workspace sources. The web container bakes
+# the public URLs at build time (Next.js requirement for NEXT_PUBLIC_* vars),
+# so changing them requires a rebuild, not just a restart.
+
+name: hollerith
+
+services:
+  api:
+    build:
+      context: ../apps/api
+      dockerfile: Dockerfile
+    image: hollerith-api:dev
+    container_name: hollerith-api
+    environment:
+      ENVIRONMENT: development
+      LOG_LEVEL: info
+      ALLOWED_ORIGINS: http://localhost:3000
+      PREDICTIONS_RATE_LIMIT_PER_MINUTE: "100"
+    ports:
+      - "8000:8000"
+    networks:
+      - hollerith
+    restart: unless-stopped
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - >-
+          python -c "import urllib.request,sys;
+          sys.exit(0 if urllib.request.urlopen('http://localhost:8000/api/v1/health',timeout=3).getcode()==200 else 1)"
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 15s
+
+  web:
+    build:
+      context: ../apps/web
+      dockerfile: Dockerfile
+      args:
+        NEXT_PUBLIC_API_URL: http://localhost:8000
+        NEXT_PUBLIC_SITE_URL: http://localhost:3000
+    image: hollerith-web:dev
+    container_name: hollerith-web
+    depends_on:
+      api:
+        condition: service_healthy
+    ports:
+      - "3000:3000"
+    networks:
+      - hollerith
+    restart: unless-stopped
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - >-
+          node -e "fetch('http://127.0.0.1:3000/api/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 15s
+
+networks:
+  hollerith:
+    name: hollerith
+    driver: bridge

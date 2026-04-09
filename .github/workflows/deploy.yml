@@ -1,0 +1,147 @@
+# Production deploy pipeline for HollerithEnergyML.
+#
+# Required repository configuration:
+#   secrets.HETZNER_HOST    SSH target hostname or IP for the production VPS
+#   secrets.HETZNER_USER    SSH username on the VPS (must be `hollerith`)
+#   secrets.HETZNER_SSH_KEY Private SSH key with access to HETZNER_USER
+#   vars.SITE_DOMAIN        Production domain (e.g. hollerith.example.de)
+#
+# Pipeline:
+#   1. ci          reuse .github/workflows/ci.yml (lint + type-check + tests)
+#   2. build-push  build web + api images, push to GHCR with sha and latest tags
+#   3. deploy      copy compose/Caddyfile to host, run deploy.sh, smoke-test
+
+name: Deploy
+
+on:
+  push:
+    branches:
+      - main
+
+concurrency:
+  group: deploy
+  cancel-in-progress: false
+
+jobs:
+  ci:
+    name: CI
+    uses: ./.github/workflows/ci.yml
+
+  build-push:
+    name: build-push (${{ matrix.service }})
+    needs: ci
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+      packages: write
+    strategy:
+      fail-fast: true
+      matrix:
+        service: [web, api]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
+      - name: Set up Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Compute image metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ghcr.io/lukasgro63/hollerithengeryml/${{ matrix.service }}
+          tags: |
+            type=raw,value=latest
+            type=sha,format=long,prefix=
+
+      - name: Build and push (api)
+        if: matrix.service == 'api'
+        uses: docker/build-push-action@v6
+        with:
+          context: apps/api
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha,scope=api
+          cache-to: type=gha,mode=max,scope=api
+
+      - name: Build and push (web)
+        if: matrix.service == 'web'
+        uses: docker/build-push-action@v6
+        with:
+          context: apps/web
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          build-args: |
+            NEXT_PUBLIC_API_URL=https://${{ vars.SITE_DOMAIN }}
+            NEXT_PUBLIC_SITE_URL=https://${{ vars.SITE_DOMAIN }}
+          cache-from: type=gha,scope=web
+          cache-to: type=gha,mode=max,scope=web
+
+  deploy:
+    name: deploy
+    needs: build-push
+    runs-on: ubuntu-24.04
+    env:
+      SITE_DOMAIN: ${{ vars.SITE_DOMAIN }}
+      HETZNER_HOST: ${{ secrets.HETZNER_HOST }}
+      HETZNER_USER: ${{ secrets.HETZNER_USER }}
+      DEPLOY_SHA: ${{ github.sha }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install SSH key
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-auth-sock: /tmp/ssh-agent.sock
+          ssh-private-key: ${{ secrets.HETZNER_SSH_KEY }}
+
+      - name: Add host to known_hosts
+        run: |
+          mkdir -p ~/.ssh
+          chmod 700 ~/.ssh
+          ssh-keyscan -H "$HETZNER_HOST" >> ~/.ssh/known_hosts
+          chmod 600 ~/.ssh/known_hosts
+
+      - name: Copy infra files to host
+        run: |
+          scp -o StrictHostKeyChecking=yes \
+            infra/Caddyfile \
+            infra/docker-compose.prod.yml \
+            "$HETZNER_USER@$HETZNER_HOST:/opt/hollerith/"
+
+      - name: Copy deploy script
+        run: |
+          scp -o StrictHostKeyChecking=yes \
+            infra/deploy/deploy.sh \
+            "$HETZNER_USER@$HETZNER_HOST:/opt/hollerith/deploy.sh"
+          ssh -o StrictHostKeyChecking=yes \
+            "$HETZNER_USER@$HETZNER_HOST" \
+            "sudo chmod +x /opt/hollerith/deploy.sh"
+
+      - name: Run deploy script
+        run: |
+          ssh -o StrictHostKeyChecking=yes \
+            "$HETZNER_USER@$HETZNER_HOST" \
+            "sudo /opt/hollerith/deploy.sh $DEPLOY_SHA"
+
+      - name: Smoke test API health
+        run: |
+          status=$(curl -sf -o /dev/null -w '%{http_code}' "https://$SITE_DOMAIN/api/v1/health")
+          if [ "$status" != "200" ]; then
+            echo "smoke test failed: HTTP $status" >&2
+            exit 1
+          fi
+          echo "smoke test ok: HTTP $status"
