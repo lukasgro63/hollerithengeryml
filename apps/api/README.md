@@ -2,7 +2,8 @@
 
 FastAPI backend serving the HollerithEnergyML meta-model.
 
-> **Status:** Skeleton directory. Implementation lands in Phase 1.
+Loads the 2024 meta-model at startup and exposes a small versioned REST API
+for energy-consumption predictions across five scikit-learn algorithms.
 
 ## Local development
 
@@ -14,8 +15,11 @@ uv run uvicorn hollerith_api.main:app --reload --port 8000
 
 ## Stack
 
-Python 3.12 · FastAPI 0.115 · Pydantic v2 · scikit-learn 1.2.2 (pinned) ·
+Python 3.11 · FastAPI 0.115 · Pydantic v2 · scikit-learn 1.2.2 (pinned) ·
 joblib · structlog · slowapi · uv · ruff · pytest.
+
+> **Note:** Python is pinned to 3.11 because scikit-learn 1.2.2 (required to
+> load the 2024 joblib artefact) does not publish wheels for Python 3.12+.
 
 ## Entry points
 

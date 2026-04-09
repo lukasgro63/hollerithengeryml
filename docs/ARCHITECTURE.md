@@ -33,7 +33,7 @@ docs/      Architecture, Model Card, Runbook, Contributing
 │            ▼                                      ▼                        │
 │   ┌────────────────────┐             ┌─────────────────────────────┐       │
 │   │ web (Next.js 15)   │             │ api (FastAPI)               │       │
-│   │ node:22-alpine     │             │ python:3.12-slim            │       │
+│   │ node:22-alpine     │             │ python:3.11-slim            │       │
 │   │ next start         │             │ gunicorn + uvicorn-worker   │       │
 │   │ :3000              │             │ :8000                       │       │
 │   └────────────────────┘             └──────────────┬──────────────┘       │

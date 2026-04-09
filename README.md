@@ -9,7 +9,7 @@ on a controlled baseline campaign at the
 
 ![Status](https://img.shields.io/badge/status-rebuild--in--progress-yellow)
 ![License](https://img.shields.io/badge/license-MIT-blue)
-![Python](https://img.shields.io/badge/python-3.12-blue)
+![Python](https://img.shields.io/badge/python-3.11-blue)
 ![Next.js](https://img.shields.io/badge/next.js-15-black)
 ![FastAPI](https://img.shields.io/badge/fastapi-0.115-009688)
 
@@ -68,7 +68,7 @@ docs/             Architecture, Model Card, Runbook, Contributing
 git clone https://github.com/lukasgro63/hollerithengeryml.git
 cd hollerithengeryml
 
-# Backend (once Phase 1 is complete)
+# Backend
 cd apps/api
 uv sync
 uv run uvicorn hollerith_api.main:app --reload
@@ -86,7 +86,7 @@ npm run dev
 | Frontend    | Next.js 15 · React 19 · TypeScript · Tailwind CSS 4 |
 | UI kit      | shadcn/ui · lucide-react · Recharts                 |
 | Forms       | react-hook-form · zod                               |
-| Backend     | FastAPI 0.115 · Python 3.12 · Pydantic v2           |
+| Backend     | FastAPI 0.115 · Python 3.11 · Pydantic v2           |
 | ML runtime  | scikit-learn 1.2.2 (pinned) · joblib                |
 | Tooling     | uv · ruff · pytest                                  |
 | Container   | Docker · Docker Compose v2                          |
