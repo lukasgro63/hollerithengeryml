@@ -1,0 +1,25 @@
+**/node_modules
+**/.next
+**/.turbo
+**/dist
+**/out
+**/build
+**/coverage
+
+# Editor / OS junk
+**/.DS_Store
+**/.vscode
+**/.idea
+**/*.log
+
+# Git
+.git
+.gitignore
+
+# Env files — production values are injected at runtime
+.env
+.env.*
+!.env.example
+
+# CI/CD
+.github

@@ -1,0 +1,146 @@
+@import "tailwindcss";
+
+/* ============================================================================
+ * HollerithEnergyML — design tokens
+ * Inspired by https://www.hhz.de visual language:
+ *   - bright yellow accent on dark text
+ *   - fluid responsive typography
+ *   - generous vertical rhythm between sections
+ *   - 4px border radius, no heavy shadows
+ *
+ * Tailwind 4 generates utility classes from these tokens automatically:
+ *   --color-brand-yellow  →  bg-brand-yellow, text-brand-yellow, border-brand-yellow
+ *   --spacing-section-md  →  py-section-md, m-section-md, gap-section-md
+ *   --radius-sm           →  rounded-sm
+ * ============================================================================ */
+
+@theme {
+  /* --- Brand colors (HHZ-inspired) ------------------------------------- */
+  --color-brand-yellow: #ffe400;
+  --color-brand-yellow-hover: #d9c200;
+  --color-brand-yellow-press: #ccb600;
+
+  --color-accent-rust: #e76f51;
+  --color-accent-rust-hover: #e2532f;
+
+  /* --- Ink (text) scale ------------------------------------------------ */
+  --color-ink-950: #080808;
+  --color-ink-900: #1a1a1a;
+  --color-ink-800: #212121;
+  --color-ink-700: #343434;
+  --color-ink-600: #4d4d4d;
+  --color-ink-500: #707173;
+  --color-ink-400: #929292;
+  --color-ink-300: #b4b4b4;
+
+  /* --- Surface (background) scale -------------------------------------- */
+  --color-surface-0: #ffffff;
+  --color-surface-50: #f8f8f8;
+  --color-surface-100: #f3f3f3;
+  --color-surface-200: #eaebec;
+  --color-surface-300: #dadada;
+  --color-surface-400: #bfbfbf;
+
+  /* --- Status ---------------------------------------------------------- */
+  --color-success: #28a745;
+  --color-danger: #dc3545;
+  --color-warning: #ffc107;
+
+  /* --- Typography ------------------------------------------------------ */
+  --font-sans:
+    var(--font-inter), ui-sans-serif, system-ui, -apple-system, "Segoe UI",
+    Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono:
+    ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
+    monospace;
+
+  /* Fluid typography — approximation of HHZ's calc()-based scaling.
+   * Matches: calc(<small-base> + <viewport-width>%) where min/max anchor
+   * the extremes for 320px and 1200px+ viewports. */
+  --text-display: clamp(2rem, 1.425rem + 2.1vw, 3rem);
+  --text-display--line-height: 1.1;
+  --text-display--letter-spacing: -0.02em;
+
+  --text-h2: clamp(1.75rem, 1.3rem + 1.5vw, 2.625rem);
+  --text-h2--line-height: 1.15;
+  --text-h2--letter-spacing: -0.02em;
+
+  --text-h3: clamp(1.5rem, 1.2rem + 1vw, 2.25rem);
+  --text-h3--line-height: 1.2;
+  --text-h3--letter-spacing: -0.015em;
+
+  --text-h4: clamp(1.25rem, 1.1rem + 0.5vw, 1.875rem);
+  --text-h4--line-height: 1.25;
+  --text-h4--letter-spacing: -0.01em;
+
+  --text-lead: clamp(1.125rem, 1rem + 0.35vw, 1.375rem);
+  --text-lead--line-height: 1.5;
+
+  /* --- Section rhythm -------------------------------------------------- */
+  --spacing-section-sm: 1.875rem; /* 30px */
+  --spacing-section-md: 2.75rem; /* 44px */
+  --spacing-section-lg: 4rem; /* 64px */
+  --spacing-section-xl: 6rem; /* 96px */
+
+  /* --- Border radius (HHZ uses 4px everywhere) ------------------------- */
+  --radius-xs: 0.125rem;
+  --radius-sm: 0.25rem; /* 4px — HHZ default */
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+
+  /* --- Container widths ------------------------------------------------ */
+  --container-prose: 65ch;
+  --container-measure: 75ch;
+}
+
+/* ============================================================================
+ * Base layer — minimal opinionated resets on top of Tailwind Preflight.
+ * ============================================================================ */
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background-color: var(--color-surface-0);
+    color: var(--color-ink-800);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    color: var(--color-ink-800);
+    font-weight: 700;
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  /* Yellow focus ring for keyboard navigation */
+  *:focus-visible {
+    outline: 2px solid var(--color-brand-yellow);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  /* Honour the user's motion preference */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
