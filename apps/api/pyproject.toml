@@ -13,7 +13,7 @@ authors = [{ name = "HollerithEnergyML contributors" }]
 # re-verifying that `apps/api/models/ml_model_package.pkl` still loads.
 dependencies = [
     "fastapi>=0.115,<0.116",
-    "uvicorn[standard]>=0.32,<0.33",
+    "uvicorn[standard]>=0.32,<0.45",
     "gunicorn>=23,<24",
     "pydantic>=2.9,<3",
     "pydantic-settings>=2.6,<3",
