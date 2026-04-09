@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
+import { SITE_DESCRIPTION, SITE_NAME, SITE_TAGLINE, SITE_URL } from "@/lib/site";
 import "./globals.css";
 
 const inter = Inter({
@@ -11,16 +12,13 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://hollerith.example.de"),
+  metadataBase: new URL(SITE_URL),
   title: {
-    default: "HollerithEnergyML — predict ML training energy consumption",
-    template: "%s · HollerithEnergyML",
+    default: `${SITE_NAME} — ${SITE_TAGLINE}`,
+    template: `%s · ${SITE_NAME}`,
   },
-  description:
-    "Estimate the energy consumption of training classical scikit-learn " +
-    "algorithms from the shape of your dataset. A research project of the " +
-    "Herman Hollerith Zentrum at Reutlingen University.",
-  applicationName: "HollerithEnergyML",
+  description: SITE_DESCRIPTION,
+  applicationName: SITE_NAME,
   authors: [{ name: "Herman Hollerith Zentrum" }],
   keywords: [
     "green AI",
@@ -37,10 +35,15 @@ export const metadata: Metadata = {
   },
   openGraph: {
     type: "website",
-    title: "HollerithEnergyML",
-    description:
-      "Predict the energy cost of your ML training before you train it.",
-    siteName: "HollerithEnergyML",
+    title: SITE_NAME,
+    description: "Predict the energy cost of your ML training before you train it.",
+    siteName: SITE_NAME,
+    locale: "en_US",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: SITE_NAME,
+    description: "Predict the energy cost of your ML training before you train it.",
   },
 };
 
