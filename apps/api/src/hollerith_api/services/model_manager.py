@@ -19,9 +19,9 @@ ModelName = Literal["random_forest", "linear_regression"]
 class Thresholds:
     """Switch-over thresholds inherited from the 2024 codebase."""
 
-    max_numerical_features: int = 50
-    max_categorical_features: int = 50
-    max_dataset_size: int = 50_000
+    max_numerical_features: int = 25
+    max_categorical_features: int = 25
+    max_dataset_size: int = 350_000
 
 
 @dataclass(frozen=True)

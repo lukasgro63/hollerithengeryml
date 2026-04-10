@@ -54,13 +54,13 @@ def test_manager_selects_random_forest_inside_thresholds() -> None:
 def test_manager_selects_linear_regression_when_any_threshold_exceeded() -> None:
     manager = ModelManager(_load_bundle())
 
-    over_numerical = manager.select(51, 0, 1)
+    over_numerical = manager.select(26, 0, 1)
     assert over_numerical.name == "linear_regression"
 
-    over_categorical = manager.select(0, 51, 1)
+    over_categorical = manager.select(0, 26, 1)
     assert over_categorical.name == "linear_regression"
 
-    over_dataset = manager.select(0, 0, 50_001)
+    over_dataset = manager.select(0, 0, 350_001)
     assert over_dataset.name == "linear_regression"
 
 

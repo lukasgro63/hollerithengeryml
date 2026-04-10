@@ -56,3 +56,6 @@ class PredictionsResponse(BaseModel):
     average_kwh: float = Field(description="Arithmetic mean of the five predictions in kWh.")
     model_used: ModelUsed = Field(description="Which sub-model the selector picked.")
     thresholds_applied: ThresholdsApplied
+    out_of_training_range: bool = Field(
+        description="True when any input exceeds the thresholds the meta-model was trained within.",
+    )

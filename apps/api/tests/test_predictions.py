@@ -23,7 +23,8 @@ def test_small_input_uses_random_forest_and_returns_five_ranked_predictions(
     body = response.json()
 
     assert body["model_used"] == "random_forest"
-    assert body["thresholds_applied"] == {"num_features": 50, "dataset_size": 50_000}
+    assert body["thresholds_applied"] == {"num_features": 25, "dataset_size": 350_000}
+    assert body["out_of_training_range"] is False
 
     predictions = body["predictions"]
     assert len(predictions) == 5
@@ -65,28 +66,32 @@ def test_exact_boundary_still_uses_random_forest(client: TestClient) -> None:
     response = client.post(
         "/api/v1/predictions",
         json={
-            "num_numerical_features": 50,
-            "num_categorical_features": 50,
-            "dataset_size": 50_000,
+            "num_numerical_features": 25,
+            "num_categorical_features": 25,
+            "dataset_size": 350_000,
         },
     )
 
     assert response.status_code == 200
-    assert response.json()["model_used"] == "random_forest"
+    body = response.json()
+    assert body["model_used"] == "random_forest"
+    assert body["out_of_training_range"] is False
 
 
 def test_one_feature_over_threshold_falls_back_to_linear(client: TestClient) -> None:
     response = client.post(
         "/api/v1/predictions",
         json={
-            "num_numerical_features": 51,
+            "num_numerical_features": 26,
             "num_categorical_features": 0,
             "dataset_size": 1,
         },
     )
 
     assert response.status_code == 200
-    assert response.json()["model_used"] == "linear_regression"
+    body = response.json()
+    assert body["model_used"] == "linear_regression"
+    assert body["out_of_training_range"] is True
 
 
 def test_rejects_negative_numerical_features(client: TestClient) -> None:

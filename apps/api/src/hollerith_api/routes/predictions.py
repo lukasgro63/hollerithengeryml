@@ -70,12 +70,20 @@ async def create_predictions(
 
     average_kwh = sum(p.energy_kwh for p in raw) / len(raw)
 
+    thresholds = selection.thresholds
+    out_of_range = (
+        payload.num_numerical_features > thresholds.max_numerical_features
+        or payload.num_categorical_features > thresholds.max_categorical_features
+        or payload.dataset_size > thresholds.max_dataset_size
+    )
+
     return PredictionsResponse(
         predictions=predictions,
         average_kwh=average_kwh,
         model_used=selection.name,
         thresholds_applied=ThresholdsApplied(
-            num_features=selection.thresholds.max_numerical_features,
-            dataset_size=selection.thresholds.max_dataset_size,
+            num_features=thresholds.max_numerical_features,
+            dataset_size=thresholds.max_dataset_size,
         ),
+        out_of_training_range=out_of_range,
     )

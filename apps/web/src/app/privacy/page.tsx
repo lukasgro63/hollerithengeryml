@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowLeft, AlertTriangle } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import { Container } from "@/components/ui/Container";
 import { PageHeader } from "@/components/marketing/PageHeader";
 
@@ -21,29 +21,15 @@ export default function PrivacyPage() {
           <>
             How HollerithEnergyML handles data under the{" "}
             <strong>General Data Protection Regulation (GDPR)</strong>. The
-            short version: it is a stateless calculator and it does not
-            persist anything about you.
+            short version: it is a stateless calculator and it does not persist
+            anything about you.
           </>
         }
       />
 
       <Container size="wide">
         <div className="max-w-3xl space-y-section-md pb-section-lg pt-section-md text-ink-700 lg:pb-section-xl">
-          <aside className="flex gap-3 border border-warning/30 bg-warning/5 p-5 text-sm">
-            <AlertTriangle className="mt-0.5 h-4 w-4 flex-shrink-0 text-warning" aria-hidden="true" />
-            <div>
-              <p className="font-semibold text-ink-800">
-                Template — pending legal review.
-              </p>
-              <p className="mt-2 leading-relaxed">
-                This document describes the data-processing behaviour of the
-                application as designed. Before publishing to a production
-                domain, have it reviewed by qualified legal counsel and
-                synchronised with the real data controller named in the imprint.
-              </p>
-            </div>
-          </aside>
-
+          {/* Data controller */}
           <section>
             <h2 className="text-h3 font-bold tracking-tight text-ink-900">
               Data controller
@@ -55,12 +41,13 @@ export default function PrivacyPage() {
                 href="/imprint"
                 className="font-semibold text-ink-800 underline decoration-brand-yellow decoration-2 underline-offset-4 hover:text-ink-900"
               >
-                imprint
+                imprint page
               </Link>
-              .
+              {" "}(Hochschule Reutlingen / Herman Hollerith Zentrum).
             </p>
           </section>
 
+          {/* What we process */}
           <section>
             <h2 className="text-h3 font-bold tracking-tight text-ink-900">
               What data we process
@@ -68,13 +55,22 @@ export default function PrivacyPage() {
             <p className="mt-4 leading-relaxed">
               HollerithEnergyML is a stateless calculator. Every prediction
               request is independent and leaves no trace after the response has
-              been delivered. Specifically:
+              been delivered.
             </p>
             <ul className="mt-4 space-y-3 leading-relaxed">
               {[
-                { title: "What we do process.", text: "The three integers you submit to the calculator (numerical feature count, categorical feature count, dataset size), processed in-memory to run a prediction, then discarded." },
-                { title: "What we do not process.", text: "Your actual dataset, model weights, training code, personal characteristics, user account information, or any data that would allow us to identify you." },
-                { title: "What we do not store.", text: "Nothing. There is no database. No request logs are kept beyond the rolling operational log needed to diagnose service failures — and those rotate quickly and are never shared." },
+                {
+                  title: "What we do process.",
+                  text: "The three integers you submit to the calculator (numerical feature count, categorical feature count, dataset size), processed in-memory to run a prediction, then discarded.",
+                },
+                {
+                  title: "What we do not process.",
+                  text: "Your actual dataset, model weights, training code, personal characteristics, user account information, or any data that would allow us to identify you.",
+                },
+                {
+                  title: "What we do not store.",
+                  text: "Nothing. There is no database. No request logs are kept beyond the minimal server logs described below.",
+                },
               ].map(({ title, text }) => (
                 <li key={title} className="flex gap-3">
                   <span
@@ -89,45 +85,86 @@ export default function PrivacyPage() {
             </ul>
           </section>
 
+          {/* Hosting */}
+          <section>
+            <h2 className="text-h3 font-bold tracking-tight text-ink-900">
+              Hosting
+            </h2>
+            <p className="mt-4 leading-relaxed">
+              This website is hosted on servers of{" "}
+              <strong>Hetzner Online GmbH</strong>, Industriestr. 25, 91710
+              Gunzenhausen, Germany. Hetzner operates data centres exclusively
+              within the European Union and is subject to the GDPR. A
+              data-processing agreement (Auftragsverarbeitungsvertrag, AVV)
+              in accordance with Art. 28 GDPR is in place.
+            </p>
+          </section>
+
+          {/* Server logs */}
           <section>
             <h2 className="text-h3 font-bold tracking-tight text-ink-900">
               Server logs
             </h2>
             <p className="mt-4 leading-relaxed">
-              Our hosting infrastructure collects minimal technical log data to
+              The hosting infrastructure collects minimal technical log data to
               keep the service running and secure. These logs typically include
               the request IP address, timestamp, requested path, HTTP status
-              code, user agent, and referrer — the standard fields any web
-              server records. Log retention is limited to what is technically
-              necessary to investigate incidents and is governed by{" "}
-              <strong>Art. 6 (1)(f) GDPR</strong> (legitimate interest in
-              operating a secure service).
+              code, user agent, and referrer. Log retention is limited to what
+              is technically necessary to investigate incidents and is governed
+              by <strong>Art. 6 (1)(f) GDPR</strong> (legitimate interest in
+              operating a secure service). Logs are not shared with third
+              parties.
             </p>
           </section>
 
+          {/* Cookies */}
           <section>
             <h2 className="text-h3 font-bold tracking-tight text-ink-900">
               Cookies
             </h2>
             <p className="mt-4 leading-relaxed">
-              HollerithEnergyML does not set any cookies. The application
-              functions without client-side storage or session tracking of any
-              kind.
+              HollerithEnergyML does <strong>not</strong> set any cookies. The
+              application functions without client-side storage or session
+              tracking of any kind. No cookie-consent banner is required because
+              no cookies are used.
             </p>
           </section>
 
+          {/* Third-party services & fonts */}
           <section>
             <h2 className="text-h3 font-bold tracking-tight text-ink-900">
-              Third-party services
+              Third-party services and fonts
             </h2>
             <p className="mt-4 leading-relaxed">
-              The application is self-hosted and does not embed third-party
-              analytics, advertising trackers, or social media pixels. Fonts
-              are self-hosted via the Next.js font pipeline — no requests are
-              made to Google Fonts or similar CDNs when you visit the site.
+              The application does not embed third-party analytics, advertising
+              trackers, or social media pixels.
+            </p>
+            <p className="mt-3 leading-relaxed">
+              Fonts (Plus Jakarta Sans, Instrument Sans, Caveat) are downloaded
+              from Google Fonts at <strong>build time</strong> by the Next.js
+              font pipeline and served from our own infrastructure. When you
+              visit this site, <strong>no requests are made to Google</strong>{" "}
+              or any other external font CDN. Your IP address is never
+              transmitted to Google in connection with font delivery.
             </p>
           </section>
 
+          {/* Embedding */}
+          <section>
+            <h2 className="text-h3 font-bold tracking-tight text-ink-900">
+              Embedding in third-party websites
+            </h2>
+            <p className="mt-4 leading-relaxed">
+              HollerithEnergyML may be embedded within the websites of partner
+              institutions (e.g. the KI-Lab Region Stuttgart). In such cases the
+              embedding site&apos;s own privacy policy applies to the surrounding
+              page. The embedded HollerithEnergyML application itself still does
+              not set cookies or collect personal data beyond what is described
+              in this policy.
+            </p>
+          </section>
+
+          {/* GDPR rights */}
           <section>
             <h2 className="text-h3 font-bold tracking-tight text-ink-900">
               Your rights under the GDPR
@@ -159,19 +196,26 @@ export default function PrivacyPage() {
               Because HollerithEnergyML does not store user data, most of the
               above rights are trivially satisfied: there is nothing on file to
               access, rectify, or erase. If you still wish to exercise any of
-              these rights, please contact the data controller listed on the
-              imprint page.
+              these rights, please contact the data controller listed on the{" "}
+              <Link
+                href="/imprint"
+                className="font-semibold text-ink-800 underline decoration-brand-yellow decoration-2 underline-offset-4 hover:text-ink-900"
+              >
+                imprint page
+              </Link>
+              .
             </p>
           </section>
 
+          {/* Changes */}
           <section>
             <h2 className="text-h3 font-bold tracking-tight text-ink-900">
               Changes to this policy
             </h2>
             <p className="mt-4 leading-relaxed">
               This privacy policy may be updated if the service&apos;s
-              data-processing behaviour changes. The effective version is
-              always the one hosted at this URL.
+              data-processing behaviour changes. The effective version is always
+              the one hosted at this URL.
             </p>
           </section>
         </div>

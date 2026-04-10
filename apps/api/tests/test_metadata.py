@@ -38,8 +38,8 @@ def test_metadata_has_expected_shape(client: TestClient) -> None:
     assert body["algorithms"] == EXPECTED_ALGORITHMS
     assert body["feature_names"] == EXPECTED_FEATURE_NAMES
     assert body["thresholds"] == {
-        "max_numerical_features": 50,
-        "max_categorical_features": 50,
-        "max_dataset_size": 50_000,
+        "max_numerical_features": 25,
+        "max_categorical_features": 25,
+        "max_dataset_size": 350_000,
     }
     assert body["model_path"].endswith("ml_model_package.pkl")
