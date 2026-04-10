@@ -3,7 +3,7 @@
 # ============================================================================
 # Stage 1 — builder: resolve and install all runtime dependencies with uv.
 # ============================================================================
-FROM python:3.11-slim-bookworm AS builder
+FROM python:3.14-slim-bookworm AS builder
 
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
@@ -32,7 +32,7 @@ RUN --mount=type=cache,target=/root/.cache/uv \
 # ============================================================================
 # Stage 2 — runtime: slim image with only the built venv + source + model.
 # ============================================================================
-FROM python:3.11-slim-bookworm AS runtime
+FROM python:3.14-slim-bookworm AS runtime
 
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
