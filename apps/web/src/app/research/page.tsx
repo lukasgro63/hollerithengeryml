@@ -90,7 +90,10 @@ export default function ResearchPage() {
                       <td className="py-3 pr-6 font-mono text-xs tabular-nums">{rows}</td>
                       <td className="py-3 pr-6 font-mono text-xs tabular-nums">{features}</td>
                       <td className="py-3">
-                        <a href={href} target="_blank" rel="noopener noreferrer" className="font-semibold text-ink-700 underline decoration-brand-yellow decoration-2 underline-offset-4 hover:text-ink-900">{source}</a>
+                        <a href={href} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-sm text-ink-500 transition-colors hover:text-ink-900">
+                          {source}
+                          <ExternalLink className="h-3 w-3" aria-hidden="true" />
+                        </a>
                       </td>
                     </tr>
                   ))}

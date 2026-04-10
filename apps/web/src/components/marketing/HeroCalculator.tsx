@@ -66,7 +66,7 @@ export function HeroCalculator() {
 
       <div className="relative p-6 sm:p-7">
         <p className="label text-brand-yellow">
-          Quick estimate
+          Check your energy footprint
         </p>
 
         <form onSubmit={onSubmit} noValidate className="mt-6 flex flex-col gap-4">
@@ -107,7 +107,7 @@ export function HeroCalculator() {
         </form>
 
         <p className="mt-3 text-[0.65rem] leading-relaxed text-surface-400">
-          Opens the full calculator with results.
+          Compare energy across 5 algorithms.
         </p>
       </div>
     </div>

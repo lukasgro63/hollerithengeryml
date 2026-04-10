@@ -55,8 +55,8 @@ export function NavWrapper({ children }: { readonly children: React.ReactNode })
       className={cn(
         "sticky top-0 z-40 w-full backdrop-blur-xl backdrop-saturate-150 transition-all duration-300",
         scrolled
-          ? "bg-surface-0/70 shadow-[0_1px_0_0_rgba(0,0,0,0.06)]"
-          : "bg-surface-0/30",
+          ? "bg-surface-0/85 shadow-[0_1px_0_0_rgba(0,0,0,0.06)]"
+          : "bg-surface-0/50",
       )}
     >
       {children}

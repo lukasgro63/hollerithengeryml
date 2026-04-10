@@ -191,9 +191,8 @@
   /* --- Section backgrounds ------------------------------------------------ */
   .gradient-mesh-hero {
     background:
-      radial-gradient(ellipse 70% 50% at 15% 45%, var(--color-brand-yellow-glow) 0%, transparent 65%),
-      radial-gradient(ellipse 50% 40% at 85% 55%, var(--color-accent-rust-glow) 0%, transparent 65%),
-      var(--color-surface-50);
+      linear-gradient(160deg, rgba(255, 228, 0, 0.07) 0%, rgba(255, 228, 0, 0.02) 40%, transparent 65%),
+      var(--color-surface-0);
   }
 
   .gradient-dark {
@@ -275,5 +274,14 @@
 @keyframes slideInRight {
   from { opacity: 0; transform: translateX(28px); }
   to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes scrollDot {
+  0%, 100% { transform: translateY(0); opacity: 1; }
+  50% { transform: translateY(12px); opacity: 0.3; }
+}
+
+.animate-scroll-dot {
+  animation: scrollDot 2s ease-in-out infinite;
 }
 

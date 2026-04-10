@@ -10,7 +10,7 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-import { Trophy } from "lucide-react";
+import { AlertTriangle, Trophy } from "lucide-react";
 
 import type {
   ModelUsed,
@@ -35,7 +35,7 @@ const AXIS_COLOR = "var(--color-surface-300)";
 const AVG_COLOR = "var(--color-ink-700)";
 
 export function ResultsCard({ data, input }: ResultsCardProps) {
-  const { predictions, average_kwh, model_used, thresholds_applied } = data;
+  const { predictions, average_kwh, model_used, thresholds_applied, out_of_training_range } = data;
   const scale = pickScaleFor(
     ...predictions.map((p) => p.energy_kwh),
     average_kwh,
@@ -74,6 +74,21 @@ export function ResultsCard({ data, input }: ResultsCardProps) {
         {" · "}
         {input.num_numerical_features} numerical · {input.num_categorical_features} categorical · {input.dataset_size.toLocaleString()} rows
       </p>
+
+      {out_of_training_range ? (
+        <div
+          role="alert"
+          className="mt-6 flex items-start gap-3 border border-amber-400/40 bg-amber-50 p-4 text-sm text-amber-900"
+        >
+          <AlertTriangle className="mt-0.5 h-4 w-4 flex-shrink-0 text-amber-600" aria-hidden="true" />
+          <p>
+            The input values exceed the training range of the HollerithEnergyML
+            model (≤{thresholds_applied.num_features} features,
+            ≤{thresholds_applied.dataset_size.toLocaleString()} rows). Predictions
+            are extrapolated and may be less accurate.
+          </p>
+        </div>
+      ) : null}
 
       {/* Greenest callout */}
       {greenest ? (

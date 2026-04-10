@@ -207,7 +207,7 @@ export function CalculatorForm({
             )}
           </Button>
           <p className="max-w-sm text-[0.6875rem] leading-relaxed text-ink-400">
-            Inputs within 50 / 50 / 50,000 use the Random Forest path.
+            Inputs within 25 / 25 / 350,000 use the Random Forest path.
             Larger inputs extrapolate via linear regression.
           </p>
         </div>

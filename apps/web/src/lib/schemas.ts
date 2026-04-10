@@ -67,6 +67,7 @@ export const PredictionsResponseSchema = z.object({
   average_kwh: z.number(),
   model_used: ModelUsedSchema,
   thresholds_applied: ThresholdsAppliedSchema,
+  out_of_training_range: z.boolean(),
 });
 
 export type PredictionsResponse = z.infer<typeof PredictionsResponseSchema>;

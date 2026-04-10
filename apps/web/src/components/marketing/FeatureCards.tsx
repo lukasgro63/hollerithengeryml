@@ -24,7 +24,7 @@ const FEATURES = [
 
 export function FeatureCards() {
   return (
-    <section className="py-section-xl bg-surface-50 lg:py-section-2xl">
+    <section id="how-it-works" className="py-section-xl bg-surface-50 lg:py-section-2xl">
       <Container size="wide">
         <div className="mb-14 max-w-2xl animate-fade-in-up">
           <p className="eyebrow text-brand-yellow-press">How it works</p>
