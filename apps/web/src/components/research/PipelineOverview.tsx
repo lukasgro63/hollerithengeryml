@@ -88,7 +88,7 @@ function DatasetNode({ x, y, name, detail }: {
       width={NODE_W}
       height={NODE_H}
     >
-      <div className="flex h-full flex-col items-center justify-center rounded-lg bg-brand-yellow px-2 shadow-sm">
+      <div className="flex h-full flex-col items-center justify-center bg-brand-yellow px-2 shadow-sm">
         <span className="text-[0.65rem] font-bold leading-tight text-ink-900">
           {name}
         </span>
@@ -115,7 +115,7 @@ function SmallNode({ x, y, label, variant }: {
       height={NODE_H}
     >
       <div
-        className={`flex h-full items-center justify-center rounded-lg px-2 shadow-sm ${styles[variant]}`}
+        className={`flex h-full items-center justify-center px-2 shadow-sm ${styles[variant]}`}
       >
         <span className="text-[0.65rem] font-bold">{label}</span>
       </div>
@@ -132,7 +132,7 @@ function OutputNode({ x, y }: { x: number; y: number }) {
       width={w}
       height={NODE_H + 16}
     >
-      <div className="flex h-full flex-col items-center justify-center rounded-xl bg-ink-950 px-2 shadow-elevated ring-1 ring-brand-yellow/30">
+      <div className="flex h-full flex-col items-center justify-center bg-ink-950 px-2 shadow-elevated ring-1 ring-brand-yellow/30">
         <span className="text-xl font-extrabold tabular-nums text-brand-yellow">
           450+
         </span>
@@ -183,7 +183,7 @@ export function PipelineOverview() {
   return (
     <figure className="my-12">
       <figcaption className="mb-5 flex items-center gap-3">
-        <span className="font-display text-[0.6875rem] font-bold uppercase tracking-[0.14em] text-brand-yellow-press">
+        <span className="label text-brand-yellow-press">
           Figure 1
         </span>
         <span className="text-xs text-ink-400">
@@ -289,7 +289,7 @@ export function PipelineOverview() {
 
       <p className="mt-4 text-center text-[0.7rem] text-ink-500">
         3 datasets × 5 reduction levels × 5 classifiers × n runs —
-        each <code className="rounded-md bg-surface-100 px-1 text-[0.6rem] font-semibold">fit()</code> call
+        each <code className="bg-surface-100 px-1 text-[0.6rem] font-semibold">fit()</code> call
         instrumented with CodeCarbon energy tracking.
       </p>
     </figure>

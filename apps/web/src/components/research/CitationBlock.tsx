@@ -54,15 +54,15 @@ export function CitationBlock() {
 
       {/* Metadata — outside the yellow border */}
       <dl className="mt-6 grid grid-cols-[auto_1fr] gap-x-4 gap-y-1.5 text-[0.8125rem] text-ink-500">
-        <dt className="font-display text-[0.6875rem] font-bold uppercase tracking-[0.14em] text-ink-400">
+        <dt className="label text-ink-400">
           Workshop
         </dt>
         <dd>Data Analytics as a Service (DAS2024)</dd>
-        <dt className="font-display text-[0.6875rem] font-bold uppercase tracking-[0.14em] text-ink-400">
+        <dt className="label text-ink-400">
           Published in
         </dt>
         <dd>INFORMATIK {PAPER_YEAR}, pp. {PAPER_PAGES}</dd>
-        <dt className="font-display text-[0.6875rem] font-bold uppercase tracking-[0.14em] text-ink-400">
+        <dt className="label text-ink-400">
           Publisher
         </dt>
         <dd>Gesellschaft für Informatik e.V., Bonn</dd>

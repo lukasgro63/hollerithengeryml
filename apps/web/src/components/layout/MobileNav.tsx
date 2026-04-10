@@ -33,7 +33,7 @@ export function MobileNav() {
       <button
         type="button"
         onClick={() => setOpen(true)}
-        className="inline-flex h-10 w-10 items-center justify-center rounded-md text-ink-800 hover:bg-surface-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-yellow"
+        className="inline-flex h-10 w-10 items-center justify-center text-ink-800 hover:bg-surface-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-yellow"
         aria-label="Open menu"
         aria-expanded={open}
         aria-controls="mobile-menu"
@@ -61,7 +61,7 @@ export function MobileNav() {
             <button
               type="button"
               onClick={() => setOpen(false)}
-              className="inline-flex h-10 w-10 items-center justify-center rounded-md text-ink-800 hover:bg-surface-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-yellow"
+              className="inline-flex h-10 w-10 items-center justify-center text-ink-800 hover:bg-surface-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-yellow"
               aria-label="Close menu"
             >
               <X className="h-6 w-6" />
@@ -77,7 +77,7 @@ export function MobileNav() {
                 key={item.href}
                 href={item.href}
                 onClick={() => setOpen(false)}
-                className="rounded-md px-4 py-4 font-display text-lg font-semibold text-ink-800 transition-colors hover:bg-surface-100"
+                className="px-4 py-4 font-display text-lg font-semibold text-ink-800 transition-colors hover:bg-surface-100"
               >
                 {item.label}
               </Link>

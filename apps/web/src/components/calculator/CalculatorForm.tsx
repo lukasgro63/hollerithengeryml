@@ -1,12 +1,13 @@
 "use client";
 
-import { useEffect, useId, useRef, useState } from "react";
+import { useCallback, useEffect, useId, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { AlertCircle, ArrowRight, Loader2 } from "lucide-react";
 
 import { ApiError, postPredictions } from "@/lib/api";
 import {
+  CALCULATOR_DEFAULTS,
   PredictionsRequestSchema,
   type PredictionsRequest,
   type PredictionsResponse,
@@ -54,11 +55,6 @@ type CalculatorFormProps = {
   readonly autoSubmit?: boolean;
 };
 
-const FALLBACK_VALUES: PredictionsRequest = {
-  num_numerical_features: 25,
-  num_categorical_features: 17,
-  dataset_size: 10_000,
-};
 
 export function CalculatorForm({
   onSuccess,
@@ -71,23 +67,27 @@ export function CalculatorForm({
 
   const form = useForm<PredictionsRequest>({
     resolver: zodResolver(PredictionsRequestSchema),
-    defaultValues: defaultValues ?? FALLBACK_VALUES,
+    defaultValues: defaultValues ?? CALCULATOR_DEFAULTS,
     mode: "onBlur",
   });
 
-  const onSubmit = form.handleSubmit(async (values) => {
-    setApiError(null);
-    try {
-      const data = await postPredictions(values);
-      onSuccess(data, values);
-    } catch (error) {
-      if (error instanceof ApiError) {
-        setApiError(error.message);
-      } else {
-        setApiError("An unexpected error occurred. Please try again.");
-      }
-    }
-  });
+  const onSubmit = useCallback(
+    (e?: React.BaseSyntheticEvent) =>
+      form.handleSubmit(async (values) => {
+        setApiError(null);
+        try {
+          const data = await postPredictions(values);
+          onSuccess(data, values);
+        } catch (error) {
+          if (error instanceof ApiError) {
+            setApiError(error.message);
+          } else {
+            setApiError("An unexpected error occurred. Please try again.");
+          }
+        }
+      })(e),
+    [form, onSuccess],
+  );
 
   useEffect(() => {
     if (autoSubmit && !autoSubmitFired.current) {
@@ -130,7 +130,7 @@ export function CalculatorForm({
               <div key={field.name} className="group">
                 <label
                   htmlFor={fieldId}
-                  className="block font-display text-[0.6875rem] font-bold uppercase tracking-[0.14em] text-ink-400 transition-colors duration-150 group-focus-within:text-ink-700"
+                  className="block label text-ink-400 transition-colors duration-150 group-focus-within:text-ink-700"
                 >
                   {field.label}
                 </label>
@@ -185,7 +185,7 @@ export function CalculatorForm({
         {apiError ? (
           <div
             role="alert"
-            className="mt-8 flex items-start gap-3 rounded-md border border-danger/20 bg-danger/5 p-4 text-sm text-danger"
+            className="mt-8 flex items-start gap-3 border border-danger/20 bg-danger/5 p-4 text-sm text-danger"
           >
             <AlertCircle className="mt-0.5 h-4 w-4 flex-shrink-0" aria-hidden="true" />
             <p>{apiError}</p>

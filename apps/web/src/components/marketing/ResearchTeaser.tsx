@@ -19,8 +19,8 @@ export function ResearchTeaser() {
         className="pointer-events-none absolute inset-0 opacity-[0.03]"
         style={{
           backgroundImage:
-            "linear-gradient(rgba(255,255,255,1) 1px, transparent 1px), " +
-            "linear-gradient(90deg, rgba(255,255,255,1) 1px, transparent 1px)",
+            "linear-gradient(var(--color-surface-0) 1px, transparent 1px), " +
+            "linear-gradient(90deg, var(--color-surface-0) 1px, transparent 1px)",
           backgroundSize: "72px 72px",
         }}
       />

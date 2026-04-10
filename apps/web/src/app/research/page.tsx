@@ -37,7 +37,7 @@ export default function ResearchPage() {
         <div className="mt-section-md grid gap-section-md pb-section-lg lg:grid-cols-[minmax(0,1fr)_18rem] lg:pb-section-xl">
           <div className="max-w-3xl space-y-section-md text-ink-700">
             <section>
-              <h2 className="font-display text-h3 font-extrabold tracking-tight text-ink-950">
+              <h2 id="the-question" className="font-display text-h3 font-extrabold tracking-tight text-ink-950">
                 The question
               </h2>
               <p className="mt-4 leading-relaxed">
@@ -59,7 +59,7 @@ export default function ResearchPage() {
             </section>
 
             <section>
-              <h2 className="font-display text-h3 font-extrabold tracking-tight text-ink-950">
+              <h2 id="the-baseline-campaign" className="font-display text-h3 font-extrabold tracking-tight text-ink-950">
                 The baseline campaign
               </h2>
               <p className="mt-4 leading-relaxed">
@@ -112,7 +112,7 @@ export default function ResearchPage() {
             </section>
 
             <section>
-              <h2 className="font-display text-h3 font-extrabold tracking-tight text-ink-950">
+              <h2 id="measurement" className="font-display text-h3 font-extrabold tracking-tight text-ink-950">
                 Measurement
               </h2>
               <p className="mt-4 leading-relaxed">
@@ -143,7 +143,7 @@ export default function ResearchPage() {
             </section>
 
             <section>
-              <h2 className="font-display text-h3 font-extrabold tracking-tight text-ink-950">
+              <h2 id="experiment-tracking" className="font-display text-h3 font-extrabold tracking-tight text-ink-950">
                 Experiment tracking
               </h2>
               <p className="mt-4 leading-relaxed">
@@ -156,7 +156,7 @@ export default function ResearchPage() {
             </section>
 
             <section>
-              <h2 className="font-display text-h3 font-extrabold tracking-tight text-ink-950">
+              <h2 id="the-meta-model" className="font-display text-h3 font-extrabold tracking-tight text-ink-950">
                 The meta-model
               </h2>
               <p className="mt-4 leading-relaxed">
@@ -227,7 +227,7 @@ export default function ResearchPage() {
             </section>
 
             <section>
-              <h2 className="font-display text-h3 font-extrabold tracking-tight text-ink-950">
+              <h2 id="known-limitations" className="font-display text-h3 font-extrabold tracking-tight text-ink-950">
                 Known limitations
               </h2>
               <ul className="mt-4 space-y-3 leading-relaxed">
@@ -251,7 +251,7 @@ export default function ResearchPage() {
             </section>
 
             <section>
-              <h2 className="font-display text-h3 font-extrabold tracking-tight text-ink-950">
+              <h2 id="citation" className="font-display text-h3 font-extrabold tracking-tight text-ink-950">
                 Citation
               </h2>
               <p className="mt-4 leading-relaxed">
@@ -263,7 +263,7 @@ export default function ResearchPage() {
             </section>
 
             <section>
-              <h2 className="font-display text-h3 font-extrabold tracking-tight text-ink-950">
+              <h2 id="source-material" className="font-display text-h3 font-extrabold tracking-tight text-ink-950">
                 Source material
               </h2>
               <p className="mt-4 leading-relaxed">
@@ -295,14 +295,14 @@ export default function ResearchPage() {
 
           <TableOfContents
             items={[
-              "The question",
-              "The baseline campaign",
-              "Measurement",
-              "Experiment tracking",
-              "The meta-model",
-              "Known limitations",
-              "Citation",
-              "Source material",
+              { label: "The question", id: "the-question" },
+              { label: "The baseline campaign", id: "the-baseline-campaign" },
+              { label: "Measurement", id: "measurement" },
+              { label: "Experiment tracking", id: "experiment-tracking" },
+              { label: "The meta-model", id: "the-meta-model" },
+              { label: "Known limitations", id: "known-limitations" },
+              { label: "Citation", id: "citation" },
+              { label: "Source material", id: "source-material" },
             ]}
           />
         </div>

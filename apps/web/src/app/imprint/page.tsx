@@ -27,7 +27,7 @@ export default function ImprintPage() {
 
       <Container size="wide">
         <div className="max-w-3xl space-y-section-md pb-section-lg pt-section-md text-ink-700 lg:pb-section-xl">
-          <aside className="flex gap-3 rounded-xl border border-warning/30 bg-warning/5 p-5 text-sm">
+          <aside className="flex gap-3 border border-warning/30 bg-warning/5 p-5 text-sm">
             <AlertTriangle className="mt-0.5 h-4 w-4 flex-shrink-0 text-warning" aria-hidden="true" />
             <div>
               <p className="font-semibold text-ink-800">
@@ -112,7 +112,7 @@ export default function ImprintPage() {
             <p className="mt-4 leading-relaxed">
               The source code of this application is published under the MIT
               License; see the{" "}
-              <code className="rounded-md bg-surface-100 px-1.5 py-0.5 text-sm">
+              <code className="bg-surface-100 px-1.5 py-0.5 text-sm">
                 LICENSE
               </code>{" "}
               file in the repository for the full terms. Content, text, and

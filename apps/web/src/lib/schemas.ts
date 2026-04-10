@@ -34,6 +34,12 @@ export const PredictionsRequestSchema = z.object({
 
 export type PredictionsRequest = z.infer<typeof PredictionsRequestSchema>;
 
+export const CALCULATOR_DEFAULTS: PredictionsRequest = {
+  num_numerical_features: 25,
+  num_categorical_features: 17,
+  dataset_size: 10_000,
+};
+
 /* --------------------------------------------------------------------------
  * Response
  * -------------------------------------------------------------------------- */

@@ -41,14 +41,14 @@ export function Input({
         aria-invalid={error ? true : undefined}
         aria-describedby={describedBy || undefined}
         className={cn(
-          "h-12 rounded-lg border bg-surface-0 px-4",
+          "h-12 border-0 border-b-2 bg-transparent px-0",
           "text-base font-medium text-ink-900 tabular-nums placeholder:text-ink-400",
           "transition-all duration-150",
-          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-yellow focus-visible:ring-offset-1",
-          "disabled:cursor-not-allowed disabled:bg-surface-100 disabled:text-ink-400",
+          "focus-visible:outline-none focus-visible:border-brand-yellow",
+          "disabled:cursor-not-allowed disabled:text-ink-400",
           error
-            ? "border-danger/60 ring-1 ring-danger/20"
-            : "border-surface-300 hover:border-ink-400",
+            ? "border-danger/60"
+            : "border-surface-200 hover:border-ink-300",
           className,
         )}
         {...props}

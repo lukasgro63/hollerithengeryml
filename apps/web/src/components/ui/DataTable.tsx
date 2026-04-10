@@ -7,7 +7,7 @@ type DataTableProps = {
 };
 
 const TH_CLASS =
-  "pb-2.5 pr-6 font-display text-[0.6875rem] font-bold uppercase tracking-[0.14em] text-ink-400";
+  "pb-2.5 pr-6 label text-ink-400";
 
 const TR_CLASS =
   "border-b border-surface-100 transition-colors duration-150 hover:bg-brand-yellow/[0.03]";
@@ -18,7 +18,7 @@ export function DataTable({ number, caption, children }: DataTableProps) {
   return (
     <figure className="mt-8">
       <figcaption className="flex items-center gap-3">
-        <span className="flex-shrink-0 font-display text-[0.6875rem] font-bold uppercase tracking-[0.14em] text-brand-yellow-press">
+        <span className="flex-shrink-0 label text-brand-yellow-press">
           {number}
         </span>
         <span className="flex-shrink-0 text-xs text-ink-400">{caption}</span>

@@ -31,7 +31,7 @@ export function Hero() {
                 <span className="relative z-10 font-[family-name:var(--font-caveat)] text-[1.15em]">before</span>
                 <span
                   aria-hidden="true"
-                  className="absolute -inset-x-1.5 bottom-0 z-0 h-[38%] bg-brand-yellow/50 rounded-sm"
+                  className="absolute -inset-x-1.5 bottom-0 z-0 h-[38%] bg-brand-yellow/50"
                 />
               </span>{" "}
               you train.

@@ -29,7 +29,7 @@ export default function PrivacyPage() {
 
       <Container size="wide">
         <div className="max-w-3xl space-y-section-md pb-section-lg pt-section-md text-ink-700 lg:pb-section-xl">
-          <aside className="flex gap-3 rounded-xl border border-warning/30 bg-warning/5 p-5 text-sm">
+          <aside className="flex gap-3 border border-warning/30 bg-warning/5 p-5 text-sm">
             <AlertTriangle className="mt-0.5 h-4 w-4 flex-shrink-0 text-warning" aria-hidden="true" />
             <div>
               <p className="font-semibold text-ink-800">

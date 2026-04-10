@@ -29,10 +29,10 @@ const MODEL_LABEL: Record<ModelUsed, string> = {
   linear_regression: "Linear Regression",
 };
 
-const BAR_COLOR = "#FFE400";
-const GRID_COLOR = "#f0f0f0";
-const AXIS_COLOR = "#b4b4b4";
-const AVG_COLOR = "#343434";
+const BAR_COLOR = "var(--color-brand-yellow)";
+const GRID_COLOR = "var(--color-surface-100)";
+const AXIS_COLOR = "var(--color-surface-300)";
+const AVG_COLOR = "var(--color-ink-700)";
 
 export function ResultsCard({ data, input }: ResultsCardProps) {
   const { predictions, average_kwh, model_used, thresholds_applied } = data;
@@ -78,7 +78,7 @@ export function ResultsCard({ data, input }: ResultsCardProps) {
       {/* Greenest callout */}
       {greenest ? (
         <div className="mt-8 flex items-baseline gap-4">
-          <span className="flex items-center gap-2 text-[0.6875rem] font-bold uppercase tracking-[0.14em] text-ink-400">
+          <span className="label flex items-center gap-2 text-ink-400">
             <Trophy className="h-3.5 w-3.5 text-brand-yellow" aria-hidden="true" />
             Greenest
           </span>
@@ -120,7 +120,7 @@ export function ResultsCard({ data, input }: ResultsCardProps) {
                 position: "insideBottom",
                 offset: -8,
                 style: {
-                  fill: "#707173",
+                  fill: "var(--color-ink-500)",
                   fontSize: 11,
                   fontWeight: 700,
                   textTransform: "uppercase",
@@ -139,14 +139,14 @@ export function ResultsCard({ data, input }: ResultsCardProps) {
             />
             <Tooltip
               contentStyle={{
-                backgroundColor: "#ffffff",
+                backgroundColor: "var(--color-surface-0)",
                 border: "none",
                 borderRadius: "12px",
                 fontSize: "12px",
                 boxShadow:
                   "0 8px 24px rgba(0,0,0,0.08), 0 2px 6px rgba(0,0,0,0.03)",
               }}
-              labelStyle={{ color: "#1a1a1a", fontWeight: 700 }}
+              labelStyle={{ color: "var(--color-ink-950)", fontWeight: 700 }}
               cursor={{ fill: "rgba(255, 228, 0, 0.06)" }}
               formatter={(value) => {
                 if (typeof value !== "number") return ["—", "Energy"];
@@ -181,7 +181,7 @@ export function ResultsCard({ data, input }: ResultsCardProps) {
       {/* Summary stats — bottom-border style matching form inputs */}
       <div className="mt-10 grid gap-x-10 gap-y-8 sm:grid-cols-3 lg:gap-x-14">
         <dl>
-          <dt className="font-display text-[0.6875rem] font-bold uppercase tracking-[0.14em] text-ink-400">
+          <dt className="label text-ink-400">
             Average
           </dt>
           <dd className="mt-3 border-b-2 border-surface-200 pb-3 font-mono text-2xl font-medium tabular-nums text-ink-900">
@@ -189,7 +189,7 @@ export function ResultsCard({ data, input }: ResultsCardProps) {
           </dd>
         </dl>
         <dl>
-          <dt className="font-display text-[0.6875rem] font-bold uppercase tracking-[0.14em] text-ink-400">
+          <dt className="label text-ink-400">
             Thresholds
           </dt>
           <dd className="mt-3 border-b-2 border-surface-200 pb-3 text-base text-ink-700">
@@ -198,7 +198,7 @@ export function ResultsCard({ data, input }: ResultsCardProps) {
           </dd>
         </dl>
         <dl>
-          <dt className="font-display text-[0.6875rem] font-bold uppercase tracking-[0.14em] text-ink-400">
+          <dt className="label text-ink-400">
             Model path
           </dt>
           <dd className="mt-3 border-b-2 border-surface-200 pb-3 text-base font-semibold text-ink-700">

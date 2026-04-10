@@ -6,14 +6,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { ArrowRight, Loader2 } from "lucide-react";
 
 import {
+  CALCULATOR_DEFAULTS,
   PredictionsRequestSchema,
   type PredictionsRequest,
 } from "@/lib/schemas";
-const DEFAULT_VALUES: PredictionsRequest = {
-  num_numerical_features: 25,
-  num_categorical_features: 17,
-  dataset_size: 10_000,
-};
 
 const FIELDS = [
   { id: "hero-num", name: "num_numerical_features" as const, label: "Numerical", placeholder: "25" },
@@ -26,7 +22,7 @@ export function HeroCalculator() {
 
   const form = useForm<PredictionsRequest>({
     resolver: zodResolver(PredictionsRequestSchema),
-    defaultValues: DEFAULT_VALUES,
+    defaultValues: CALCULATOR_DEFAULTS,
     mode: "onBlur",
   });
 
@@ -52,8 +48,8 @@ export function HeroCalculator() {
         className="pointer-events-none absolute inset-0 opacity-[0.04]"
         style={{
           backgroundImage:
-            "linear-gradient(rgba(255,255,255,1) 1px, transparent 1px), " +
-            "linear-gradient(90deg, rgba(255,255,255,1) 1px, transparent 1px)",
+            "linear-gradient(var(--color-surface-0) 1px, transparent 1px), " +
+            "linear-gradient(90deg, var(--color-surface-0) 1px, transparent 1px)",
           backgroundSize: "48px 48px",
         }}
       />
@@ -69,7 +65,7 @@ export function HeroCalculator() {
       />
 
       <div className="relative p-6 sm:p-7">
-        <p className="font-display text-[0.6875rem] font-bold uppercase tracking-[0.14em] text-brand-yellow">
+        <p className="label text-brand-yellow">
           Quick estimate
         </p>
 
@@ -78,7 +74,7 @@ export function HeroCalculator() {
             <div key={field.id} className="group">
               <label
                 htmlFor={field.id}
-                className="block font-display text-[0.6875rem] font-bold uppercase tracking-[0.14em] text-surface-400 transition-colors duration-150 group-focus-within:text-brand-yellow"
+                className="block label text-surface-400 transition-colors duration-150 group-focus-within:text-brand-yellow"
               >
                 {field.label}
               </label>

@@ -14,7 +14,7 @@ export function NavLinks() {
       {PRIMARY_NAV.map((item) => {
         const isActive = pathname === item.href;
         return (
-          <li key={item.href}>
+          <li key={item.href} className="group">
             <Link
               href={item.href}
               className={cn(

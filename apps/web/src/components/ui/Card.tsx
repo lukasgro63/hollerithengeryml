@@ -10,6 +10,10 @@ type CardProps = {
   readonly variant?: CardVariant;
 };
 
+/**
+ * `accent` shares the same base styles as `default` but renders a
+ * yellow gradient accent bar along the top edge of the card.
+ */
 const VARIANT_STYLES: Record<CardVariant, string> = {
   default: "bg-surface-0 shadow-card",
   accent: "bg-surface-0 shadow-card",
@@ -25,7 +29,7 @@ export function Card({
   return (
     <div
       className={cn(
-        "relative rounded-xl p-6 sm:p-8",
+        "relative p-6 sm:p-8",
         VARIANT_STYLES[variant],
         hover && (variant === "dark" ? "card-glow" : "card-hover"),
         className,

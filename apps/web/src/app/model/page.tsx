@@ -72,14 +72,14 @@ const FEATURES: readonly FeatureRow[] = [
 ];
 
 const TOC_ITEMS = [
-  "At a glance",
-  "Intended use",
-  "Input features",
-  "Model-selection rule",
-  "Output",
-  "Training data",
-  "Known limitations",
-  "Maintenance",
+  { label: "At a glance", id: "at-a-glance" },
+  { label: "Intended use", id: "intended-use" },
+  { label: "Input features", id: "input-features" },
+  { label: "Model-selection rule", id: "model-selection-rule" },
+  { label: "Output", id: "output" },
+  { label: "Training data", id: "training-data" },
+  { label: "Known limitations", id: "known-limitations" },
+  { label: "Maintenance", id: "maintenance" },
 ] as const;
 
 export default function ModelPage() {
@@ -102,7 +102,7 @@ export default function ModelPage() {
         <div className="mt-section-md grid gap-section-md pb-section-lg lg:grid-cols-[minmax(0,1fr)_18rem] lg:pb-section-xl">
           <div className="max-w-3xl space-y-section-md text-ink-700">
             <section>
-              <h2 className="font-display text-h3 font-extrabold tracking-tight text-ink-950">
+              <h2 id="at-a-glance" className="font-display text-h3 font-extrabold tracking-tight text-ink-950">
                 At a glance
               </h2>
               <dl className="mt-6 grid grid-cols-1 gap-x-8 gap-y-4 sm:grid-cols-3">
@@ -115,7 +115,7 @@ export default function ModelPage() {
                   { label: "Input shape", value: "8 features", mono: false },
                 ].map(({ label, value, mono }) => (
                   <div key={label}>
-                    <dt className="font-display text-[0.6rem] font-bold uppercase tracking-[0.1em] text-ink-400">
+                    <dt className="label text-ink-400">
                       {label}
                     </dt>
                     <dd className={`mt-1 text-sm text-ink-800 ${mono ? "font-mono text-xs" : ""}`}>
@@ -127,7 +127,7 @@ export default function ModelPage() {
             </section>
 
             <section>
-              <h2 className="font-display text-h3 font-extrabold tracking-tight text-ink-950">
+              <h2 id="intended-use" className="font-display text-h3 font-extrabold tracking-tight text-ink-950">
                 Intended use
               </h2>
               <p className="mt-4 leading-relaxed">
@@ -145,7 +145,7 @@ export default function ModelPage() {
             </section>
 
             <section>
-              <h2 className="font-display text-h3 font-extrabold tracking-tight text-ink-950">
+              <h2 id="input-features" className="font-display text-h3 font-extrabold tracking-tight text-ink-950">
                 Input features
               </h2>
               <p className="mt-4 leading-relaxed">
@@ -184,7 +184,7 @@ export default function ModelPage() {
             </section>
 
             <section>
-              <h2 className="font-display text-h3 font-extrabold tracking-tight text-ink-950">
+              <h2 id="model-selection-rule" className="font-display text-h3 font-extrabold tracking-tight text-ink-950">
                 Model-selection rule
               </h2>
               <p className="mt-4 leading-relaxed">
@@ -194,7 +194,7 @@ export default function ModelPage() {
 
               <div className="mt-6 grid gap-px bg-surface-200 sm:grid-cols-2">
                 <div className="bg-brand-yellow p-5">
-                  <p className="font-display text-[0.6875rem] font-bold uppercase tracking-[0.14em] text-ink-700">Inside envelope</p>
+                  <p className="label text-ink-700">Inside envelope</p>
                   <p className="mt-3 text-lg font-bold text-ink-950">Random Forest</p>
                   <p className="mt-2 font-mono text-xs leading-relaxed text-ink-700">
                     num ≤ 50 · cat ≤ 50 · rows ≤ 50,000
@@ -202,7 +202,7 @@ export default function ModelPage() {
                   <p className="mt-1 text-[0.65rem] font-semibold text-ink-600">R² = 0.996</p>
                 </div>
                 <div className="bg-surface-50 p-5">
-                  <p className="font-display text-[0.6875rem] font-bold uppercase tracking-[0.14em] text-ink-400">Outside envelope</p>
+                  <p className="label text-ink-400">Outside envelope</p>
                   <p className="mt-3 text-lg font-bold text-ink-900">Linear Regression</p>
                   <p className="mt-2 text-xs leading-relaxed text-ink-500">
                     Extrapolation fallback for inputs beyond the measured range.
@@ -212,7 +212,7 @@ export default function ModelPage() {
             </section>
 
             <section>
-              <h2 className="font-display text-h3 font-extrabold tracking-tight text-ink-950">
+              <h2 id="output" className="font-display text-h3 font-extrabold tracking-tight text-ink-950">
                 Output
               </h2>
               <p className="mt-4 leading-relaxed">
@@ -226,7 +226,7 @@ export default function ModelPage() {
             </section>
 
             <section>
-              <h2 className="font-display text-h3 font-extrabold tracking-tight text-ink-950">
+              <h2 id="training-data" className="font-display text-h3 font-extrabold tracking-tight text-ink-950">
                 Training data
               </h2>
               <p className="mt-4 leading-relaxed">
@@ -246,7 +246,7 @@ export default function ModelPage() {
             </section>
 
             <section>
-              <h2 className="font-display text-h3 font-extrabold tracking-tight text-ink-950">
+              <h2 id="known-limitations" className="font-display text-h3 font-extrabold tracking-tight text-ink-950">
                 Known limitations
               </h2>
               <ul className="mt-4 space-y-3 leading-relaxed">
@@ -270,7 +270,7 @@ export default function ModelPage() {
             </section>
 
             <section>
-              <h2 className="font-display text-h3 font-extrabold tracking-tight text-ink-950">
+              <h2 id="maintenance" className="font-display text-h3 font-extrabold tracking-tight text-ink-950">
                 Maintenance
               </h2>
               <p className="mt-4 leading-relaxed">
