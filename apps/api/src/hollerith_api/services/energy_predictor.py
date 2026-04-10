@@ -17,11 +17,13 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from enum import IntEnum
-from typing import Any
 
 import pandas as pd
+import structlog
 
-from .model_loader import ModelBundle
+from .model_loader import ModelBundle, SklearnRegressor
+
+log = structlog.get_logger(__name__)
 
 
 class Algorithm(IntEnum):
@@ -67,7 +69,7 @@ class EnergyPredictor:
 
     def predict_all(
         self,
-        estimator: Any,
+        estimator: SklearnRegressor,
         num_numerical_features: int,
         num_categorical_features: int,
         dataset_size: int,
@@ -86,8 +88,23 @@ class EnergyPredictor:
                 ]
             )
 
+        expected_cols = len(self._feature_names)
+        actual_cols = len(rows[0])
+        if actual_cols != expected_cols:
+            raise RuntimeError(
+                f"feature vector has {actual_cols} columns, "
+                f"but the artefact expects {expected_cols}"
+            )
+
         frame = pd.DataFrame(rows, columns=self._feature_names)
         energies = estimator.predict(frame)
+
+        log.debug(
+            "prediction_complete",
+            num_numerical_features=num_numerical_features,
+            num_categorical_features=num_categorical_features,
+            dataset_size=dataset_size,
+        )
 
         return [
             Prediction(

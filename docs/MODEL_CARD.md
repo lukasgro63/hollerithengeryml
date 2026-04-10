@@ -17,22 +17,36 @@ choice for their training workloads.
 
 ## Input features (8)
 
-| Index | Name                        | Type  | Notes                     |
-|-------|-----------------------------|-------|---------------------------|
-| 0     | `num_numerical_features`    | float | Raw count                 |
-| 1     | `num_categorical_features`  | float | Raw count                 |
-| 2     | `dataset_size`              | float | Number of rows            |
-| 3     | `is_decision_tree`          | float | One-hot (0 or 1)          |
-| 4     | `is_gaussian_nb`            | float | One-hot (0 or 1)          |
-| 5     | `is_knn`                    | float | One-hot (0 or 1)          |
-| 6     | `is_logistic_regression`    | float | One-hot (0 or 1)          |
-| 7     | `is_random_forest`          | float | One-hot (0 or 1)          |
+| Index | Name                   | Type  | Notes            |
+|-------|------------------------|-------|------------------|
+| 0     | `num_num_features`     | float | Raw count        |
+| 1     | `num_cat_features`     | float | Raw count        |
+| 2     | `number_of_instances`  | float | Number of rows   |
+| 3     | `model_0`             | float | DecisionTree     |
+| 4     | `model_1`             | float | GaussianNB       |
+| 5     | `model_2`             | float | KNN              |
+| 6     | `model_3`             | float | LogisticRegression |
+| 7     | `model_4`             | float | RandomForest     |
+
+```mermaid
+%%{init: {'look': 'handDrawn', 'theme': 'base', 'themeVariables': {'primaryColor': '#FFE400', 'primaryTextColor': '#0a0a0a', 'primaryBorderColor': '#0a0a0a', 'lineColor': '#0a0a0a', 'secondaryColor': '#f5f5f0'}}}%%
+graph LR
+    input["num ≤ 25<br/>cat ≤ 25<br/>rows ≤ 350k"]
+    rf["Random Forest<br/>R² = 0.996"]
+    lr["Linear Regression<br/>fallback"]
+    input -->|within envelope| rf
+    input -->|exceeded| lr
+
+    style input fill:#f5f5f0,stroke:#0a0a0a,stroke-width:1px
+    style rf fill:#FFE400,stroke:#0a0a0a,stroke-width:2px,color:#0a0a0a
+    style lr fill:#0a0a0a,stroke:#FFE400,stroke-width:2px,color:#FFE400
+```
 
 ## Model-selection rule
 
 | Condition                                                                   | Model used        |
 |-----------------------------------------------------------------------------|-------------------|
-| `num_num ≤ 50` AND `num_cat ≤ 50` AND `dataset_size ≤ 50_000`               | Random Forest     |
+| `num_num ≤ 25` AND `num_cat ≤ 25` AND `dataset_size ≤ 350_000`              | Random Forest     |
 | Otherwise                                                                   | Linear Regression |
 
 ## Output
@@ -60,8 +74,8 @@ Heart 2020 datasets across the five algorithms.
    KNN `n_neighbors`, LogisticRegression regularisation strength,
    DecisionTree max depth — are invisible to the meta-model and will shift
    real energy consumption in ways the predictions do not capture.
-3. **Linear extrapolation beyond the envelope.** Inputs larger than 50
-   numerical features, 50 categorical features, or 50,000 rows fall
+3. **Linear extrapolation beyond the envelope.** Inputs larger than 25
+   numerical features, 25 categorical features, or 350,000 rows fall
    through to the LinearRegression fallback, which is exactly a linear
    extrapolation of the measured surface. Treat large-data predictions as
    rough directional guidance, not precise estimates.

@@ -7,11 +7,11 @@ consume — given only the shape of your dataset. Powered by a meta-model traine
 on a controlled baseline campaign at the
 [Herman Hollerith Zentrum](https://www.hhz.de), Reutlingen University.
 
-![Status](https://img.shields.io/badge/status-production--ready-success)
+[![CI](https://github.com/lukasgro63/hollerithengeryml/actions/workflows/ci.yml/badge.svg)](https://github.com/lukasgro63/hollerithengeryml/actions/workflows/ci.yml)
 ![License](https://img.shields.io/badge/license-MIT-blue)
 ![Python](https://img.shields.io/badge/python-3.11-blue)
 ![Next.js](https://img.shields.io/badge/next.js-16-black)
-![FastAPI](https://img.shields.io/badge/fastapi-0.115-009688)
+![FastAPI](https://img.shields.io/badge/fastapi-0.135-009688)
 
 ---
 
@@ -32,17 +32,21 @@ baseline was measured, what datasets were used — is archived under
 
 ## Architecture
 
-```
-┌─────────────────┐    HTTPS     ┌─────────────────┐
-│  Next.js 15     │  ◄────────►  │  FastAPI        │
-│  (web)          │              │  (api)          │
-│  Tailwind +     │              │  Python 3.12    │
-│  shadcn/ui      │              │  scikit-learn   │
-└────────┬────────┘              └────────┬────────┘
-         │                                │
-         └────────── Caddy 2 ─────────────┘
-                         │
-                   Hetzner Cloud
+```mermaid
+%%{init: {'look': 'handDrawn', 'theme': 'base', 'themeVariables': {'primaryColor': '#FFE400', 'primaryTextColor': '#0a0a0a', 'primaryBorderColor': '#0a0a0a', 'lineColor': '#0a0a0a', 'secondaryColor': '#f5f5f0'}}}%%
+graph LR
+    subgraph hetzner["Hetzner Cloud"]
+        caddy["Caddy 2<br/>HTTPS · TLS"]
+        web["Next.js 16<br/>Tailwind 4"]
+        api["FastAPI 0.135<br/>Python 3.11<br/>scikit-learn"]
+    end
+    caddy -->|"/*"| web
+    caddy -->|"/api/*"| api
+
+    style caddy fill:#FFE400,stroke:#0a0a0a,stroke-width:2px,color:#0a0a0a
+    style web fill:#f5f5f0,stroke:#0a0a0a,stroke-width:1px,color:#0a0a0a
+    style api fill:#f5f5f0,stroke:#0a0a0a,stroke-width:1px,color:#0a0a0a
+    style hetzner fill:#ffffff,stroke:#0a0a0a,stroke-width:2px,color:#0a0a0a
 ```
 
 See [`docs/ARCHITECTURE.md`](./docs/ARCHITECTURE.md) for the full architectural
@@ -52,7 +56,7 @@ blueprint, API contract, and deployment topology.
 
 ```
 apps/
-├── api/          FastAPI backend (Python 3.12, scikit-learn)
+├── api/          FastAPI backend (Python 3.11, scikit-learn 1.2.2)
 └── web/          Next.js 16 frontend (React 19, Tailwind CSS 4)
 infra/            Docker Compose, Caddy, deployment scripts
 research/         Archived baseline-test notebooks and raw research data
@@ -130,13 +134,15 @@ TLS rotation, and incident response — see
 - [`docs/RUNBOOK.md`](./docs/RUNBOOK.md) — first-time setup, deploys, rollbacks, incident response
 - [`docs/CONTRIBUTING.md`](./docs/CONTRIBUTING.md) — dev workflow and code style
 - [`SECURITY.md`](./SECURITY.md) — responsible disclosure policy
+- [`CHANGELOG.md`](./CHANGELOG.md) — release history
+- [`CODE_OF_CONDUCT.md`](./CODE_OF_CONDUCT.md) — community norms
 - [`research/README.md`](./research/README.md) — archived 2024 baseline campaign
 
 ## Contributing
 
 Read [`docs/CONTRIBUTING.md`](./docs/CONTRIBUTING.md) before opening pull
-requests. This project follows GitHub-flow: branch off `main`, open a PR, get
-a review, merge.
+requests. Run `make setup` to install dependencies and pre-commit hooks,
+then `make check` to verify everything passes locally.
 
 ## License
 

@@ -20,8 +20,6 @@ def rate_limit_exceeded_handler(
     request: Request,
     exc: RateLimitExceeded,
 ) -> JSONResponse:
-    # `request` is required by slowapi's handler contract even if unused.
-    del request
     return JSONResponse(
         status_code=429,
         content={

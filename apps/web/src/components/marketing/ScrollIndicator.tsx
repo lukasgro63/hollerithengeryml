@@ -20,6 +20,8 @@ export function ScrollIndicator({ target }: ScrollIndicatorProps) {
     <a
       href={target}
       aria-label="Scroll to content"
+      aria-hidden={!visible}
+      tabIndex={visible ? 0 : -1}
       className={[
         "fixed bottom-8 left-1/2 z-30 -translate-x-1/2",
         "flex flex-col items-center gap-2 text-ink-300 transition-all duration-500",

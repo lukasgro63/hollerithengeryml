@@ -5,11 +5,10 @@ from typing import Annotated
 from fastapi import APIRouter, Depends
 
 from ..config import Settings
-from ..dependencies import get_settings
+from ..dependencies import get_model_manager, get_settings
 from ..schemas.metadata import MetadataResponse, MetadataThresholds
 from ..services.energy_predictor import Algorithm
-from ..services.model_loader import ModelLoader
-from ..services.model_manager import Thresholds
+from ..services.model_manager import ModelManager
 
 router = APIRouter()
 
@@ -19,9 +18,12 @@ router = APIRouter()
     response_model=MetadataResponse,
     summary="Inspect the loaded meta-model.",
 )
-async def metadata(settings: Annotated[Settings, Depends(get_settings)]) -> MetadataResponse:
-    bundle = ModelLoader.get()
-    thresholds = Thresholds()
+async def metadata(
+    settings: Annotated[Settings, Depends(get_settings)],
+    manager: Annotated[ModelManager, Depends(get_model_manager)],
+) -> MetadataResponse:
+    bundle = manager.bundle
+    thresholds = manager.thresholds
     return MetadataResponse(
         version=settings.api_version,
         sklearn_version=bundle.sklearn_version,
@@ -32,5 +34,5 @@ async def metadata(settings: Annotated[Settings, Depends(get_settings)]) -> Meta
             max_categorical_features=thresholds.max_categorical_features,
             max_dataset_size=thresholds.max_dataset_size,
         ),
-        model_path=str(bundle.loaded_from),
+        model_path=bundle.loaded_from.name,
     )

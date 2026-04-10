@@ -14,7 +14,7 @@ export function Footer() {
     <footer className="mt-auto bg-ink-950 text-surface-300">
       <Container size="wide" as="div">
         <div className="grid gap-12 py-14 md:grid-cols-12 md:py-16">
-          {/* Brand column */}
+
           <div className="md:col-span-5">
             <div className="flex items-center gap-1.5">
               <span className="font-display text-sm font-bold text-surface-0">
@@ -25,7 +25,7 @@ export function Footer() {
               </span>
               <span
                 aria-hidden="true"
-                className="inline-block h-1.5 w-1.5 rounded-[1px] bg-brand-yellow"
+                className="inline-block h-1.5 w-1.5 rounded-xs bg-brand-yellow"
               />
             </div>
             <p className="mt-5 max-w-sm text-sm leading-relaxed text-surface-400">
@@ -35,9 +35,9 @@ export function Footer() {
             </p>
           </div>
 
-          {/* Site navigation */}
+
           <nav className="md:col-span-3" aria-label="Footer primary">
-            <h2 className="mb-4 text-[0.65rem] font-bold uppercase tracking-[0.2em] text-surface-500">
+            <h2 className="mb-4 label text-surface-500">
               Navigate
             </h2>
             <ul className="flex flex-col gap-2.5">
@@ -54,9 +54,9 @@ export function Footer() {
             </ul>
           </nav>
 
-          {/* External links */}
+
           <nav className="md:col-span-4" aria-label="Footer external">
-            <h2 className="mb-4 text-[0.65rem] font-bold uppercase tracking-[0.2em] text-surface-500">
+            <h2 className="mb-4 label text-surface-500">
               Elsewhere
             </h2>
             <ul className="flex flex-col gap-2.5">
@@ -77,7 +77,7 @@ export function Footer() {
           </nav>
         </div>
 
-        {/* Bottom bar */}
+
         <div className="flex flex-col gap-4 border-t border-surface-0/10 py-6 text-xs text-surface-500 sm:flex-row sm:items-center sm:justify-between">
           <p>&copy; {year} HollerithEnergyML contributors. MIT License.</p>
           <ul className="flex items-center gap-6">

@@ -12,7 +12,7 @@ const FEATURES = [
     step: "02",
     icon: Gauge,
     title: "Model selection by threshold",
-    body: "The Random Forest regressor handles inputs within the measured envelope. Beyond it, a linear fallback extrapolates.",
+    body: "The meta-model instantly ranks all five algorithms by predicted kilowatt-hours — no GPU time spent.",
   },
   {
     step: "03",
@@ -24,7 +24,7 @@ const FEATURES = [
 
 export function FeatureCards() {
   return (
-    <section id="how-it-works" className="py-section-xl bg-surface-50 lg:py-section-2xl">
+    <section id="how-it-works" className="py-section-lg bg-surface-50 lg:py-section-xl">
       <Container size="wide">
         <div className="mb-14 max-w-2xl animate-fade-in-up">
           <p className="eyebrow text-brand-yellow-press">How it works</p>
@@ -37,7 +37,7 @@ export function FeatureCards() {
           </p>
         </div>
 
-        <ul className="grid gap-px bg-surface-200 sm:grid-cols-2 lg:grid-cols-3">
+        <ul className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {FEATURES.map(({ step, icon: Icon, title, body }, idx) => (
             <li
               key={title}
@@ -49,7 +49,7 @@ export function FeatureCards() {
                   className="inline-flex h-10 w-10 items-center justify-center bg-ink-950 transition-all duration-200 group-hover:bg-brand-yellow"
                 >
                   <Icon
-                    className="h-4.5 w-4.5 text-brand-yellow transition-colors duration-200 group-hover:text-ink-900"
+                    className="h-[18px] w-[18px] text-brand-yellow transition-colors duration-200 group-hover:text-ink-900"
                     strokeWidth={1.8}
                   />
                 </span>

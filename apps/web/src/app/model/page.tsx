@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowLeft, ArrowRight } from "lucide-react";
+import { ArrowRight } from "lucide-react";
+import { BackLink } from "@/components/ui/BackLink";
 import { Container } from "@/components/ui/Container";
 import { DataTable, TH_CLASS, TR_CLASS } from "@/components/ui/DataTable";
 import { TableOfContents } from "@/components/ui/TableOfContents";
@@ -43,7 +44,7 @@ const FEATURES: readonly FeatureRow[] = [
     index: "3",
     name: "model_0",
     type: "one-hot",
-    description: "Flag for DecisionTreeClassifier.",
+    description: "Flag for DecisionTree (sklearn DecisionTreeClassifier).",
   },
   {
     index: "4",
@@ -55,7 +56,7 @@ const FEATURES: readonly FeatureRow[] = [
     index: "5",
     name: "model_2",
     type: "one-hot",
-    description: "Flag for KNeighborsClassifier.",
+    description: "Flag for KNN (sklearn KNeighborsClassifier).",
   },
   {
     index: "6",
@@ -67,7 +68,7 @@ const FEATURES: readonly FeatureRow[] = [
     index: "7",
     name: "model_4",
     type: "one-hot",
-    description: "Flag for RandomForestClassifier.",
+    description: "Flag for RandomForest (sklearn RandomForestClassifier).",
   },
 ];
 
@@ -197,7 +198,7 @@ export default function ModelPage() {
                   <p className="label text-ink-700">Inside envelope</p>
                   <p className="mt-3 text-lg font-bold text-ink-950">Random Forest</p>
                   <p className="mt-2 font-mono text-xs leading-relaxed text-ink-700">
-                    num ≤ 50 · cat ≤ 50 · rows ≤ 50,000
+                    num ≤ 25 · cat ≤ 25 · rows ≤ 350,000
                   </p>
                   <p className="mt-1 text-[0.65rem] font-semibold text-ink-600">R² = 0.996</p>
                 </div>
@@ -253,7 +254,7 @@ export default function ModelPage() {
                 {[
                   { title: "Hardware-calibrated.", text: "The baseline ran on a dual-core Intel Xeon at 2.20 GHz. Expect meaningful deviation on different CPU architectures or when a GPU is in the loop." },
                   { title: "Default hyperparameters only.", text: "The five classifiers were measured with scikit-learn 1.2.2 defaults. Custom hyperparameters — especially tree depth or ensemble size — will shift real energy consumption in ways the meta-model does not see." },
-                  { title: "Extrapolation caveat.", text: "Inputs beyond the 50/50/50,000 envelope are handled by the linear fallback, which is exactly a linear extrapolation. Treat large-data predictions as rough directional guidance." },
+                  { title: "Extrapolation caveat.", text: "Inputs beyond the 25/25/350,000 envelope are handled by the linear fallback, which is exactly a linear extrapolation. Treat large-data predictions as rough directional guidance." },
                   { title: "No XGBoost.", text: "The original campaign measured XGBoost too, but it was excluded from the production model for sklearn-API consistency. If you need an XGBoost estimate, this model will not give you one." },
                 ].map(({ title, text }) => (
                   <li key={title} className="flex gap-3">
@@ -313,13 +314,7 @@ export default function ModelPage() {
         </div>
 
         <footer className="border-t border-surface-100 pb-section-lg pt-8">
-          <Link
-            href="/"
-            className="inline-flex items-center gap-1.5 text-sm font-semibold text-ink-600 hover:text-ink-900 transition-colors"
-          >
-            <ArrowLeft className="h-4 w-4" aria-hidden="true" />
-            Back to home
-          </Link>
+          <BackLink />
         </footer>
       </Container>
     </article>

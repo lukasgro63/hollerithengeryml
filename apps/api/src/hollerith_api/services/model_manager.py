@@ -8,9 +8,13 @@ determined empirically during the baseline campaign; see
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Any, Literal
+from typing import Literal
 
-from .model_loader import ModelBundle
+import structlog
+
+from .model_loader import ModelBundle, SklearnRegressor
+
+log = structlog.get_logger(__name__)
 
 ModelName = Literal["random_forest", "linear_regression"]
 
@@ -26,7 +30,7 @@ class Thresholds:
 
 @dataclass(frozen=True)
 class ModelSelection:
-    estimator: Any
+    estimator: SklearnRegressor
     name: ModelName
     thresholds: Thresholds
 
@@ -37,6 +41,10 @@ class ModelManager:
     def __init__(self, bundle: ModelBundle, thresholds: Thresholds | None = None):
         self._bundle = bundle
         self.thresholds = thresholds or Thresholds()
+
+    @property
+    def bundle(self) -> ModelBundle:
+        return self._bundle
 
     def select(
         self,

@@ -7,7 +7,7 @@ or pandas is caught by CI rather than discovered in production.
 
 from __future__ import annotations
 
-from collections.abc import Generator
+from collections.abc import Iterator
 from pathlib import Path
 
 import pytest
@@ -34,7 +34,7 @@ def settings() -> Settings:
 
 
 @pytest.fixture(scope="session", autouse=True)
-def _disable_rate_limiter() -> Generator[None, None, None]:
+def _disable_rate_limiter() -> Iterator[None]:
     previous = limiter.enabled
     limiter.enabled = False
     try:
@@ -44,7 +44,7 @@ def _disable_rate_limiter() -> Generator[None, None, None]:
 
 
 @pytest.fixture(scope="session")
-def client(settings: Settings) -> Generator[TestClient, None, None]:
+def client(settings: Settings) -> Iterator[TestClient]:
     ModelLoader.reset()
     app = create_app(settings)
     with TestClient(app) as test_client:

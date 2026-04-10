@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import Link from "next/link";
-import { ArrowLeft, ExternalLink } from "lucide-react";
+import { ExternalLink } from "lucide-react";
+import { BackLink } from "@/components/ui/BackLink";
 import { Container } from "@/components/ui/Container";
 import { PageHeader } from "@/components/marketing/PageHeader";
 import { HHZ_URL } from "@/lib/site";
@@ -31,9 +31,6 @@ export default function ImprintPage() {
 
       <Container size="wide">
         <div className="max-w-3xl space-y-section-md pb-section-lg pt-section-md text-ink-700 lg:pb-section-xl">
-          {/* ----------------------------------------------------------------
-           * Responsible party — reference to HHZ / Hochschule Reutlingen
-           * -------------------------------------------------------------- */}
           <section>
             <h2 className="text-h3 font-bold tracking-tight text-ink-900">
               Responsible party
@@ -72,9 +69,6 @@ export default function ImprintPage() {
             </p>
           </section>
 
-          {/* ----------------------------------------------------------------
-           * Disclaimer for external links
-           * -------------------------------------------------------------- */}
           <section>
             <h2 className="text-h3 font-bold tracking-tight text-ink-900">
               Disclaimer for external links
@@ -90,9 +84,6 @@ export default function ImprintPage() {
             </p>
           </section>
 
-          {/* ----------------------------------------------------------------
-           * Project disclaimer (bilingual, carried over from the 2024 legacy)
-           * -------------------------------------------------------------- */}
           <section>
             <h2 className="text-h3 font-bold tracking-tight text-ink-900">
               Disclaimer
@@ -141,9 +132,6 @@ export default function ImprintPage() {
             </p>
           </section>
 
-          {/* ----------------------------------------------------------------
-           * Copyright
-           * -------------------------------------------------------------- */}
           <section>
             <h2 className="text-h3 font-bold tracking-tight text-ink-900">
               Copyright
@@ -163,13 +151,7 @@ export default function ImprintPage() {
         </div>
 
         <footer className="border-t border-surface-100 pb-section-lg pt-8">
-          <Link
-            href="/"
-            className="inline-flex items-center gap-1.5 text-sm font-semibold text-ink-600 hover:text-ink-900 transition-colors"
-          >
-            <ArrowLeft className="h-4 w-4" aria-hidden="true" />
-            Back to home
-          </Link>
+          <BackLink />
         </footer>
       </Container>
     </article>

@@ -12,7 +12,6 @@ const ROUTES: readonly Route[] = [
   { path: "/calculate", priority: 0.9, changeFrequency: "monthly" },
   { path: "/research", priority: 0.8, changeFrequency: "yearly" },
   { path: "/model", priority: 0.8, changeFrequency: "yearly" },
-  { path: "/about", priority: 0.5, changeFrequency: "yearly" },
   { path: "/imprint", priority: 0.3, changeFrequency: "yearly" },
   { path: "/privacy", priority: 0.3, changeFrequency: "yearly" },
 ] as const;

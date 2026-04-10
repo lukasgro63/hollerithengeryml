@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import json
 from pathlib import Path
 from typing import Annotated, Literal
 
@@ -59,8 +60,6 @@ class Settings(BaseSettings):
         if isinstance(value, str):
             stripped = value.strip()
             if stripped.startswith("["):
-                import json
-
                 parsed = json.loads(stripped)
                 if not isinstance(parsed, list):
                     raise ValueError("allowed_origins JSON must be a list")

@@ -9,7 +9,7 @@ export function TableOfContents({ items }: TableOfContentsProps) {
         <h2 className="label text-ink-400">
           On this page
         </h2>
-        <ol className="mt-4 space-y-2.5 text-[0.8125rem]">
+        <ol className="mt-4 space-y-2.5 text-ui">
           {items.map((item) => (
             <li key={item.id}>
               <a

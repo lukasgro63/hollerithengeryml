@@ -7,7 +7,7 @@ from fastapi import APIRouter, Depends
 from ..config import Settings
 from ..dependencies import get_settings
 from ..schemas.health import HealthResponse
-from ..services.model_loader import ModelLoader
+from ..services.model_loader import ModelLoader, ModelNotLoadedError
 
 router = APIRouter()
 
@@ -21,7 +21,7 @@ async def health(settings: Annotated[Settings, Depends(get_settings)]) -> Health
     try:
         ModelLoader.get()
         loaded = True
-    except RuntimeError:
+    except ModelNotLoadedError:
         loaded = False
 
     return HealthResponse(

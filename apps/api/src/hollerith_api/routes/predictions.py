@@ -11,6 +11,7 @@ from typing import Annotated
 
 from fastapi import APIRouter, Body, Depends, Request
 
+from ..config import Settings
 from ..dependencies import get_model_manager, get_predictor
 from ..rate_limit import limiter
 from ..schemas.predictions import (
@@ -24,10 +25,10 @@ from ..services.model_manager import ModelManager
 
 router = APIRouter()
 
-# Rate limit is deliberately conservative: the endpoint is cheap but the
-# service is public, and a single well-behaved user never needs more than a
-# few requests per minute. Tighten or loosen via pyproject if needed.
-_PREDICTIONS_RATE_LIMIT = "30/minute"
+# Frozen at import time from env (PREDICTIONS_RATE_LIMIT_PER_MINUTE).
+# slowapi decorators bind at class-definition time, so the Settings object
+# passed to create_app() cannot influence this value — only the env var can.
+_PREDICTIONS_RATE_LIMIT = f"{Settings().predictions_rate_limit_per_minute}/minute"
 
 
 @router.post(
@@ -37,14 +38,11 @@ _PREDICTIONS_RATE_LIMIT = "30/minute"
 )
 @limiter.limit(_PREDICTIONS_RATE_LIMIT)
 async def create_predictions(
-    request: Request,  # required by slowapi's handler contract
+    request: Request,
     payload: Annotated[PredictionsRequest, Body()],
     manager: Annotated[ModelManager, Depends(get_model_manager)],
     predictor: Annotated[EnergyPredictor, Depends(get_predictor)],
 ) -> PredictionsResponse:
-    # `request` is referenced by slowapi via the wrapper; suppress unused warning.
-    del request
-
     selection = manager.select(
         num_numerical_features=payload.num_numerical_features,
         num_categorical_features=payload.num_categorical_features,
@@ -83,6 +81,7 @@ async def create_predictions(
         model_used=selection.name,
         thresholds_applied=ThresholdsApplied(
             num_features=thresholds.max_numerical_features,
+            cat_features=thresholds.max_categorical_features,
             dataset_size=thresholds.max_dataset_size,
         ),
         out_of_training_range=out_of_range,

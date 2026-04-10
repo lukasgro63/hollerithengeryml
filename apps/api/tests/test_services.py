@@ -3,14 +3,12 @@
 from __future__ import annotations
 
 import math
-from pathlib import Path
 
 from hollerith_api.services.energy_predictor import Algorithm, EnergyPredictor
 from hollerith_api.services.model_loader import ModelBundle, ModelLoader
 from hollerith_api.services.model_manager import ModelManager, Thresholds
 
-API_DIR = Path(__file__).resolve().parent.parent
-MODEL_PATH = API_DIR / "models" / "ml_model_package.pkl"
+from .conftest import MODEL_PATH
 
 
 def _load_bundle() -> ModelBundle:
@@ -54,13 +52,13 @@ def test_manager_selects_random_forest_inside_thresholds() -> None:
 def test_manager_selects_linear_regression_when_any_threshold_exceeded() -> None:
     manager = ModelManager(_load_bundle())
 
-    over_numerical = manager.select(26, 0, 1)
+    over_numerical = manager.select(26, 1, 1)
     assert over_numerical.name == "linear_regression"
 
-    over_categorical = manager.select(0, 26, 1)
+    over_categorical = manager.select(1, 26, 1)
     assert over_categorical.name == "linear_regression"
 
-    over_dataset = manager.select(0, 0, 350_001)
+    over_dataset = manager.select(1, 1, 350_001)
     assert over_dataset.name == "linear_regression"
 
 
@@ -109,7 +107,5 @@ def test_predictor_uses_feature_names_and_does_not_emit_warning() -> None:
             dataset_size=10_000,
         )
 
-    feature_warnings = [
-        w for w in caught if "feature names" in str(w.message).lower()
-    ]
+    feature_warnings = [w for w in caught if "feature names" in str(w.message).lower()]
     assert feature_warnings == []

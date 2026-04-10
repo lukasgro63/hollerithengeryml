@@ -18,5 +18,7 @@ class MetadataResponse(BaseModel):
     sklearn_version: str = Field(description="scikit-learn version the artefact was built against.")
     algorithms: list[str] = Field(description="Display names of all scored algorithms.")
     feature_names: list[str] = Field(description="Column names the regressor was fitted with.")
-    thresholds: MetadataThresholds = Field(description="RandomForest vs LinearRegression switch-over points.")
-    model_path: str = Field(description="Absolute path of the loaded artefact on disk.")
+    thresholds: MetadataThresholds = Field(
+        description="RandomForest vs LinearRegression switch-over points."
+    )
+    model_path: str = Field(description="Filename of the loaded artefact.")

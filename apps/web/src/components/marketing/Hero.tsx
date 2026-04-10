@@ -7,36 +7,48 @@ import { ScrollIndicator } from "@/components/marketing/ScrollIndicator";
 export function Hero() {
   return (
     <section className="relative overflow-hidden gradient-mesh-hero -mt-[4.25rem] pt-[4.25rem] min-h-screen">
-      {/* Graph paper grid */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-0"
+        className="pointer-events-none absolute -top-[15%] -left-[10%] h-[800px] w-[900px] rounded-full"
         style={{
-          backgroundImage:
-            "linear-gradient(var(--color-ink-900) 1px, transparent 1px), " +
-            "linear-gradient(90deg, var(--color-ink-900) 1px, transparent 1px)",
-          backgroundSize: "72px 72px",
-          opacity: 0.06,
+          background: "radial-gradient(circle, rgba(10, 10, 10, 0.12) 0%, rgba(10, 10, 10, 0.04) 40%, transparent 65%)" /* ink-950 */,
+          filter: "blur(40px)",
         }}
       />
-      {/* Finer sub-grid */}
+
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-0"
+        className="pointer-events-none absolute -top-[10%] -right-[5%] h-[900px] w-[900px] rounded-full animate-hero-float"
         style={{
-          backgroundImage:
-            "linear-gradient(var(--color-ink-900) 0.5px, transparent 0.5px), " +
-            "linear-gradient(90deg, var(--color-ink-900) 0.5px, transparent 0.5px)",
-          backgroundSize: "18px 18px",
-          opacity: 0.03,
+          background: "radial-gradient(circle, rgba(255, 228, 0, 0.55) 0%, rgba(255, 228, 0, 0.2) 30%, rgba(255, 228, 0, 0.05) 50%, transparent 65%)",
+          filter: "blur(60px)",
+          willChange: "transform",
+        }}
+      />
+
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute bottom-[0%] -left-[5%] h-[450px] w-[500px] rounded-full"
+        style={{
+          background: "radial-gradient(circle, rgba(255, 208, 0, 0.3) 0%, rgba(255, 208, 0, 0.06) 40%, transparent 60%)",
+          filter: "blur(50px)",
+        }}
+      />
+
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 opacity-[0.04] mix-blend-multiply"
+        style={{
+          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")`,
+          backgroundSize: "256px 256px",
         }}
       />
 
       <Container size="wide">
         <div className="relative grid items-center gap-14 pt-section-lg pb-section-md lg:grid-cols-12 lg:gap-20 lg:pt-section-xl">
           <div className="lg:col-span-7 animate-fade-in-up">
-            <div className="flex items-center gap-3">
-              <span className="inline-flex items-center bg-brand-yellow px-2 py-0.5 text-[0.6rem] font-bold uppercase tracking-[0.1em] text-ink-900">
+            <div className="flex flex-wrap items-center gap-2 sm:gap-3">
+              <span className="inline-flex shrink-0 items-center bg-brand-yellow px-2.5 py-0.5 text-[0.6rem] font-bold uppercase tracking-[0.1em] text-ink-900 shadow-glow-yellow">
                 Peer-reviewed
               </span>
               <p className="eyebrow text-brand-yellow-press">
@@ -82,7 +94,6 @@ export function Hero() {
               </Button>
             </div>
 
-            {/* Proof stats — inline in hero content */}
             <div className="mt-12 grid grid-cols-2 gap-x-8 gap-y-4 sm:grid-cols-4">
               {([
                 { value: "450+", label: "measured runs" },
@@ -91,6 +102,7 @@ export function Hero() {
                 { value: "2024", label: "peer-reviewed" },
               ] as const).map(({ value, label }) => (
                 <div key={label}>
+                  <div aria-hidden="true" className="mb-2 h-[2px] w-5 rounded-full bg-gradient-to-r from-brand-yellow to-brand-yellow-end" />
                   <p className="font-display text-lg font-extrabold tracking-tight text-ink-950">
                     {value}
                   </p>
@@ -102,23 +114,28 @@ export function Hero() {
             </div>
           </div>
 
-          {/* Inline calculator — desktop only */}
           <div className="hidden lg:col-span-5 lg:block animate-slide-in-right stagger-2">
             <p className="label text-ink-400 mb-4">
               Your dataset, your footprint
             </p>
-            <HeroCalculator />
+            <div className="relative">
+              <div
+                aria-hidden="true"
+                className="absolute -inset-4 rounded-lg bg-brand-yellow/15 blur-2xl"
+              />
+              <div className="relative">
+                <HeroCalculator />
+              </div>
+            </div>
           </div>
         </div>
       </Container>
 
-      {/* Scroll indicator — fixed to bottom of viewport */}
       <ScrollIndicator target="#how-it-works" />
 
-      {/* Smooth transition to light content */}
       <div
         aria-hidden="true"
-        className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-b from-transparent to-surface-0"
+        className="absolute bottom-0 left-0 right-0 h-40 bg-gradient-to-b from-transparent to-surface-50"
       />
     </section>
   );

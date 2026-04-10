@@ -45,8 +45,9 @@ class AlgorithmPrediction(BaseModel):
 
 
 class ThresholdsApplied(BaseModel):
-    num_features: int
-    dataset_size: int
+    num_features: int = Field(description="Max numerical features for the RF path.")
+    cat_features: int = Field(description="Max categorical features for the RF path.")
+    dataset_size: int = Field(description="Max dataset rows for the RF path.")
 
 
 class PredictionsResponse(BaseModel):

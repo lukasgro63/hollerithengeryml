@@ -1,5 +1,4 @@
 import Image from "next/image";
-import { Container } from "@/components/ui/Container";
 
 const PARTNERS = [
   {
@@ -30,29 +29,22 @@ const PARTNERS = [
 
 export function TechLogos() {
   return (
-    <section className="bg-surface-0 py-10 sm:py-14">
-      <Container size="wide">
-        <p className="mb-8 text-center text-[0.65rem] font-bold uppercase tracking-[0.2em] text-ink-400">
-          A research project by
-        </p>
-        <div className="flex flex-wrap items-center justify-center gap-x-12 gap-y-8 sm:gap-x-16 lg:gap-x-20">
-          {PARTNERS.map(({ name, src, height, width }) => (
-            <div
-              key={name}
-              className="logo-muted flex items-center justify-center"
-            >
-              <Image
-                src={src}
-                alt={name}
-                height={height}
-                width={width}
-                className="h-auto max-h-12 w-auto object-contain"
-                unoptimized
-              />
-            </div>
-          ))}
+    <>
+      {PARTNERS.map(({ name, src, height, width }) => (
+        <div
+          key={name}
+          className="flex items-center justify-center opacity-40 brightness-0 invert transition-opacity duration-300 hover:opacity-70"
+        >
+          <Image
+            src={src}
+            alt={name}
+            height={height}
+            width={width}
+            className="h-auto max-h-8 w-auto object-contain"
+            unoptimized
+          />
         </div>
-      </Container>
-    </section>
+      ))}
+    </>
   );
 }

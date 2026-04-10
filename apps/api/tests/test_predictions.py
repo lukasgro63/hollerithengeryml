@@ -23,7 +23,11 @@ def test_small_input_uses_random_forest_and_returns_five_ranked_predictions(
     body = response.json()
 
     assert body["model_used"] == "random_forest"
-    assert body["thresholds_applied"] == {"num_features": 25, "dataset_size": 350_000}
+    assert body["thresholds_applied"] == {
+        "num_features": 25,
+        "cat_features": 25,
+        "dataset_size": 350_000,
+    }
     assert body["out_of_training_range"] is False
 
     predictions = body["predictions"]
@@ -38,12 +42,10 @@ def test_small_input_uses_random_forest_and_returns_five_ranked_predictions(
         "RandomForest",
     }
 
-    # Ranks are 1..5 in order, and energies are sorted descending.
     assert [p["rank"] for p in predictions] == [1, 2, 3, 4, 5]
     energies = [p["energy_kwh"] for p in predictions]
     assert energies == sorted(energies, reverse=True)
 
-    # Average matches arithmetic mean of the raw energies.
     expected_average = sum(energies) / len(energies)
     assert math.isclose(body["average_kwh"], expected_average, rel_tol=1e-9)
 

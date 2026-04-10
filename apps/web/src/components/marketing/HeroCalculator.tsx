@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ArrowRight, Loader2 } from "lucide-react";
+import { Button } from "@/components/ui/Button";
 
 import {
   CALCULATOR_DEFAULTS,
@@ -36,13 +37,11 @@ export function HeroCalculator() {
 
   return (
     <div className="relative overflow-hidden bg-ink-950 shadow-elevated">
-      {/* Yellow top accent bar */}
       <div
         aria-hidden="true"
         className="h-[3px] bg-gradient-to-r from-brand-yellow to-brand-yellow-end"
       />
 
-      {/* Grid pattern overlay */}
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-0 opacity-[0.04]"
@@ -54,7 +53,6 @@ export function HeroCalculator() {
         }}
       />
 
-      {/* Subtle yellow corner glow */}
       <div
         aria-hidden="true"
         className="pointer-events-none absolute -bottom-16 -right-16 h-44 w-44 rounded-full opacity-[0.06]"
@@ -82,19 +80,23 @@ export function HeroCalculator() {
                 id={field.id}
                 type="number"
                 inputMode="numeric"
+                min={field.name === "dataset_size" ? 1 : 0}
                 placeholder={field.placeholder}
                 disabled={isSubmitting}
+                aria-describedby={form.formState.errors[field.name] ? `${field.id}-error` : undefined}
+                aria-invalid={!!form.formState.errors[field.name]}
                 className="mt-2 block w-full border-0 border-b border-surface-0/15 bg-transparent pb-3 font-mono text-lg font-medium tabular-nums text-surface-0 placeholder:text-surface-500 transition-all duration-200 hover:border-surface-0/25 focus-visible:border-brand-yellow focus-visible:outline-none disabled:cursor-not-allowed disabled:text-surface-500"
                 {...form.register(field.name, { valueAsNumber: true })}
               />
+              {form.formState.errors[field.name] && (
+                <p id={`${field.id}-error`} role="alert" className="mt-1.5 text-xs text-accent-rust">
+                  {form.formState.errors[field.name]?.message}
+                </p>
+              )}
             </div>
           ))}
 
-          <button
-            type="submit"
-            disabled={isSubmitting}
-            className="mt-3 flex h-11 w-full items-center justify-center gap-2 bg-gradient-to-br from-brand-yellow to-brand-yellow-warm text-sm font-bold uppercase tracking-[0.08em] text-ink-900 shadow-button transition-all duration-150 hover:from-brand-yellow-hover hover:to-brand-yellow-press disabled:opacity-50"
-          >
+          <Button type="submit" disabled={isSubmitting} size="md" className="mt-3 w-full">
             {isSubmitting ? (
               <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />
             ) : (
@@ -103,7 +105,7 @@ export function HeroCalculator() {
                 <ArrowRight className="h-4 w-4" aria-hidden="true" />
               </>
             )}
-          </button>
+          </Button>
         </form>
 
         <p className="mt-3 text-[0.65rem] leading-relaxed text-surface-400">

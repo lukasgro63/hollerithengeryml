@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import Link from "next/link";
-import { ArrowLeft, ExternalLink } from "lucide-react";
+import { ExternalLink } from "lucide-react";
+import { BackLink } from "@/components/ui/BackLink";
 import { Container } from "@/components/ui/Container";
 import { DataTable, TH_CLASS, TR_CLASS } from "@/components/ui/DataTable";
 import { TableOfContents } from "@/components/ui/TableOfContents";
@@ -63,11 +63,12 @@ export default function ResearchPage() {
                 The baseline campaign
               </h2>
               <p className="mt-4 leading-relaxed">
-                Five classifiers — LogisticRegression, KNeighborsClassifier,
-                DecisionTreeClassifier, RandomForestClassifier, and XGBoost —
-                were measured on three public tabular datasets with progressive
-                subsampling of features and rows, producing dense
-                energy-versus-shape curves.
+                Six classifiers — DecisionTree, GaussianNB, KNN,
+                LogisticRegression, RandomForest, and XGBoost — were measured
+                on three public tabular datasets with progressive subsampling
+                of features and rows, producing dense energy-versus-shape
+                curves. The production meta-model uses the first five;
+                XGBoost was excluded for scikit-learn-API consistency.
               </p>
 
               <DataTable number="Table 1" caption="Datasets used in the baseline campaign">
@@ -81,8 +82,8 @@ export default function ResearchPage() {
                 </thead>
                 <tbody className="text-ink-700">
                   {[
-                    { name: "Diabetes Health Indicators", rows: "~250,000", features: "22", href: "https://www.kaggle.com/datasets/alexteboul/diabetes-health-indicators-dataset", source: "Kaggle" },
-                    { name: "Bank Marketing", rows: "~11,000", features: "17", href: "https://archive.ics.uci.edu/dataset/222/bank+marketing", source: "UCI" },
+                    { name: "Diabetes Health Indicators", rows: "~254,000", features: "21", href: "https://www.kaggle.com/datasets/alexteboul/diabetes-health-indicators-dataset", source: "Kaggle" },
+                    { name: "Bank Marketing", rows: "~41,000", features: "19", href: "https://archive.ics.uci.edu/dataset/222/bank+marketing", source: "UCI" },
                     { name: "Heart Disease 2020", rows: "~320,000", features: "17", href: "https://www.kaggle.com/datasets/kamilpytlak/personal-key-indicators-of-heart-disease", source: "Kaggle / CDC" },
                   ].map(({ name, rows, features, href, source }) => (
                     <tr key={name} className={TR_CLASS}>
@@ -103,13 +104,12 @@ export default function ResearchPage() {
               <p className="mt-4 leading-relaxed">
                 Every dataset was sampled at 100 %, 80 %, 60 %, 40 %, and
                 20 % of its original row count, with features reduced randomly
-                step by step. The paper measured XGBoost alongside the other
-                four, but the production meta-model replaces it with GaussianNB
-                for scikit-learn-API consistency. The measurement archive under{" "}
+                step by step. The measurement archive under{" "}
                 <code className="bg-surface-100 px-1.5 py-0.5 text-sm text-ink-800">
                   research/baseline-tests/results/
                 </code>{" "}
-                contains emission CSVs for all six classifiers.
+                contains emission CSVs for all six classifiers (including
+                XGBoost).
               </p>
 
             </section>
@@ -214,18 +214,9 @@ export default function ResearchPage() {
 
               <p className="mt-4 leading-relaxed">
                 The Random Forest path is taken when <em>all three</em> of the
-                following hold: at most 50 numerical features, at most 50
-                categorical features, and at most 50,000 rows. For larger
+                following hold: at most 25 numerical features, at most 25
+                categorical features, and at most 350,000 rows. For larger
                 inputs the linear fallback extrapolates.
-              </p>
-              <p className="mt-4 text-sm text-ink-500">
-                Note: the paper documents a measured envelope of 25 numerical
-                features, 25 categorical features, and 350,000 rows — the
-                range in which training data was actually collected. The
-                production code&apos;s switch-over thresholds (50 / 50 /
-                50,000) are a slightly different, implementation-level choice
-                about where to fall through to the linear extrapolator. Read
-                predictions between the two bands with some extra skepticism.
               </p>
             </section>
 
@@ -311,13 +302,7 @@ export default function ResearchPage() {
         </div>
 
         <footer className="border-t border-surface-100 pb-section-lg pt-8">
-          <Link
-            href="/"
-            className="inline-flex items-center gap-1.5 text-sm font-semibold text-ink-600 hover:text-ink-900 transition-colors"
-          >
-            <ArrowLeft className="h-4 w-4" aria-hidden="true" />
-            Back to home
-          </Link>
+          <BackLink />
         </footer>
       </Container>
     </article>

@@ -57,7 +57,6 @@ export function ResultsCard({ data, input }: ResultsCardProps) {
 
   return (
     <div className="animate-fade-in-up">
-      {/* Section header — mirrors form's accent-bar pattern */}
       <div
         aria-hidden="true"
         className="h-[3px] w-10 rounded-full bg-gradient-to-r from-brand-yellow to-brand-yellow-end"
@@ -83,14 +82,14 @@ export function ResultsCard({ data, input }: ResultsCardProps) {
           <AlertTriangle className="mt-0.5 h-4 w-4 flex-shrink-0 text-amber-600" aria-hidden="true" />
           <p>
             The input values exceed the training range of the HollerithEnergyML
-            model (≤{thresholds_applied.num_features} features,
+            model (≤{thresholds_applied.num_features} numerical,
+            ≤{thresholds_applied.cat_features} categorical features,
             ≤{thresholds_applied.dataset_size.toLocaleString()} rows). Predictions
             are extrapolated and may be less accurate.
           </p>
         </div>
       ) : null}
 
-      {/* Greenest callout */}
       {greenest ? (
         <div className="mt-8 flex items-baseline gap-4">
           <span className="label flex items-center gap-2 text-ink-400">
@@ -106,9 +105,8 @@ export function ResultsCard({ data, input }: ResultsCardProps) {
         </div>
       ) : null}
 
-      {/* Chart — open, no container */}
       <div
-        className="mt-10 h-72 w-full sm:h-80"
+        className="mt-10 h-72 min-h-[1px] w-full sm:h-80"
         role="img"
         aria-label={`Horizontal bar chart of predicted training energy in ${scale.unit}`}
       >
@@ -156,13 +154,12 @@ export function ResultsCard({ data, input }: ResultsCardProps) {
               contentStyle={{
                 backgroundColor: "var(--color-surface-0)",
                 border: "none",
-                borderRadius: "12px",
+                borderRadius: "var(--radius-lg)",
                 fontSize: "12px",
-                boxShadow:
-                  "0 8px 24px rgba(0,0,0,0.08), 0 2px 6px rgba(0,0,0,0.03)",
+                boxShadow: "var(--shadow-card-hover)",
               }}
               labelStyle={{ color: "var(--color-ink-950)", fontWeight: 700 }}
-              cursor={{ fill: "rgba(255, 228, 0, 0.06)" }}
+              cursor={{ fill: "var(--color-brand-yellow-subtle)" }}
               formatter={(value) => {
                 if (typeof value !== "number") return ["—", "Energy"];
                 const kwh = value / scale.factor;
@@ -193,7 +190,6 @@ export function ResultsCard({ data, input }: ResultsCardProps) {
         </ResponsiveContainer>
       </div>
 
-      {/* Summary stats — bottom-border style matching form inputs */}
       <div className="mt-10 grid gap-x-10 gap-y-8 sm:grid-cols-3 lg:gap-x-14">
         <dl>
           <dt className="label text-ink-400">
@@ -222,7 +218,6 @@ export function ResultsCard({ data, input }: ResultsCardProps) {
         </dl>
       </div>
 
-      {/* Algorithm ranking — clean horizontal list */}
       <ol className="mt-10 flex flex-wrap gap-x-6 gap-y-4 sm:gap-x-8">
         {sorted.map((p, idx) => (
           <li key={p.algorithm} className="flex items-baseline gap-2.5">

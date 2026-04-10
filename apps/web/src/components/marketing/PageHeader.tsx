@@ -10,7 +10,6 @@ type PageHeaderProps = {
 export function PageHeader({ eyebrow, title, lede }: PageHeaderProps) {
   return (
     <div className="relative overflow-hidden gradient-mesh-hero -mt-[4.25rem] pt-[4.25rem]">
-      {/* Grid pattern */}
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-0 opacity-[0.025]"
@@ -32,7 +31,6 @@ export function PageHeader({ eyebrow, title, lede }: PageHeaderProps) {
         </header>
       </Container>
 
-      {/* Smooth fade to content */}
       <div
         aria-hidden="true"
         className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-b from-transparent to-surface-0"

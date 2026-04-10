@@ -10,21 +10,34 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any
+from typing import Protocol, runtime_checkable
 
 import joblib
+import numpy as np
+import pandas as pd
 import sklearn
 import structlog
 
 log = structlog.get_logger(__name__)
 
 
+class ModelNotLoadedError(RuntimeError):
+    """Raised when code accesses the model before the lifespan has loaded it."""
+
+
+@runtime_checkable
+class SklearnRegressor(Protocol):
+    """Structural type for any sklearn-compatible regressor."""
+
+    def predict(self, x: pd.DataFrame) -> np.ndarray: ...
+
+
 @dataclass(frozen=True)
 class ModelBundle:
     """In-memory handle to the loaded meta-model."""
 
-    linear_regression: Any
-    random_forest: Any
+    linear_regression: SklearnRegressor
+    random_forest: SklearnRegressor
     feature_names: list[str]
     sklearn_version: str
     loaded_from: Path
@@ -54,8 +67,7 @@ class ModelLoader:
 
         if not isinstance(artefact, tuple) or len(artefact) != 2:
             raise RuntimeError(
-                f"expected a 2-tuple (linear, random_forest), "
-                f"got {type(artefact).__name__}"
+                f"expected a 2-tuple (linear, random_forest), got {type(artefact).__name__}"
             )
 
         linear, forest = artefact
@@ -83,7 +95,7 @@ class ModelLoader:
     @classmethod
     def get(cls) -> ModelBundle:
         if cls._bundle is None:
-            raise RuntimeError(
+            raise ModelNotLoadedError(
                 "ModelLoader.load() has not been called; "
                 "the FastAPI lifespan should load the model at startup"
             )

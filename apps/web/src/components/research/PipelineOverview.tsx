@@ -166,8 +166,8 @@ function ColLabel({ x, y, children }: {
 /* ── Main component ────────────────────────────────────────────── */
 
 const DATASETS_DATA = [
-  { name: "Diabetes", detail: "250k × 21" },
-  { name: "Bank", detail: "45k × 20" },
+  { name: "Diabetes", detail: "254k × 21" },
+  { name: "Bank", detail: "41k × 19" },
   { name: "Heart", detail: "320k × 17" },
 ] as const;
 
@@ -197,13 +197,13 @@ export function PipelineOverview() {
           className="w-full min-w-[600px]"
           style={{ maxHeight: "350px" }}
         >
-          {/* Column labels */}
+
           <ColLabel x={COL_X[0]} y={16}>Datasets</ColLabel>
           <ColLabel x={COL_X[1]} y={16}>Subsampling</ColLabel>
           <ColLabel x={COL_X[2]} y={16}>Classifiers</ColLabel>
           <ColLabel x={COL_X[3]} y={16}>Output</ColLabel>
 
-          {/* Connection lines — drawn first so nodes overlay them */}
+
           <Connections
             fromX={edgeRight(0, NODE_W)}
             fromYs={LAYERS.datasets}
@@ -226,7 +226,7 @@ export function PipelineOverview() {
             color="var(--color-accent-rust)"
           />
 
-          {/* Layer 1: Datasets */}
+
           {DATASETS_DATA.map(({ name, detail }, i) => (
             <DatasetNode
               key={name}
@@ -237,7 +237,7 @@ export function PipelineOverview() {
             />
           ))}
 
-          {/* Layer 2: Reduction levels */}
+
           {REDUCTION_LABELS.map((label, i) => (
             <SmallNode
               key={label}
@@ -248,7 +248,7 @@ export function PipelineOverview() {
             />
           ))}
 
-          {/* Layer 3: Classifiers */}
+
           {CLASSIFIER_LABELS.map((label, i) => (
             <SmallNode
               key={label}
@@ -259,10 +259,10 @@ export function PipelineOverview() {
             />
           ))}
 
-          {/* Layer 4: Output */}
+
           <OutputNode x={COL_X[3]} y={LAYERS.output[0]} />
 
-          {/* Annotation: CodeCarbon wraps layer 3 */}
+
           <rect
             x={COL_X[2] - SMALL_W / 2 - 10}
             y={LAYERS.classifiers[0] - NODE_H / 2 - 14}

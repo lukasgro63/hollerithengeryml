@@ -3,6 +3,15 @@
 Thanks for taking an interest in HollerithEnergyML. This document describes
 how to propose changes.
 
+## First-time setup
+
+```bash
+make setup   # installs dependencies + pre-commit hooks
+```
+
+Pre-commit hooks run `ruff`, `trailing-whitespace`, and `detect-secrets`
+automatically on every commit. If a hook fails, fix the issue and re-stage.
+
 ## Workflow
 
 We follow GitHub-flow:
@@ -14,13 +23,10 @@ We follow GitHub-flow:
 2. Make your changes. Keep commits focused — one logical change per commit.
 3. Run the local checks:
    ```bash
-   # Backend
-   cd apps/api && uv run ruff check . && uv run pytest
-
-   # Frontend
-   cd apps/web && npm run lint && npm run test && npm run build
+   make check   # runs lint + test for both apps
    ```
 4. Push the branch and open a Pull Request against `main`.
+   The [PR template](../.github/PULL_REQUEST_TEMPLATE.md) will guide you.
 5. A reviewer will look at your change, request adjustments if needed, and
    merge once CI is green.
 

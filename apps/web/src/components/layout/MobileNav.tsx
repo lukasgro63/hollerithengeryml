@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { Menu, X } from "lucide-react";
 import { PRIMARY_NAV, FOOTER_LEGAL_NAV } from "@/lib/nav";
@@ -8,11 +8,14 @@ import { Button } from "@/components/ui/Button";
 
 export function MobileNav() {
   const [open, setOpen] = useState(false);
+  const closeRef = useRef<HTMLButtonElement>(null);
+  const dialogRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (open) {
       const previousOverflow = document.body.style.overflow;
       document.body.style.overflow = "hidden";
+      closeRef.current?.focus();
       return () => {
         document.body.style.overflow = previousOverflow;
       };
@@ -27,6 +30,23 @@ export function MobileNav() {
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, [open]);
+
+  const trapFocus = useCallback((event: React.KeyboardEvent) => {
+    if (event.key !== "Tab" || !dialogRef.current) return;
+    const focusable = dialogRef.current.querySelectorAll<HTMLElement>(
+      'a[href], button:not([disabled]), input:not([disabled])',
+    );
+    if (focusable.length === 0) return;
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+    if (event.shiftKey && document.activeElement === first) {
+      event.preventDefault();
+      last.focus();
+    } else if (!event.shiftKey && document.activeElement === last) {
+      event.preventDefault();
+      first.focus();
+    }
+  }, []);
 
   return (
     <>
@@ -43,12 +63,14 @@ export function MobileNav() {
 
       {open && (
         <div
+          ref={dialogRef}
           id="mobile-menu"
           className="fixed inset-0 z-50 bg-surface-0"
           role="dialog"
           aria-modal="true"
+          aria-label="Navigation menu"
+          onKeyDown={trapFocus}
         >
-          {/* Yellow accent bar */}
           <div
             aria-hidden="true"
             className="h-[2px] bg-gradient-to-r from-brand-yellow to-brand-yellow-end"
@@ -59,6 +81,7 @@ export function MobileNav() {
               Menu
             </span>
             <button
+              ref={closeRef}
               type="button"
               onClick={() => setOpen(false)}
               className="inline-flex h-10 w-10 items-center justify-center text-ink-800 hover:bg-surface-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-yellow"
@@ -102,7 +125,7 @@ export function MobileNav() {
                   <Link
                     href={item.href}
                     onClick={() => setOpen(false)}
-                    className="text-sm text-ink-500 hover:text-ink-800"
+                    className="block py-2 text-sm text-ink-500 hover:text-ink-800"
                   >
                     {item.label}
                   </Link>

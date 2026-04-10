@@ -12,26 +12,26 @@ authors = [{ name = "HollerithEnergyML contributors" }]
 # it does not. Do not bump scikit-learn, numpy, pandas, or joblib without
 # re-verifying that `apps/api/models/ml_model_package.pkl` still loads.
 dependencies = [
-    "fastapi>=0.115,<0.116",
-    "uvicorn[standard]>=0.32,<0.33",
-    "gunicorn>=23,<24",
-    "pydantic>=2.9,<3",
-    "pydantic-settings>=2.6,<3",
+    "fastapi>=0.135,<0.136",
+    "uvicorn[standard]>=0.44,<0.45",
+    "gunicorn>=25.3,<26",
+    "pydantic>=2.12,<3",
+    "pydantic-settings>=2.13,<3",
     "scikit-learn==1.2.2",
     "numpy==1.23.5",
     "pandas==1.5.3",
     "joblib==1.3.2",
-    "structlog>=24.4,<25",
+    "structlog>=25.5,<26",
     "slowapi>=0.1.9,<0.2",
 ]
 
 [dependency-groups]
 dev = [
-    "pytest>=8.3,<9",
-    "pytest-asyncio>=0.24,<0.25",
-    "httpx>=0.27,<0.28",
-    "ruff>=0.8,<1",
-    "mypy>=1.13,<2",
+    "pytest>=9,<10",
+    "pytest-asyncio>=1.3,<2",
+    "httpx>=0.28,<0.29",
+    "ruff>=0.15,<1",
+    "mypy>=1.20,<2",
 ]
 
 [build-system]

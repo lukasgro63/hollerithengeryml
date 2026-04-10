@@ -13,7 +13,7 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
     UV_PYTHON_DOWNLOADS=never
 
 # uv is distributed as a pre-built binary image. Bumping this tag is safe.
-COPY --from=ghcr.io/astral-sh/uv:0.5.11 /uv /uvx /bin/
+COPY --from=ghcr.io/astral-sh/uv:0.11.5 /uv /uvx /bin/
 
 WORKDIR /app
 
@@ -60,6 +60,7 @@ HEALTHCHECK --interval=30s --timeout=5s --start-period=15s --retries=3 \
 CMD ["gunicorn", "hollerith_api.main:app", \
      "--workers", "2", \
      "--worker-class", "uvicorn.workers.UvicornWorker", \
+     "--preload-app", \
      "--bind", "0.0.0.0:8000", \
      "--access-logfile", "-", \
      "--error-logfile", "-", \

@@ -72,8 +72,14 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${plusJakarta.variable} ${instrumentSans.variable} ${caveat.variable} h-full`}>
       <body className="flex min-h-full flex-col bg-surface-0 text-ink-700 antialiased">
+        <a
+          href="#main-content"
+          className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:bg-brand-yellow focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-ink-900"
+        >
+          Skip to content
+        </a>
         <Navbar />
-        <main className="flex flex-1 flex-col">{children}</main>
+        <main id="main-content" className="flex flex-1 flex-col">{children}</main>
         <Footer />
       </body>
     </html>

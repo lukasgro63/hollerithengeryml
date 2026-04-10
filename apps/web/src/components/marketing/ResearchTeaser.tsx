@@ -1,19 +1,20 @@
 import Link from "next/link";
 import { ArrowRight, FileText } from "lucide-react";
 import { Container } from "@/components/ui/Container";
+import { TechLogos } from "@/components/marketing/TechLogos";
 import { PAPER_DOI, PAPER_DOI_URL } from "@/lib/site";
 
 const STATS = [
-  { value: "5", label: "Algorithms", detail: "compared side by side" },
+  { value: "12,550", label: "Training rows", detail: "meta-model training set" },
+  { value: "450+", label: "Experiments", detail: "measured with CodeCarbon" },
+  { value: "5", label: "Classifiers", detail: "scikit-learn algorithms" },
   { value: "3", label: "Datasets", detail: "public tabular benchmarks" },
-  { value: ".996", label: "R² accuracy", detail: "Random Forest meta-model", prefix: "0" },
-  { value: "2024", label: "Peer-reviewed", detail: "at INFORMATIK, Bonn" },
 ] as const;
 
 export function ResearchTeaser() {
   return (
     <section className="relative overflow-hidden bg-ink-950 py-section-xl text-surface-200 lg:py-section-2xl">
-      {/* Grid pattern */}
+
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-0 opacity-[0.03]"
@@ -25,7 +26,7 @@ export function ResearchTeaser() {
         }}
       />
 
-      {/* Subtle radial warm glow */}
+
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-0"
@@ -37,7 +38,7 @@ export function ResearchTeaser() {
 
       <Container size="wide">
         <div className="relative">
-          {/* Header */}
+
           <div className="max-w-2xl">
             <p className="eyebrow text-brand-yellow">About</p>
 
@@ -53,23 +54,16 @@ export function ResearchTeaser() {
             </p>
           </div>
 
-          {/* Stats grid */}
+
           <div className="mt-14 grid grid-cols-2 gap-y-10 lg:grid-cols-4">
-            {STATS.map(({ value, label, detail, ...rest }) => (
+            {STATS.map(({ value, label, detail }) => (
               <div key={label} className="relative">
                 <div
                   aria-hidden="true"
                   className="mb-5 h-[3px] w-10 rounded-full bg-gradient-to-r from-brand-yellow to-brand-yellow-end"
                 />
                 <p className="font-display text-[clamp(2.5rem,2rem+2vw,3.5rem)] font-extrabold leading-none tracking-tight text-surface-0">
-                  {"prefix" in rest ? (
-                    <>
-                      <span className="text-surface-500">{rest.prefix}</span>
-                      {value}
-                    </>
-                  ) : (
-                    value
-                  )}
+                  {value}
                 </p>
                 <p className="mt-3 font-display text-sm font-bold text-surface-300">
                   {label}
@@ -81,27 +75,34 @@ export function ResearchTeaser() {
             ))}
           </div>
 
-          {/* Links */}
-          <div className="mt-12 flex flex-wrap items-center gap-x-6 gap-y-3 border-t border-surface-0/10 pt-8">
-            <Link
-              href="/research"
-              className="inline-flex items-center gap-1.5 text-sm font-semibold text-surface-0 underline decoration-brand-yellow decoration-2 underline-offset-4 transition-colors hover:text-brand-yellow"
-            >
-              Read the full methodology
-              <ArrowRight className="h-4 w-4" aria-hidden="true" />
-            </Link>
-            <a
-              href={PAPER_DOI_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 text-xs text-surface-500 transition-colors hover:text-surface-300"
-            >
-              <FileText className="h-3.5 w-3.5" aria-hidden="true" />
-              doi:{PAPER_DOI}
-            </a>
+
+          <div className="mt-14 flex flex-wrap items-center justify-between gap-y-8">
+            <div className="flex flex-wrap items-center gap-x-6 gap-y-3">
+              <Link
+                href="/research"
+                className="inline-flex items-center gap-1.5 text-sm font-semibold text-surface-0 transition-colors hover:text-brand-yellow"
+              >
+                Read the full methodology
+                <ArrowRight className="h-4 w-4" aria-hidden="true" />
+              </Link>
+              <a
+                href={PAPER_DOI_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 text-xs text-surface-500 transition-colors hover:text-surface-300"
+              >
+                <FileText className="h-3.5 w-3.5" aria-hidden="true" />
+                doi:{PAPER_DOI}
+              </a>
+            </div>
+
+            <div className="flex flex-wrap items-center gap-x-10 gap-y-4">
+              <TechLogos />
+            </div>
           </div>
         </div>
       </Container>
+
     </section>
   );
 }

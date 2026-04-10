@@ -9,30 +9,24 @@ export function Navbar() {
     <NavWrapper>
       <Container size="wide">
         <div className="flex h-[4.25rem] items-center justify-between gap-8">
-          {/* Typographic logo */}
           <Link
             href="/"
             className="flex items-center gap-1.5 transition-opacity hover:opacity-80"
             aria-label="HollerithEnergyML — home"
           >
-            <span className="font-display text-[0.95rem] font-bold tracking-tight text-ink-900">
-              Hollerith
-            </span>
-            <span className="font-display text-[0.95rem] font-medium tracking-tight text-ink-900">
-              EnergyML
+            <span className="font-display text-[0.95rem] tracking-tight text-ink-900">
+              <span className="font-bold">Hollerith</span><span className="font-medium">EnergyML</span>
             </span>
             <span
               aria-hidden="true"
-              className="inline-block h-1.5 w-1.5 rounded-[1px] bg-brand-yellow"
+              className="inline-block h-1.5 w-1.5 rounded-xs bg-brand-yellow"
             />
           </Link>
 
-          {/* Desktop nav links */}
           <nav className="hidden md:block" aria-label="Primary">
             <NavLinks />
           </nav>
 
-          {/* Desktop CTA + Mobile menu */}
           <div className="flex items-center gap-3">
             <Button
               href="/calculate"

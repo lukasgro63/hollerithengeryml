@@ -54,6 +54,7 @@ export type AlgorithmPrediction = z.infer<typeof AlgorithmPredictionSchema>;
 
 export const ThresholdsAppliedSchema = z.object({
   num_features: z.number().int(),
+  cat_features: z.number().int(),
   dataset_size: z.number().int(),
 });
 

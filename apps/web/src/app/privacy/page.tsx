@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowLeft } from "lucide-react";
+import { BackLink } from "@/components/ui/BackLink";
 import { Container } from "@/components/ui/Container";
 import { PageHeader } from "@/components/marketing/PageHeader";
 
@@ -29,7 +29,6 @@ export default function PrivacyPage() {
 
       <Container size="wide">
         <div className="max-w-3xl space-y-section-md pb-section-lg pt-section-md text-ink-700 lg:pb-section-xl">
-          {/* Data controller */}
           <section>
             <h2 className="text-h3 font-bold tracking-tight text-ink-900">
               Data controller
@@ -47,7 +46,6 @@ export default function PrivacyPage() {
             </p>
           </section>
 
-          {/* What we process */}
           <section>
             <h2 className="text-h3 font-bold tracking-tight text-ink-900">
               What data we process
@@ -85,7 +83,6 @@ export default function PrivacyPage() {
             </ul>
           </section>
 
-          {/* Hosting */}
           <section>
             <h2 className="text-h3 font-bold tracking-tight text-ink-900">
               Hosting
@@ -100,7 +97,6 @@ export default function PrivacyPage() {
             </p>
           </section>
 
-          {/* Server logs */}
           <section>
             <h2 className="text-h3 font-bold tracking-tight text-ink-900">
               Server logs
@@ -117,7 +113,6 @@ export default function PrivacyPage() {
             </p>
           </section>
 
-          {/* Cookies */}
           <section>
             <h2 className="text-h3 font-bold tracking-tight text-ink-900">
               Cookies
@@ -130,7 +125,6 @@ export default function PrivacyPage() {
             </p>
           </section>
 
-          {/* Third-party services & fonts */}
           <section>
             <h2 className="text-h3 font-bold tracking-tight text-ink-900">
               Third-party services and fonts
@@ -149,7 +143,6 @@ export default function PrivacyPage() {
             </p>
           </section>
 
-          {/* Embedding */}
           <section>
             <h2 className="text-h3 font-bold tracking-tight text-ink-900">
               Embedding in third-party websites
@@ -164,7 +157,6 @@ export default function PrivacyPage() {
             </p>
           </section>
 
-          {/* GDPR rights */}
           <section>
             <h2 className="text-h3 font-bold tracking-tight text-ink-900">
               Your rights under the GDPR
@@ -207,7 +199,6 @@ export default function PrivacyPage() {
             </p>
           </section>
 
-          {/* Changes */}
           <section>
             <h2 className="text-h3 font-bold tracking-tight text-ink-900">
               Changes to this policy
@@ -221,13 +212,7 @@ export default function PrivacyPage() {
         </div>
 
         <footer className="border-t border-surface-100 pb-section-lg pt-8">
-          <Link
-            href="/"
-            className="inline-flex items-center gap-1.5 text-sm font-semibold text-ink-600 hover:text-ink-900 transition-colors"
-          >
-            <ArrowLeft className="h-4 w-4" aria-hidden="true" />
-            Back to home
-          </Link>
+          <BackLink />
         </footer>
       </Container>
     </article>

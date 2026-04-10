@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { Check, Copy, FileText } from "lucide-react";
 
 import {
@@ -25,16 +25,22 @@ const BIBTEX = `@inproceedings{zanger2024hollerithenergyml,
 
 export function CitationBlock() {
   const [copied, setCopied] = useState(false);
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => () => {
+    if (timerRef.current) clearTimeout(timerRef.current);
+  }, []);
 
   const handleCopy = useCallback(async () => {
     await navigator.clipboard.writeText(BIBTEX);
+    if (timerRef.current) clearTimeout(timerRef.current);
     setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+    timerRef.current = setTimeout(() => setCopied(false), 2000);
   }, []);
 
   return (
     <div className="mt-8">
-      {/* Quoted citation block — yellow border only around title + authors */}
+
       <div className="border-l-[3px] border-brand-yellow pl-6 sm:pl-8">
         <span
           aria-hidden="true"
@@ -52,8 +58,8 @@ export function CitationBlock() {
         </p>
       </div>
 
-      {/* Metadata — outside the yellow border */}
-      <dl className="mt-6 grid grid-cols-[auto_1fr] gap-x-4 gap-y-1.5 text-[0.8125rem] text-ink-500">
+
+      <dl className="mt-6 grid grid-cols-[auto_1fr] gap-x-4 gap-y-1.5 text-ui text-ink-500">
         <dt className="label text-ink-400">
           Workshop
         </dt>
@@ -77,7 +83,7 @@ export function CitationBlock() {
           {copied ? (
             <>
               <Check className="h-4 w-4 text-success" aria-hidden="true" />
-              Copied
+              <span aria-live="polite">Copied</span>
             </>
           ) : (
             <>

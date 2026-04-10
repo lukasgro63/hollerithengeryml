@@ -102,13 +102,11 @@ export function CalculatorForm({
 
   return (
     <div className="animate-fade-in-up">
-      {/* Accent bar */}
       <div
         aria-hidden="true"
         className="h-[3px] w-10 rounded-full bg-gradient-to-r from-brand-yellow to-brand-yellow-end"
       />
 
-      {/* Section header */}
       <p className="mt-5 font-display text-h3 font-extrabold tracking-tight text-ink-950">
         Describe your dataset
       </p>
@@ -117,7 +115,6 @@ export function CalculatorForm({
         size, then compare five algorithms.
       </p>
 
-      {/* Form */}
       <form onSubmit={onSubmit} noValidate className="mt-10">
         <div className="grid gap-x-10 gap-y-8 sm:grid-cols-3 lg:gap-x-14">
           {FIELDS.map((field) => {
