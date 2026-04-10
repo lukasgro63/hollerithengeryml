@@ -24,7 +24,7 @@ docs/      Architecture, Model Card, Runbook, Contributing
 ## Runtime topology
 
 ```mermaid
-%%{init: {'look': 'handDrawn', 'theme': 'neutral'}}%%
+%%{init: {'theme': 'neutral'}}%%
 graph TB
     internet((Internet))
     subgraph Hetzner Cloud CX22
@@ -43,7 +43,7 @@ graph TB
 ## Prediction flow
 
 ```mermaid
-%%{init: {'look': 'handDrawn', 'theme': 'neutral'}}%%
+%%{init: {'theme': 'neutral'}}%%
 sequenceDiagram
     participant U as Browser
     participant W as Next.js
@@ -112,7 +112,7 @@ fallback.
 ## CI/CD pipeline
 
 ```mermaid
-%%{init: {'look': 'handDrawn', 'theme': 'neutral'}}%%
+%%{init: {'theme': 'neutral'}}%%
 graph LR
     push[git push main]
     ci[CI · lint · test · build]

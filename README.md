@@ -33,7 +33,7 @@ baseline was measured, what datasets were used — is archived under
 ## Architecture
 
 ```mermaid
-%%{init: {'look': 'handDrawn', 'theme': 'neutral'}}%%
+%%{init: {'theme': 'neutral'}}%%
 graph LR
     subgraph Hetzner Cloud
         caddy[Caddy 2 · HTTPS]

@@ -29,7 +29,7 @@ choice for their training workloads.
 | 7     | `model_4`             | float | RandomForest     |
 
 ```mermaid
-%%{init: {'look': 'handDrawn', 'theme': 'neutral'}}%%
+%%{init: {'theme': 'neutral'}}%%
 graph LR
     input[num ≤ 25 · cat ≤ 25 · rows ≤ 350k]
     rf[Random Forest · R² = 0.996]
