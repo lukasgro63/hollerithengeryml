@@ -33,20 +33,15 @@ baseline was measured, what datasets were used — is archived under
 ## Architecture
 
 ```mermaid
-%%{init: {'look': 'handDrawn', 'theme': 'base', 'themeVariables': {'primaryColor': '#FFE400', 'primaryTextColor': '#0a0a0a', 'primaryBorderColor': '#0a0a0a', 'lineColor': '#0a0a0a', 'secondaryColor': '#f5f5f0'}}}%%
+%%{init: {'look': 'handDrawn', 'theme': 'neutral'}}%%
 graph LR
-    subgraph hetzner["Hetzner Cloud"]
-        caddy["Caddy 2<br/>HTTPS · TLS"]
-        web["Next.js 16<br/>Tailwind 4"]
-        api["FastAPI 0.135<br/>Python 3.11<br/>scikit-learn"]
+    subgraph Hetzner Cloud
+        caddy[Caddy 2 · HTTPS]
+        web[Next.js 16]
+        api[FastAPI · Python 3.11]
     end
-    caddy -->|"/*"| web
-    caddy -->|"/api/*"| api
-
-    style caddy fill:#FFE400,stroke:#0a0a0a,stroke-width:2px,color:#0a0a0a
-    style web fill:#f5f5f0,stroke:#0a0a0a,stroke-width:1px,color:#0a0a0a
-    style api fill:#f5f5f0,stroke:#0a0a0a,stroke-width:1px,color:#0a0a0a
-    style hetzner fill:#ffffff,stroke:#0a0a0a,stroke-width:2px,color:#0a0a0a
+    caddy -- /* --> web
+    caddy -- /api/* --> api
 ```
 
 See [`docs/ARCHITECTURE.md`](./docs/ARCHITECTURE.md) for the full architectural

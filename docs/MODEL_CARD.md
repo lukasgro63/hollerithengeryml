@@ -29,17 +29,13 @@ choice for their training workloads.
 | 7     | `model_4`             | float | RandomForest     |
 
 ```mermaid
-%%{init: {'look': 'handDrawn', 'theme': 'base', 'themeVariables': {'primaryColor': '#FFE400', 'primaryTextColor': '#0a0a0a', 'primaryBorderColor': '#0a0a0a', 'lineColor': '#0a0a0a', 'secondaryColor': '#f5f5f0'}}}%%
+%%{init: {'look': 'handDrawn', 'theme': 'neutral'}}%%
 graph LR
-    input["num ≤ 25<br/>cat ≤ 25<br/>rows ≤ 350k"]
-    rf["Random Forest<br/>R² = 0.996"]
-    lr["Linear Regression<br/>fallback"]
-    input -->|within envelope| rf
-    input -->|exceeded| lr
-
-    style input fill:#f5f5f0,stroke:#0a0a0a,stroke-width:1px
-    style rf fill:#FFE400,stroke:#0a0a0a,stroke-width:2px,color:#0a0a0a
-    style lr fill:#0a0a0a,stroke:#FFE400,stroke-width:2px,color:#FFE400
+    input[num ≤ 25 · cat ≤ 25 · rows ≤ 350k]
+    rf[Random Forest · R² = 0.996]
+    lr[Linear Regression · fallback]
+    input -- within envelope --> rf
+    input -- exceeded --> lr
 ```
 
 ## Model-selection rule

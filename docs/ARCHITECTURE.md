@@ -24,33 +24,26 @@ docs/      Architecture, Model Card, Runbook, Contributing
 ## Runtime topology
 
 ```mermaid
-%%{init: {'look': 'handDrawn', 'theme': 'base', 'themeVariables': {'primaryColor': '#FFE400', 'primaryTextColor': '#0a0a0a', 'primaryBorderColor': '#0a0a0a', 'lineColor': '#0a0a0a', 'secondaryColor': '#f5f5f0', 'tertiaryColor': '#0a0a0a', 'noteBkgColor': '#FFE400', 'noteTextColor': '#0a0a0a'}}}%%
+%%{init: {'look': 'handDrawn', 'theme': 'neutral'}}%%
 graph TB
     internet((Internet))
-    subgraph hetzner["Hetzner Cloud CX22"]
-        caddy["Caddy 2<br/>:80 → :443<br/>Let's Encrypt · HSTS · CSP"]
-        web["web · Next.js 16<br/>node:22-alpine<br/>:3000"]
-        api["api · FastAPI 0.135<br/>python:3.11-slim<br/>gunicorn + uvicorn<br/>:8000"]
-        model[("ml_model_package.pkl<br/>scikit-learn 1.2.2")]
+    subgraph Hetzner Cloud CX22
+        caddy[Caddy 2 · :443 · Let's Encrypt]
+        web[Next.js 16 · :3000]
+        api[FastAPI · gunicorn · :8000]
+        model[(ml_model_package.pkl)]
     end
 
-    internet -->|HTTPS| caddy
-    caddy -->|"/*"| web
-    caddy -->|"/api/*"| api
-    api -.->|read-only| model
-
-    style caddy fill:#FFE400,stroke:#0a0a0a,stroke-width:2px,color:#0a0a0a
-    style web fill:#f5f5f0,stroke:#0a0a0a,stroke-width:1px,color:#0a0a0a
-    style api fill:#f5f5f0,stroke:#0a0a0a,stroke-width:1px,color:#0a0a0a
-    style model fill:#0a0a0a,stroke:#FFE400,stroke-width:2px,color:#FFE400
-    style hetzner fill:#ffffff,stroke:#0a0a0a,stroke-width:2px,color:#0a0a0a
-    style internet fill:#FFE400,stroke:#0a0a0a,stroke-width:2px,color:#0a0a0a
+    internet -- HTTPS --> caddy
+    caddy -- /* --> web
+    caddy -- /api/* --> api
+    api -. read-only .-> model
 ```
 
 ## Prediction flow
 
 ```mermaid
-%%{init: {'look': 'handDrawn', 'theme': 'base', 'themeVariables': {'primaryColor': '#FFE400', 'primaryTextColor': '#0a0a0a', 'primaryBorderColor': '#0a0a0a', 'lineColor': '#0a0a0a', 'secondaryColor': '#f5f5f0'}}}%%
+%%{init: {'look': 'handDrawn', 'theme': 'neutral'}}%%
 sequenceDiagram
     participant U as Browser
     participant W as Next.js
@@ -67,9 +60,9 @@ sequenceDiagram
         M-->>A: LinearRegression fallback
     end
     A->>P: predict_all(estimator, num, cat, rows)
-    P->>P: Build 5×8 DataFrame (one-hot per algorithm)
-    P-->>A: 5 Prediction objects (kWh)
-    A-->>W: JSON response (ranked, with average)
+    P->>P: Build 5×8 DataFrame
+    P-->>A: 5 predictions (kWh)
+    A-->>W: JSON ranked response
     W-->>U: Bar chart + ranking
 ```
 
@@ -119,27 +112,19 @@ fallback.
 ## CI/CD pipeline
 
 ```mermaid
-%%{init: {'look': 'handDrawn', 'theme': 'base', 'themeVariables': {'primaryColor': '#FFE400', 'primaryTextColor': '#0a0a0a', 'primaryBorderColor': '#0a0a0a', 'lineColor': '#0a0a0a', 'secondaryColor': '#f5f5f0'}}}%%
+%%{init: {'look': 'handDrawn', 'theme': 'neutral'}}%%
 graph LR
-    push["git push main"]
-    ci["CI<br/>ruff · pytest · tsc · next build"]
-    build["Docker Buildx<br/>web + api → ghcr.io"]
-    deploy["SSH → Hetzner<br/>deploy.sh &lt;sha&gt;"]
-    health{"Health check<br/>/api/v1/health"}
-    ok(["Live"])
-    rollback["Rollback<br/>previous tag"]
+    push[git push main]
+    ci[CI · lint · test · build]
+    build[Docker Buildx → ghcr.io]
+    deploy[SSH → Hetzner]
+    health{Health check}
+    ok([Live])
+    rollback[Rollback]
 
     push --> ci --> build --> deploy --> health
-    health -->|pass| ok
-    health -->|fail| rollback
-
-    style push fill:#f5f5f0,stroke:#0a0a0a,stroke-width:1px
-    style ci fill:#f5f5f0,stroke:#0a0a0a,stroke-width:1px
-    style build fill:#FFE400,stroke:#0a0a0a,stroke-width:2px,color:#0a0a0a
-    style deploy fill:#FFE400,stroke:#0a0a0a,stroke-width:2px,color:#0a0a0a
-    style health fill:#f5f5f0,stroke:#0a0a0a,stroke-width:2px
-    style ok fill:#FFE400,stroke:#0a0a0a,stroke-width:2px,color:#0a0a0a
-    style rollback fill:#0a0a0a,stroke:#FFE400,stroke-width:2px,color:#FFE400
+    health -- pass --> ok
+    health -- fail --> rollback
 ```
 
 ## Technology choices
