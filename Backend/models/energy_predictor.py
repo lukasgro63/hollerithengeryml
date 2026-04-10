@@ -29,7 +29,8 @@ class EnergyPredictor:
                 predicted_energy = future.result()
                 predictions[model.name] = predicted_energy
 
-        return predictions
+        relative_predictions = self._calculate_relative_values(predictions)
+        return relative_predictions
 
     def _predict_energy_for_model(self, model, prediction_parameters):
         model_features = [0.0] * 5
@@ -45,3 +46,9 @@ class EnergyPredictor:
         predicted_energy = self.models[model].predict(X_predict)
 
         return predicted_energy[0]
+    
+    def _calculate_relative_values(self, predictions):
+        max_value = max(predictions.values())
+        return {model: int((energy / max_value) * 100) if max_value != 0 else 0 for model, energy in predictions.items()}
+
+

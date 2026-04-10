@@ -1,0 +1,70 @@
+.faq-container {
+  margin: auto;
+  padding: 50px 20px;
+  max-width: 1250px;
+}
+
+.faq-container h1 {
+  text-align: center;
+  color: #333;
+  font-size: 2em;
+  margin-bottom: 1em;
+}
+
+.faq-container h1::after {
+  content: "";
+  display: block;
+  margin: 0 auto;
+  width: 60px;
+  height: 3px;
+  background-color: #ffc107;
+  margin-top: 8px;
+}
+
+.faq-container .mat-expansion-panel {
+  margin-top: 30px;
+  margin-bottom: 16px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.faq-container .mat-expansion-panel.mat-expanded .mat-expansion-panel-header {
+  background-color: #fed426;
+}
+
+.faq-container .mat-expansion-panel .mat-expansion-panel-header {
+  font-size: 16px;
+  background-color: #f1f1f0;
+}
+
+@media (max-width: 768px) {
+  .faq-container {
+    padding: 20px;
+  }
+
+  .faq-container h1 {
+    font-size: 1.5em;
+  }
+
+  .faq-container .mat-expansion-panel .mat-expansion-panel-header {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .faq-container {
+    padding: 10px;
+  }
+
+  .faq-container h1 {
+    font-size: 1.25em;
+  }
+
+  .faq-container .mat-expansion-panel {
+    margin-top: 15px;
+    margin-bottom: 12px; /* Anpassungen des Abstands */
+  }
+
+  .faq-container .mat-expansion-panel .mat-expansion-panel-header {
+    font-size: 13px; /* Weitere Reduzierung der Schriftgröße für optimale Lesbarkeit */
+  }
+}

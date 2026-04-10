@@ -1,17 +1,10 @@
-<!-- Documentation for the HTML Template Structure -->
-
-<!-- Navbar Component -->
-<app-navbar-component></app-navbar-component>
-<!-- Description: This component represents the navigation bar or menu of the application. -->
-
-<!-- Calculator Component -->
-<app-calculator></app-calculator>
-<!-- Description: The Calculator Component is responsible for performing calculations in the application. Users interact with this component to input data and receive calculation results. -->
-
-<!-- Router Outlet -->
-<router-outlet></router-outlet>
-<!-- Description: The Router Outlet is a dynamic content placeholder. -->
-
-<!-- Footer Component -->
-<app-footer-component></app-footer-component>
-<!-- Description: This component represents the footer section of the application. -->
+<!-- app.component.html -->
+<div class="background-image-container"></div>
+<!-- Dedizierter Container für das Hintergrundbild -->
+<div class="wrapper">
+  <app-navbar-component></app-navbar-component>
+  <div class="content">
+    <router-outlet></router-outlet>
+  </div>
+  <app-footer-component></app-footer-component>
+</div>

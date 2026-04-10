@@ -1,0 +1,10 @@
+.chart-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+canvas {
+  width: 100% !important;
+  height: auto;
+}

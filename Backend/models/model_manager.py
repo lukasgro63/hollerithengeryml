@@ -8,9 +8,9 @@ class ModelManager:
         self.model_path = model_path
         self.li_model, self.rf_model = self.load_model()
         self.thresholds = {
-            'num_num': 50,
-            'num_cat': 50,
-            'data_size': 50000
+            'num_num': 25,
+            'num_cat': 25,
+            'data_size': 350000
         }
 
     def load_model(self):

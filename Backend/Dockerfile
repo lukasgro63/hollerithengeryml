@@ -1,5 +1,5 @@
 # Base image: Python 3.8 slim version
-FROM python:3.10-slim
+FROM python:3.8-slim
 
 # This is needed to prevent Python from writing pyc files to disc (which are not used in containers)
 ENV PYTHONDONTWRITEBYTECODE=1
@@ -18,4 +18,4 @@ COPY . /app
 RUN pip install -r requirements.txt
 
 # Command to start the FastAPI application
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8001"]

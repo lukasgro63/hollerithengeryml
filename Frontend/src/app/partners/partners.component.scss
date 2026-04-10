@@ -1,0 +1,33 @@
+.partners-container {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  flex-wrap: wrap;
+  padding: 20px;
+  margin-top: 20px;
+}
+
+.partner-logo {
+  max-width: 150px;
+  height: auto;
+  margin: 10px;
+}
+
+@media (max-width: 768px) {
+  .partners-container {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .partner-logo {
+    max-width: 35%;
+    margin: 20px auto;
+  }
+}
+
+@media (max-width: 480px) {
+  .partner-logo {
+    max-width: 50%;
+    margin: 15px auto;
+  }
+}

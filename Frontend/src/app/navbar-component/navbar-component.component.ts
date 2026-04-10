@@ -1,19 +1,25 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-navbar-component',
   templateUrl: './navbar-component.component.html',
   styleUrls: ['./navbar-component.component.scss'],
 })
-export class NavbarComponentComponent {
-  /**
-   * Angular component responsible for rendering the application's navigation bar.
-   *
-   * This component defines the selector, template URL, and style URL for the navbar.
-   *
-   * Usage:
-   * ```html
-   * <app-navbar-component></app-navbar-component>
-   * ```
-   */
+export class NavbarComponentComponent implements OnInit {
+  constructor(private activatedRoute: ActivatedRoute) {}
+
+  ngOnInit() {
+    this.activatedRoute.fragment.subscribe((fragment: string | null) => {
+      if (fragment) {
+        this.scrollToSection(fragment);
+      }
+    });
+  }
+
+  scrollToSection(sectionId: string) {
+    document
+      .querySelector(`#${sectionId}`)
+      ?.scrollIntoView({ behavior: 'smooth' });
+  }
 }

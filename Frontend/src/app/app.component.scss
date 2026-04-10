@@ -1,16 +1,15 @@
-.mat-toolbar {
-    background-color: #c5c4c0;
+body,
+html {
+  height: 100%;
+  margin: 0;
 }
 
-.container {
-    display: flex;
-    justify-content: flex-start;
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; // Stellt sicher, dass der Footer am unteren Rand bleibt
 }
 
-.item {
-    align-self: center;
-}
-
-.heading {
-    align-items: center;
+.content {
+  flex: 1;
 }

@@ -1,72 +1,109 @@
-/* styles.scss */
+.calculator-background {
+  position: relative;
+  min-height: 95vh;
+}
 
-/* Gemeinsames Styling für alle Bildschirmgrößen */
-.center-container {
+.calculator-background::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url("../../assets/images/hero-bg.png");
+  background-size: cover;
+  background-position: center;
+  opacity: 0.8;
+  z-index: -1;
+}
+
+.content-wrapper {
+  position: relative;
+  z-index: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding-left: 20px; /* Abstand links hinzufügen */
-  padding-right: 20px; /* Abstand rechts hinzufügen */
+  width: 100%;
 }
 
-.header-text {
-  font-size: 36px; /* Ihre gewünschte Schriftgröße */
-  color: #333; /* Ihre gewünschte Textfarbe */
-  text-align: center; /* Text zentrieren */
-  margin-top: 50px; /* Optional: Einen Abstand nach oben hinzufügen */
+.center-container {
+  margin-top: 100px;
+  padding: 20px 120px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
+.header-text,
 .short-text {
-  font-size: 24px; /* Ihre gewünschte Schriftgröße */
-  color: #333; /* Ihre gewünschte Textfarbe */
-  text-align: center; /* Text zentrieren */
-  margin-top: 5px; /* Optional: Einen Abstand nach oben hinzufügen */
+  text-align: center;
 }
 
 .input-fields {
-  text-align: center;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  width: 100%;
+  gap: 50px;
 }
 
 .input-field {
-  padding: 10px;
-  padding-top: 40px;
+  margin-top: 50px;
+  width: calc(33.333% - 20px);
 }
 
-.heading {
-  text-align: center;
-  padding: 20px;
-}
-
-.container {
-  display: flex;
-  justify-content: space-evenly;
+.button-container {
   margin-top: 20px;
+  text-align: center;
 }
 
-/* Responsive-Änderungen für kleinere Bildschirmgrößen (z.B. Tablets und Mobilgeräte) */
 @media screen and (max-width: 768px) {
   .center-container {
-    height: 70vh; /* Anpassung der Höhe für kleinere Bildschirme */
+    padding: 20px;
+    margin-top: 55px;
   }
 
-  .header-text {
-    font-size: 28px; /* Anpassung der Schriftgröße */
-    margin-top: 10px; /* Anpassung des oberen Abstands */
-  }
-
+  .header-text,
   .short-text {
-    font-size: 20px; /* Anpassung der Schriftgröße */
-    margin-top: 5px; /* Anpassung des oberen Abstands */
+    font-size: 22px;
+  }
+
+  .input-fields {
+    flex-direction: column;
+    gap: 20px;
   }
 
   .input-field {
-    padding-top: 20px; /* Anpassung des oberen Abstands */
+    width: 100%;
+    margin-top: 20px;
   }
 
-  .container {
-    flex-direction: column; /* Anpassung der Anordnung für kleinere Bildschirme */
-    align-items: center; /* Zentrierung für kleinere Bildschirme */
-    margin-top: 10px; /* Anpassung des oberen Abstands */
+  .button-container {
+    margin-top: 20px;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .center-container {
+    padding: 10px;
+    margin-top: 30px;
+  }
+
+  .header-text {
+    font-size: 22px;
+  }
+
+  .short-text {
+    font-size: 16px;
+  }
+
+  .input-fields {
+    gap: 10px;
+  }
+
+  .input-field {
+    margin-top: 15px;
   }
 }

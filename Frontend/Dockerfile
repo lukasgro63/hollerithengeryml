@@ -24,4 +24,5 @@ COPY . .
 RUN ng build --configuration=production
 
 # Command to run the Angular application (can be adjusted based on requirements)
-CMD ["ng", "serve", "--host", "0.0.0.0"]
+CMD ["ng", "serve", "--host", "0.0.0.0", "--port", "4201"]
+

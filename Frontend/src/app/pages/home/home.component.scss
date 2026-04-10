@@ -1,0 +1,13 @@
+.background-container {
+  position: relative;
+  min-height: 100vh;
+}
+
+@media (max-width: 768px) {
+  #partners,
+  #about,
+  #faq {
+    padding: 15px;
+    margin-top: 15px;
+  }
+}

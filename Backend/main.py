@@ -12,7 +12,7 @@ app = FastAPI()
 if os.getenv("DEV_ENVIRONMENT"):
     origins = config("ALLOWED_ORIGINS").split(",") if config("ALLOWED_ORIGINS") else ["*"]
 else:
-    origins = os.getenv("ALLOWED_ORIGINS_PROD").split(",") if os.getenv("ALLOWED_ORIGINS_PROD") else ["*"]
+    origins = os.getenv("CORS_ORIGINS").split(",") if os.getenv("CORS_ORIGINS") else ["*"]
 
 model_path = "data/ml_model_package.pkl"
 model_manager = ModelManager(model_path)

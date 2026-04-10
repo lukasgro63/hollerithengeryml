@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { StaticContentComponent } from './static-content.component';
+import { FaqComponent } from './faq.component';
 
-describe('StaticContentComponent', () => {
-  let component: StaticContentComponent;
-  let fixture: ComponentFixture<StaticContentComponent>;
+describe('FaqComponent', () => {
+  let component: FaqComponent;
+  let fixture: ComponentFixture<FaqComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [StaticContentComponent]
+      declarations: [FaqComponent]
     })
     .compileComponents();
     
-    fixture = TestBed.createComponent(StaticContentComponent);
+    fixture = TestBed.createComponent(FaqComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

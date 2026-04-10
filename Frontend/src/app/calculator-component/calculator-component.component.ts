@@ -1,186 +1,81 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component, ViewChild } from '@angular/core';
+import { FormBuilder, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTable } from '@angular/material/table';
-import {
-  BarController,
-  BarElement,
-  CategoryScale,
-  Chart,
-  LinearScale,
-  Title,
-} from 'chart.js';
+import { PredictionParameters } from '../../models/predicton-parameters';
 import { CalculationsService } from '../../services/calculations.service';
 import { PopupComponentComponent } from '../popup-component/popup-component.component';
 
-/**
- * Angular component responsible for energy calculations and visualization.
- */
 @Component({
   selector: 'app-calculator',
   templateUrl: './calculator-component.component.html',
   styleUrls: ['./calculator-component.component.scss'],
 })
 export class CalculatorComponent {
-  // Define displayed columns for the data table
   displayedColumns: string[] = ['key', 'value'];
-
-  // Data source for the result table
   dataSource: RowElement[] = [];
 
-  // Chart instance for visualization
-  chart: any;
+  inputForm = this.fb.group({
+    numFeatures: ['', [Validators.required, Validators.pattern('^[0-9]*$')]],
+    catFeatures: ['', [Validators.required, Validators.pattern('^[0-9]*$')]],
+    dataSize: ['', [Validators.required, Validators.pattern(/^[1-9][0-9]*$/)]],
+  });
 
-  // Labels for chart data
-  labels: string[] = [];
-
-  // Data for chart
-  chartData: any = [];
-
-  // Form group for input fields
-  inputForm: FormGroup;
-
-  // Reference to the MatTable component
   @ViewChild('myTable') myTable!: MatTable<any>;
 
-  /**
-   * Constructs an instance of CalculatorComponent.
-   *
-   * @param calculationsService - Service for making calculations
-   * @param elementRef - Reference to the current component's element
-   * @param formbuilder - FormBuilder for managing form controls
-   * @param dialog - MatDialog for opening pop-up dialogs
-   */
   constructor(
-    private calculationsService: CalculationsService,
-    private elementRef: ElementRef,
-    private formbuilder: FormBuilder,
-    private dialog: MatDialog
-  ) {
-    // Initialize the input form with validation rules
-    this.inputForm = formbuilder.group({
-      numFeatures: ['', [Validators.required, Validators.pattern('^[0-9]*$')]],
-      catFeatures: ['', [Validators.required, Validators.pattern('^[0-9]*$')]],
-      dataSize: ['', [Validators.required, Validators.pattern('^[0-9]*$')]],
-    });
-  }
+    private fb: FormBuilder,
+    private dialog: MatDialog,
+    private calculationsService: CalculationsService
+  ) {}
 
-  /**
-   * Calculate energy consumption and display results.
-   */
   calculate() {
-    // Register Chart.js components
-    Chart.register(
-      BarController,
-      BarElement,
-      CategoryScale,
-      LinearScale,
-      Title
-    );
+    const params: PredictionParameters = {
+      num_cat_features: +this.inputForm.value.catFeatures,
+      num_num_features: +this.inputForm.value.numFeatures,
+      number_of_instances: +this.inputForm.value.dataSize,
+    };
 
-    // Create a parameters object for prediction
-    let params = <PredictionParameters>{};
-    params.num_cat_features = this.inputForm.controls['catFeatures'].value;
-    params.num_num_features = this.inputForm.controls['numFeatures'].value;
-    params.number_of_instances = this.inputForm.controls['dataSize'].value;
+    let overLimit = false;
+    let warningMessage =
+      'The input values are within the range of the trained HollerithEnergyML predictor model. The prediction is accurate for the data trained by the model.';
 
-    // Make a POST request to the calculations service
+    if (
+      params.num_cat_features > 25 ||
+      params.num_num_features > 25 ||
+      params.number_of_instances > 350000
+    ) {
+      overLimit = true;
+      warningMessage =
+        'The input values are outside the range of the trained HollerithEnergyML predictor model and thus no output will be generated. Further information can be found in the usage description.';
+      // warningMessage =
+      //   'The input values are outside the range of the trained HollerithEnergyML predictor model. This could lead to less accurate energy predictions. Further information can be found in the usage description.';
+    }
+
     this.calculationsService.postCalculationParams(params).subscribe(
       (response) => {
-        // Handle the response from the service
-        console.log('response:', response);
+        this.dataSource = Object.entries(response).map(([key, value]) => ({
+          key,
+          value: +value,
+        }));
 
-        // Reset the chart and data if it already exists
-        if (this.chart) {
-          this.reset();
-        }
+        this.myTable?.renderRows();
 
-        // Process the response data and update chart and table
-        for (const key in response) {
-          this.dataSource.push({ key, value: response[key] });
-          this.labels.push(key);
-          this.chartData.push(response[key]);
-        }
-
-        // Update the table
-        this.updateTable();
-
-        // Create a new chart
-        let ctx = this.elementRef.nativeElement.querySelector(`#myChart`);
-        this.chart = new Chart(ctx, {
-          type: 'bar',
+        this.dialog.open(PopupComponentComponent, {
           data: {
-            labels: this.labels,
-            datasets: [
-              {
-                label: 'Amount of energy',
-                data: this.chartData,
-                borderWidth: 1,
-                backgroundColor: '#fec700',
-              },
-            ],
-          },
-          options: {
-            scales: {
-              y: {
-                beginAtZero: true,
-              },
-            },
-            indexAxis: 'y',
-          },
-        });
-
-        // Open a popup with the results
-        const dialogRef = this.dialog.open(PopupComponentComponent, {
-          width: '600px',
-          data: {
-            labels: this.labels,
-            chartData: this.chartData,
-            numFeatures: params.num_num_features,
-            catFeatures: params.num_cat_features,
-            dataSize: params.number_of_instances,
-            // Add additional calculated data to display in the popup
+            labels: Object.keys(response),
+            chartData: Object.values(response).map(Number),
+            warningMessage: warningMessage,
+            overLimit: overLimit,
           },
         });
       },
-      (error) => {
-        // Handle errors
-        console.log(error);
-      }
+      (error) => console.error(error)
     );
   }
-
-  /**
-   * Update the table to reflect changes in data source.
-   */
-  updateTable() {
-    this.myTable?.renderRows();
-  }
-
-  /**
-   * Reset the chart and data.
-   */
-  reset() {
-    this.chart.destroy();
-    this.labels = [];
-    this.chartData = [];
-    this.dataSource = [];
-  }
 }
 
-/**
- * Interface for row elements in the result table.
- */
-export interface RowElement {
+interface RowElement {
   key: string;
-  value: string;
-}
-
-/**
- * Interface for prediction parameters.
- */
-interface PredictionParameters {
-  num_cat_features: number;
-  num_num_features: number;
-  number_of_instances: number;
+  value: number;
 }

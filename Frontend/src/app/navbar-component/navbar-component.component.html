@@ -1,12 +1,32 @@
-<nav class="navbar">
-  <div class="navbar-content">
-    <a routerLink="/">
-      <div class="logo">
-        <img src="../../assets/logo.png" alt="Logo" />
+<nav class="navbar navbar-expand-lg navbar-dark custom-navbar">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">
+      <img
+        src="../../assets/logo.png"
+        alt="Logo"
+        width="40"
+        class="d-inline-block align-top"
+      />
+      HollerithEnergyML
+    </a>
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarNavAltMarkup"
+      aria-controls="navbarNavAltMarkup"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+      <div class="navbar-nav ms-auto">
+        <a class="nav-link active" aria-current="page" routerLink="/">Home</a>
+        <a class="nav-link" (click)="scrollToSection('about')">About</a>
+        <a class="nav-link" (click)="scrollToSection('faq')">FAQ</a>
+        <a class="nav-link" routerLink="/disclaimer">Disclaimer</a>
       </div>
-    </a>
-    <a routerLink="/">
-      <div class="brand-text">HollerithEngeryML</div>
-    </a>
+    </div>
   </div>
 </nav>

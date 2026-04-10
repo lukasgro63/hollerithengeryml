@@ -1,25 +1,46 @@
-/* You can add global styles to this file, and also import other style files */
+// Importieren des Custom Themes
+@import "customTheme.scss";
+
+// Globale Stildefinitionen
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
 
 html,
 body {
   height: 100%;
-}
-body {
-  margin: 0;
-  font-family: Roboto, "Helvetica Neue", sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif;
+  color: #212529; // Standardtextfarbe
 }
 
-body::before {
-  content: "";
-  background-image: url("../images/bg_2.jpg");
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-  position: fixed;
-  top: 0;
-  left: 0;
+// Globale Container-Stile
+.container {
+  padding: 0 15px;
+  margin: 0 auto;
   width: 100%;
-  height: 100%;
-  opacity: 0.6; /* Hier ändere den Alpha-Wert (0.0 - 1.0) */
-  z-index: -1; /* Damit das Pseudo-Element unter dem Inhalt liegt */
+  max-width: 1140px; // Maximalbreite für große Bildschirme
+}
+
+// Responsive Paddings und Margins
+.padding-horizontal-md {
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+.margin-top-md {
+  margin-top: 20px;
+}
+
+@media (min-width: 768px) {
+  .padding-horizontal-md {
+    padding-left: 30px;
+    padding-right: 30px;
+  }
+
+  .margin-top-md {
+    margin-top: 40px;
+  }
 }
