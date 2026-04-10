@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, AlertTriangle } from "lucide-react";
 import { Container } from "@/components/ui/Container";
 import { PageHeader } from "@/components/marketing/PageHeader";
 
@@ -13,32 +13,35 @@ export const metadata: Metadata = {
 
 export default function PrivacyPage() {
   return (
-    <Container size="wide">
-      <article className="py-section-lg lg:py-section-xl">
-        <PageHeader
-          eyebrow="Legal"
-          title="Privacy policy"
-          lede={
-            <>
-              How HollerithEnergyML handles data under the{" "}
-              <strong>General Data Protection Regulation (GDPR)</strong>. The
-              short version: it is a stateless calculator and it does not
-              persist anything about you.
-            </>
-          }
-        />
+    <article>
+      <PageHeader
+        eyebrow="Legal"
+        title="Privacy policy"
+        lede={
+          <>
+            How HollerithEnergyML handles data under the{" "}
+            <strong>General Data Protection Regulation (GDPR)</strong>. The
+            short version: it is a stateless calculator and it does not
+            persist anything about you.
+          </>
+        }
+      />
 
-        <div className="mt-section-lg max-w-3xl space-y-section-md text-ink-700">
-          <aside className="rounded-sm border border-warning/40 bg-warning/10 p-5 text-sm">
-            <p className="font-semibold text-ink-800">
-              Template — pending legal review.
-            </p>
-            <p className="mt-2 leading-relaxed">
-              This document describes the data-processing behaviour of the
-              application as designed. Before publishing to a production
-              domain, have it reviewed by qualified legal counsel and
-              synchronised with the real data controller named in the imprint.
-            </p>
+      <Container size="wide">
+        <div className="max-w-3xl space-y-section-md pb-section-lg pt-section-md text-ink-700 lg:pb-section-xl">
+          <aside className="flex gap-3 rounded-xl border border-warning/30 bg-warning/5 p-5 text-sm">
+            <AlertTriangle className="mt-0.5 h-4 w-4 flex-shrink-0 text-warning" aria-hidden="true" />
+            <div>
+              <p className="font-semibold text-ink-800">
+                Template — pending legal review.
+              </p>
+              <p className="mt-2 leading-relaxed">
+                This document describes the data-processing behaviour of the
+                application as designed. Before publishing to a production
+                domain, have it reviewed by qualified legal counsel and
+                synchronised with the real data controller named in the imprint.
+              </p>
+            </div>
           </aside>
 
           <section>
@@ -68,42 +71,21 @@ export default function PrivacyPage() {
               been delivered. Specifically:
             </p>
             <ul className="mt-4 space-y-3 leading-relaxed">
-              <li className="flex gap-3">
-                <span
-                  aria-hidden="true"
-                  className="mt-2 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-brand-yellow"
-                />
-                <p>
-                  <strong>What we do process.</strong> The three integers you
-                  submit to the calculator (numerical feature count, categorical
-                  feature count, dataset size), processed in-memory to run a
-                  prediction, then discarded.
-                </p>
-              </li>
-              <li className="flex gap-3">
-                <span
-                  aria-hidden="true"
-                  className="mt-2 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-brand-yellow"
-                />
-                <p>
-                  <strong>What we do <em>not</em> process.</strong> Your actual
-                  dataset, model weights, training code, personal
-                  characteristics, user account information, or any data that
-                  would allow us to identify you.
-                </p>
-              </li>
-              <li className="flex gap-3">
-                <span
-                  aria-hidden="true"
-                  className="mt-2 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-brand-yellow"
-                />
-                <p>
-                  <strong>What we do <em>not</em> store.</strong> Nothing. There
-                  is no database. No request logs are kept beyond the rolling
-                  operational log needed to diagnose service failures — and
-                  those rotate quickly and are never shared.
-                </p>
-              </li>
+              {[
+                { title: "What we do process.", text: "The three integers you submit to the calculator (numerical feature count, categorical feature count, dataset size), processed in-memory to run a prediction, then discarded." },
+                { title: "What we do not process.", text: "Your actual dataset, model weights, training code, personal characteristics, user account information, or any data that would allow us to identify you." },
+                { title: "What we do not store.", text: "Nothing. There is no database. No request logs are kept beyond the rolling operational log needed to diagnose service failures — and those rotate quickly and are never shared." },
+              ].map(({ title, text }) => (
+                <li key={title} className="flex gap-3">
+                  <span
+                    aria-hidden="true"
+                    className="mt-2 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-brand-yellow"
+                  />
+                  <p>
+                    <strong>{title}</strong> {text}
+                  </p>
+                </li>
+              ))}
             </ul>
           </section>
 
@@ -155,58 +137,23 @@ export default function PrivacyPage() {
               your personal data:
             </p>
             <ul className="mt-4 space-y-2 leading-relaxed">
-              <li className="flex gap-3">
-                <span
-                  aria-hidden="true"
-                  className="mt-2 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-brand-yellow"
-                />
-                <p>Right of access (Art. 15 GDPR)</p>
-              </li>
-              <li className="flex gap-3">
-                <span
-                  aria-hidden="true"
-                  className="mt-2 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-brand-yellow"
-                />
-                <p>Right to rectification (Art. 16 GDPR)</p>
-              </li>
-              <li className="flex gap-3">
-                <span
-                  aria-hidden="true"
-                  className="mt-2 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-brand-yellow"
-                />
-                <p>Right to erasure (Art. 17 GDPR)</p>
-              </li>
-              <li className="flex gap-3">
-                <span
-                  aria-hidden="true"
-                  className="mt-2 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-brand-yellow"
-                />
-                <p>Right to restriction of processing (Art. 18 GDPR)</p>
-              </li>
-              <li className="flex gap-3">
-                <span
-                  aria-hidden="true"
-                  className="mt-2 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-brand-yellow"
-                />
-                <p>Right to data portability (Art. 20 GDPR)</p>
-              </li>
-              <li className="flex gap-3">
-                <span
-                  aria-hidden="true"
-                  className="mt-2 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-brand-yellow"
-                />
-                <p>Right to object (Art. 21 GDPR)</p>
-              </li>
-              <li className="flex gap-3">
-                <span
-                  aria-hidden="true"
-                  className="mt-2 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-brand-yellow"
-                />
-                <p>
-                  Right to lodge a complaint with a supervisory authority
-                  (Art. 77 GDPR)
-                </p>
-              </li>
+              {[
+                "Right of access (Art. 15 GDPR)",
+                "Right to rectification (Art. 16 GDPR)",
+                "Right to erasure (Art. 17 GDPR)",
+                "Right to restriction of processing (Art. 18 GDPR)",
+                "Right to data portability (Art. 20 GDPR)",
+                "Right to object (Art. 21 GDPR)",
+                "Right to lodge a complaint with a supervisory authority (Art. 77 GDPR)",
+              ].map((right) => (
+                <li key={right} className="flex gap-3">
+                  <span
+                    aria-hidden="true"
+                    className="mt-2 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-brand-yellow"
+                  />
+                  <p>{right}</p>
+                </li>
+              ))}
             </ul>
             <p className="mt-4 leading-relaxed">
               Because HollerithEnergyML does not store user data, most of the
@@ -229,16 +176,16 @@ export default function PrivacyPage() {
           </section>
         </div>
 
-        <footer className="mt-section-lg border-t border-surface-200 pt-8">
+        <footer className="border-t border-surface-100 pb-section-lg pt-8">
           <Link
             href="/"
-            className="inline-flex items-center gap-1.5 text-sm font-semibold text-ink-700 hover:text-ink-900 hover:underline underline-offset-4"
+            className="inline-flex items-center gap-1.5 text-sm font-semibold text-ink-600 hover:text-ink-900 transition-colors"
           >
             <ArrowLeft className="h-4 w-4" aria-hidden="true" />
             Back to home
           </Link>
         </footer>
-      </article>
-    </Container>
+      </Container>
+    </article>
   );
 }

@@ -12,7 +12,6 @@ import {
 } from "recharts";
 import { Trophy } from "lucide-react";
 
-import { Card } from "@/components/ui/Card";
 import type {
   ModelUsed,
   PredictionsRequest,
@@ -31,10 +30,9 @@ const MODEL_LABEL: Record<ModelUsed, string> = {
 };
 
 const BAR_COLOR = "#FFE400";
-const BAR_COLOR_WINNER = "#E76F51";
-const GRID_COLOR = "#EAEBEC";
-const AXIS_COLOR = "#929292";
-const AVG_COLOR = "#212121";
+const GRID_COLOR = "#f0f0f0";
+const AXIS_COLOR = "#b4b4b4";
+const AVG_COLOR = "#343434";
 
 export function ResultsCard({ data, input }: ResultsCardProps) {
   const { predictions, average_kwh, model_used, thresholds_applied } = data;
@@ -43,67 +41,91 @@ export function ResultsCard({ data, input }: ResultsCardProps) {
     average_kwh,
   );
 
-  // Build a chart frame sorted ascending so the lowest-energy algorithm
-  // sits at the top of the horizontal bar chart — that's the winner.
-  const chartData = [...predictions]
-    .sort((a, b) => a.energy_kwh - b.energy_kwh)
-    .map((p) => ({
-      algorithm: p.algorithm,
-      value: p.energy_kwh * scale.factor,
-      rawKwh: p.energy_kwh,
-      rank: p.rank,
-    }));
+  const sorted = [...predictions].sort(
+    (a, b) => a.energy_kwh - b.energy_kwh,
+  );
+
+  const chartData = sorted.map((p) => ({
+    algorithm: p.algorithm,
+    value: p.energy_kwh * scale.factor,
+    rawKwh: p.energy_kwh,
+    rank: p.rank,
+  }));
 
   const averageDisplay = average_kwh * scale.factor;
-  const greenest = chartData[0];
+  const greenest = sorted[0];
 
   return (
-    <Card>
-      <div className="mb-6 flex flex-wrap items-start justify-between gap-4">
-        <div>
-          <h2 className="text-h4 font-bold leading-tight tracking-tight text-ink-900">
-            Predicted training energy
-          </h2>
-          <p className="mt-1 text-sm text-ink-500">
-            Ranked from lowest to highest. Selected model:{" "}
-            <span className="font-semibold text-ink-700">
-              {MODEL_LABEL[model_used]}
-            </span>
-          </p>
-        </div>
-
-        {greenest ? (
-          <div className="inline-flex items-center gap-2 rounded-sm border border-brand-yellow/40 bg-brand-yellow/20 px-3 py-1.5 text-xs font-semibold uppercase tracking-wide text-ink-800">
-            <Trophy className="h-4 w-4" aria-hidden="true" />
-            Greenest: {greenest.algorithm}
-          </div>
-        ) : null}
-      </div>
-
+    <div className="animate-fade-in-up">
+      {/* Section header — mirrors form's accent-bar pattern */}
       <div
-        className="h-72 w-full sm:h-80"
+        aria-hidden="true"
+        className="h-[3px] w-10 rounded-full bg-gradient-to-r from-brand-yellow to-brand-yellow-end"
+      />
+
+      <p className="mt-5 font-display text-h3 font-extrabold tracking-tight text-ink-950">
+        Predicted training energy
+      </p>
+      <p className="mt-2 text-sm leading-relaxed text-ink-500">
+        Model:{" "}
+        <span className="font-semibold text-ink-700">
+          {MODEL_LABEL[model_used]}
+        </span>
+        {" · "}
+        {input.num_numerical_features} numerical · {input.num_categorical_features} categorical · {input.dataset_size.toLocaleString()} rows
+      </p>
+
+      {/* Greenest callout */}
+      {greenest ? (
+        <div className="mt-8 flex items-baseline gap-4">
+          <span className="flex items-center gap-2 text-[0.6875rem] font-bold uppercase tracking-[0.14em] text-ink-400">
+            <Trophy className="h-3.5 w-3.5 text-brand-yellow" aria-hidden="true" />
+            Greenest
+          </span>
+          <span className="font-display text-xl font-extrabold tracking-tight text-ink-950 sm:text-2xl">
+            {greenest.algorithm}
+          </span>
+          <span className="font-mono text-sm tabular-nums text-ink-500">
+            {formatEnergy(greenest.energy_kwh, 3)}
+          </span>
+        </div>
+      ) : null}
+
+      {/* Chart — open, no container */}
+      <div
+        className="mt-10 h-72 w-full sm:h-80"
         role="img"
-        aria-label={`Horizontal bar chart of predicted training energy for five algorithms, in ${scale.unit}`}
+        aria-label={`Horizontal bar chart of predicted training energy in ${scale.unit}`}
       >
         <ResponsiveContainer width="100%" height="100%">
           <BarChart
             data={chartData}
             layout="vertical"
-            margin={{ top: 10, right: 30, bottom: 18, left: 6 }}
+            margin={{ top: 24, right: 30, bottom: 16, left: 6 }}
           >
-            <CartesianGrid strokeDasharray="3 3" stroke={GRID_COLOR} horizontal={false} />
+            <CartesianGrid
+              strokeDasharray="3 3"
+              stroke={GRID_COLOR}
+              horizontal={false}
+            />
             <XAxis
               type="number"
               tickFormatter={(value: number) => value.toFixed(2)}
               stroke={AXIS_COLOR}
               tickLine={false}
               axisLine={false}
-              style={{ fontSize: "11px" }}
+              style={{ fontSize: "11px", fontWeight: 500 }}
               label={{
                 value: scale.unit,
                 position: "insideBottom",
                 offset: -8,
-                style: { fill: "#707173", fontSize: 11, fontWeight: 600 },
+                style: {
+                  fill: "#707173",
+                  fontSize: 11,
+                  fontWeight: 700,
+                  textTransform: "uppercase",
+                  letterSpacing: "0.05em",
+                },
               }}
             />
             <YAxis
@@ -112,18 +134,20 @@ export function ResultsCard({ data, input }: ResultsCardProps) {
               stroke={AXIS_COLOR}
               tickLine={false}
               axisLine={false}
-              width={135}
-              style={{ fontSize: "12px", fontWeight: 500 }}
+              width={130}
+              style={{ fontSize: "12px", fontWeight: 600 }}
             />
             <Tooltip
               contentStyle={{
                 backgroundColor: "#ffffff",
-                border: "1px solid #DADADA",
-                borderRadius: "4px",
+                border: "none",
+                borderRadius: "12px",
                 fontSize: "12px",
+                boxShadow:
+                  "0 8px 24px rgba(0,0,0,0.08), 0 2px 6px rgba(0,0,0,0.03)",
               }}
-              labelStyle={{ color: "#212121", fontWeight: 700 }}
-              cursor={{ fill: "rgba(255, 228, 0, 0.08)" }}
+              labelStyle={{ color: "#1a1a1a", fontWeight: 700 }}
+              cursor={{ fill: "rgba(255, 228, 0, 0.06)" }}
               formatter={(value) => {
                 if (typeof value !== "number") return ["—", "Energy"];
                 const kwh = value / scale.factor;
@@ -133,85 +157,80 @@ export function ResultsCard({ data, input }: ResultsCardProps) {
             <ReferenceLine
               x={averageDisplay}
               stroke={AVG_COLOR}
-              strokeDasharray="4 4"
+              strokeDasharray="6 4"
               strokeWidth={1.5}
               label={{
                 value: `avg ${averageDisplay.toFixed(2)} ${scale.unit}`,
                 position: "top",
                 fill: AVG_COLOR,
-                fontSize: 11,
-                fontWeight: 600,
+                fontSize: 10,
+                fontWeight: 700,
               }}
             />
             <Bar
               dataKey="value"
-              radius={[0, 4, 4, 0]}
               fill={BAR_COLOR}
-              // Recharts 2.x honours an `activeBar` and per-entry fill via
-              // the Cell child; here we keep the whole series uniform and
-              // colour the winner through a second Bar overlay below.
+              radius={[0, 6, 6, 0]}
+              animationDuration={800}
+              animationEasing="ease-out"
             />
-            {greenest ? (
-              <Bar
-                dataKey={(entry: { algorithm: string; value: number }) =>
-                  entry.algorithm === greenest.algorithm ? entry.value : 0
-                }
-                fill={BAR_COLOR_WINNER}
-                radius={[0, 4, 4, 0]}
-                isAnimationActive={false}
-              />
-            ) : null}
           </BarChart>
         </ResponsiveContainer>
       </div>
 
-      <div className="mt-6 grid gap-5 border-t border-surface-200 pt-6 sm:grid-cols-3">
+      {/* Summary stats — bottom-border style matching form inputs */}
+      <div className="mt-10 grid gap-x-10 gap-y-8 sm:grid-cols-3 lg:gap-x-14">
         <dl>
-          <dt className="text-xs font-semibold uppercase tracking-wide text-ink-500">
+          <dt className="font-display text-[0.6875rem] font-bold uppercase tracking-[0.14em] text-ink-400">
             Average
           </dt>
-          <dd className="mt-1 text-xl font-bold tabular-nums text-ink-900">
+          <dd className="mt-3 border-b-2 border-surface-200 pb-3 font-mono text-2xl font-medium tabular-nums text-ink-900">
             {formatEnergy(average_kwh)}
           </dd>
         </dl>
         <dl>
-          <dt className="text-xs font-semibold uppercase tracking-wide text-ink-500">
-            Your input
+          <dt className="font-display text-[0.6875rem] font-bold uppercase tracking-[0.14em] text-ink-400">
+            Thresholds
           </dt>
-          <dd className="mt-1 text-sm text-ink-700">
-            {input.num_numerical_features.toLocaleString()} num ·{" "}
-            {input.num_categorical_features.toLocaleString()} cat ·{" "}
-            {input.dataset_size.toLocaleString()} rows
+          <dd className="mt-3 border-b-2 border-surface-200 pb-3 text-base text-ink-700">
+            ≤ {thresholds_applied.num_features} features · ≤{" "}
+            {thresholds_applied.dataset_size.toLocaleString()} rows
           </dd>
         </dl>
         <dl>
-          <dt className="text-xs font-semibold uppercase tracking-wide text-ink-500">
-            Model selection
+          <dt className="font-display text-[0.6875rem] font-bold uppercase tracking-[0.14em] text-ink-400">
+            Model path
           </dt>
-          <dd className="mt-1 text-sm text-ink-700">
-            RF path if ≤ {thresholds_applied.num_features} features and ≤{" "}
-            {thresholds_applied.dataset_size.toLocaleString()} rows
+          <dd className="mt-3 border-b-2 border-surface-200 pb-3 text-base font-semibold text-ink-700">
+            {MODEL_LABEL[model_used]}
           </dd>
         </dl>
       </div>
 
-      <ol className="mt-6 grid gap-2 border-t border-surface-200 pt-6 sm:grid-cols-5">
-        {[...predictions]
-          .sort((a, b) => a.energy_kwh - b.energy_kwh)
-          .map((p, idx) => (
-            <li key={p.algorithm} className="rounded-sm border border-surface-200 p-3">
-              <p className="text-xs font-semibold uppercase tracking-wide text-ink-500">
-                #{idx + 1}
-              </p>
-              <p className="mt-1 text-sm font-semibold text-ink-800">
-                {p.algorithm}
-              </p>
-              <p className="mt-1 text-xs tabular-nums text-ink-600">
-                {formatEnergy(p.energy_kwh, 3)}
-              </p>
-            </li>
-          ))}
+      {/* Algorithm ranking — clean horizontal list */}
+      <ol className="mt-10 flex flex-wrap gap-x-6 gap-y-4 sm:gap-x-8">
+        {sorted.map((p, idx) => (
+          <li key={p.algorithm} className="flex items-baseline gap-2.5">
+            <span
+              className={`font-mono text-xs font-bold tabular-nums ${
+                idx === 0 ? "text-brand-yellow-press" : "text-ink-300"
+              }`}
+            >
+              #{idx + 1}
+            </span>
+            <span
+              className={`text-sm font-bold ${
+                idx === 0 ? "text-ink-950" : "text-ink-600"
+              }`}
+            >
+              {p.algorithm}
+            </span>
+            <span className="font-mono text-xs tabular-nums text-ink-400">
+              {formatEnergy(p.energy_kwh, 3)}
+            </span>
+          </li>
+        ))}
       </ol>
-    </Card>
+    </div>
   );
 }

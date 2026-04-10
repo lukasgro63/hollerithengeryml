@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { Container } from "@/components/ui/Container";
 
 type PageHeaderProps = {
   readonly eyebrow: string;
@@ -6,21 +7,36 @@ type PageHeaderProps = {
   readonly lede: ReactNode;
 };
 
-/**
- * Shared page-header block for the long-form content routes.
- * Keeps the typography and spacing consistent across Research,
- * Model, About, and the legal pages.
- */
 export function PageHeader({ eyebrow, title, lede }: PageHeaderProps) {
   return (
-    <header className="max-w-3xl">
-      <div className="inline-flex items-center gap-2 rounded-sm border border-surface-300 bg-surface-50 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-ink-600">
-        {eyebrow}
-      </div>
-      <h1 className="mt-6 text-display font-bold leading-tight tracking-tight text-ink-900">
-        {title}
-      </h1>
-      <div className="mt-6 max-w-prose text-lead text-ink-600">{lede}</div>
-    </header>
+    <div className="relative overflow-hidden gradient-mesh-hero -mt-[4.25rem] pt-[4.25rem]">
+      {/* Grid pattern */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 opacity-[0.025]"
+        style={{
+          backgroundImage:
+            "linear-gradient(var(--color-ink-900) 1px, transparent 1px), " +
+            "linear-gradient(90deg, var(--color-ink-900) 1px, transparent 1px)",
+          backgroundSize: "72px 72px",
+        }}
+      />
+
+      <Container size="wide">
+        <header className="relative max-w-3xl py-section-lg animate-fade-in-up lg:py-section-xl">
+          <p className="eyebrow text-brand-yellow-press">{eyebrow}</p>
+          <h1 className="mt-5 text-display font-extrabold tracking-tight text-ink-950">
+            {title}
+          </h1>
+          <div className="mt-6 max-w-prose text-lead text-ink-500">{lede}</div>
+        </header>
+      </Container>
+
+      {/* Smooth fade to content */}
+      <div
+        aria-hidden="true"
+        className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-b from-transparent to-surface-0"
+      />
+    </div>
   );
 }

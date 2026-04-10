@@ -1,12 +1,26 @@
 import type { Metadata, Viewport } from "next";
-import { Inter } from "next/font/google";
+import { Caveat, Instrument_Sans, Plus_Jakarta_Sans } from "next/font/google";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { SITE_DESCRIPTION, SITE_NAME, SITE_TAGLINE, SITE_URL } from "@/lib/site";
 import "./globals.css";
 
-const inter = Inter({
-  variable: "--font-inter",
+const plusJakarta = Plus_Jakarta_Sans({
+  variable: "--font-plus-jakarta-sans",
+  subsets: ["latin"],
+  display: "swap",
+  weight: ["400", "500", "600", "700", "800"],
+});
+
+const instrumentSans = Instrument_Sans({
+  variable: "--font-instrument-sans",
+  subsets: ["latin"],
+  display: "swap",
+  weight: ["400", "500", "600", "700"],
+});
+
+const caveat = Caveat({
+  variable: "--font-caveat",
   subsets: ["latin"],
   display: "swap",
 });
@@ -29,10 +43,7 @@ export const metadata: Metadata = {
     "HHZ",
     "Reutlingen University",
   ],
-  robots: {
-    index: true,
-    follow: true,
-  },
+  robots: { index: true, follow: true },
   openGraph: {
     type: "website",
     title: SITE_NAME,
@@ -59,8 +70,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${inter.variable} h-full antialiased`}>
-      <body className="flex min-h-full flex-col bg-surface-0 text-ink-800">
+    <html lang="en" className={`${plusJakarta.variable} ${instrumentSans.variable} ${caveat.variable} h-full`}>
+      <body className="flex min-h-full flex-col bg-surface-0 text-ink-700 antialiased">
         <Navbar />
         <main className="flex flex-1 flex-col">{children}</main>
         <Footer />

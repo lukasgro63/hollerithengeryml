@@ -1,90 +1,75 @@
-import { ArrowRight, Leaf } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
+import { HeroCalculator } from "@/components/marketing/HeroCalculator";
 
 export function Hero() {
   return (
-    <section className="relative overflow-hidden border-b border-surface-200 bg-surface-50">
+    <section className="relative overflow-hidden gradient-mesh-hero -mt-[4.25rem] pt-[4.25rem]">
+      {/* Grid pattern */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 opacity-[0.025]"
+        style={{
+          backgroundImage:
+            "linear-gradient(var(--color-ink-900) 1px, transparent 1px), " +
+            "linear-gradient(90deg, var(--color-ink-900) 1px, transparent 1px)",
+          backgroundSize: "72px 72px",
+        }}
+      />
+
       <Container size="wide">
-        <div className="grid items-center gap-10 py-section-lg lg:grid-cols-12 lg:py-section-xl">
-          <div className="lg:col-span-8">
-            <div className="inline-flex items-center gap-2 rounded-sm border border-surface-300 bg-surface-0 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-ink-600">
-              <Leaf className="h-3.5 w-3.5 text-accent-rust" aria-hidden="true" />
-              Green AI · Herman Hollerith Zentrum
-            </div>
-
-            <h1 className="mt-6 text-display font-bold leading-tight tracking-tight text-ink-900">
-              Predict the energy cost of your ML training{" "}
-              <span className="whitespace-nowrap bg-brand-yellow px-2">before</span>{" "}
-              you train it.
-            </h1>
-
-            <p className="mt-6 max-w-prose text-lead text-ink-600">
-              Give us the shape of your dataset — number of numerical features,
-              categorical features, rows — and we predict the training energy
-              consumption of five classical scikit-learn algorithms in kilowatt-hours.
-              Pick the greener one before you burn the watts.
+        <div className="relative grid items-center gap-14 py-section-xl lg:grid-cols-12 lg:gap-20 lg:py-section-2xl">
+          <div className="lg:col-span-7 animate-fade-in-up">
+            <p className="eyebrow text-brand-yellow-press">
+              Green AI · Peer-reviewed at INFORMATIK 2024
             </p>
 
-            <div className="mt-8 flex flex-wrap items-center gap-3">
+            <h1 className="mt-6 text-hero font-bold tracking-tight text-ink-950">
+              Know the energy cost{" "}
+              <span className="relative inline-block">
+                <span className="relative z-10 font-[family-name:var(--font-caveat)] text-[1.15em]">before</span>
+                <span
+                  aria-hidden="true"
+                  className="absolute -inset-x-1.5 bottom-0 z-0 h-[38%] bg-brand-yellow/50 rounded-sm"
+                />
+              </span>{" "}
+              you train.
+            </h1>
+
+            <p className="mt-7 max-w-lg text-lead text-ink-500">
+              Three numbers — numerical features, categorical features, dataset
+              rows — and you get a ranked energy estimate for five classical
+              scikit-learn algorithms.
+            </p>
+
+            <div className="mt-10 flex flex-wrap items-center gap-4">
               <Button href="/calculate" size="lg">
-                Run the calculator
-                <ArrowRight className="h-5 w-5" aria-hidden="true" />
+                Open the calculator
+                <ArrowRight className="h-4 w-4" aria-hidden="true" />
               </Button>
-              <Button href="/research" variant="ghost" size="lg">
+              <Button href="/research" variant="secondary" size="lg">
                 Read the research
               </Button>
             </div>
+
+            <p className="mt-12 eyebrow text-ink-400">
+              Herman Hollerith Zentrum · Reutlingen University
+            </p>
           </div>
 
-          <div className="lg:col-span-4">
-            <div className="relative rounded-sm border border-surface-300 bg-surface-0 p-6">
-              <div
-                aria-hidden="true"
-                className="absolute -top-px left-0 h-1 w-20 bg-brand-yellow"
-              />
-              <dl className="grid grid-cols-2 gap-6">
-                <div>
-                  <dt className="text-xs font-semibold uppercase tracking-wide text-ink-500">
-                    Algorithms
-                  </dt>
-                  <dd className="mt-1 text-2xl font-bold text-ink-900">5</dd>
-                  <dd className="mt-1 text-xs text-ink-500">
-                    DT · GNB · KNN · LR · RF
-                  </dd>
-                </div>
-                <div>
-                  <dt className="text-xs font-semibold uppercase tracking-wide text-ink-500">
-                    Features
-                  </dt>
-                  <dd className="mt-1 text-2xl font-bold text-ink-900">3</dd>
-                  <dd className="mt-1 text-xs text-ink-500">
-                    num · cat · rows
-                  </dd>
-                </div>
-                <div>
-                  <dt className="text-xs font-semibold uppercase tracking-wide text-ink-500">
-                    Baseline runs
-                  </dt>
-                  <dd className="mt-1 text-2xl font-bold text-ink-900">15+</dd>
-                  <dd className="mt-1 text-xs text-ink-500">
-                    CodeCarbon measured
-                  </dd>
-                </div>
-                <div>
-                  <dt className="text-xs font-semibold uppercase tracking-wide text-ink-500">
-                    Training sets
-                  </dt>
-                  <dd className="mt-1 text-2xl font-bold text-ink-900">3</dd>
-                  <dd className="mt-1 text-xs text-ink-500">
-                    Diabetes · Bank · Heart
-                  </dd>
-                </div>
-              </dl>
-            </div>
+          {/* Inline calculator — desktop only */}
+          <div className="hidden lg:col-span-5 lg:block animate-slide-in-right stagger-2">
+            <HeroCalculator />
           </div>
         </div>
       </Container>
+
+      {/* Smooth fade to next section */}
+      <div
+        aria-hidden="true"
+        className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-b from-transparent to-surface-0"
+      />
     </section>
   );
 }

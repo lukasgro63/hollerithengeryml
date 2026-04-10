@@ -13,7 +13,12 @@ type ResultState = {
   readonly input: PredictionsRequest;
 };
 
-export function Calculator() {
+type CalculatorProps = {
+  readonly initialValues?: PredictionsRequest;
+  readonly autoSubmit?: boolean;
+};
+
+export function Calculator({ initialValues, autoSubmit }: CalculatorProps) {
   const [result, setResult] = useState<ResultState | null>(null);
   const resultRef = useRef<HTMLDivElement | null>(null);
 
@@ -22,8 +27,6 @@ export function Calculator() {
     input: PredictionsRequest,
   ) => {
     setResult({ data, input });
-    // Let the layout render, then scroll the results into view for users
-    // who just tapped "Calculate" on mobile.
     requestAnimationFrame(() => {
       resultRef.current?.scrollIntoView({
         behavior: "smooth",
@@ -33,8 +36,12 @@ export function Calculator() {
   };
 
   return (
-    <div className="flex flex-col gap-8">
-      <CalculatorForm onSuccess={handleSuccess} />
+    <div className="flex flex-col gap-16">
+      <CalculatorForm
+        onSuccess={handleSuccess}
+        defaultValues={initialValues}
+        autoSubmit={autoSubmit}
+      />
       {result ? (
         <div ref={resultRef}>
           <ResultsCard data={result.data} input={result.input} />

@@ -9,11 +9,6 @@ type InputProps = Omit<ComponentPropsWithRef<"input">, "children"> & {
   readonly hint?: string;
 };
 
-/**
- * Labeled text input with inline error + hint rendering. Accepts `ref`
- * directly as a prop (React 19 pattern, no `forwardRef` needed) so it
- * composes cleanly with `react-hook-form`'s `register()`.
- */
 export function Input({
   label,
   error,
@@ -33,10 +28,10 @@ export function Input({
     .join(" ");
 
   return (
-    <div className="flex flex-col gap-1.5">
+    <div className="flex flex-col gap-2">
       <label
         htmlFor={id}
-        className="text-sm font-semibold text-ink-800"
+        className="font-display text-xs font-bold uppercase tracking-widest text-ink-500"
       >
         {label}
       </label>
@@ -46,20 +41,20 @@ export function Input({
         aria-invalid={error ? true : undefined}
         aria-describedby={describedBy || undefined}
         className={cn(
-          "h-11 rounded-sm border bg-surface-0 px-3",
-          "text-base text-ink-800 placeholder:text-ink-400",
-          "transition-colors duration-150",
-          "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-yellow",
-          "disabled:cursor-not-allowed disabled:bg-surface-50 disabled:text-ink-400",
+          "h-12 rounded-lg border bg-surface-0 px-4",
+          "text-base font-medium text-ink-900 tabular-nums placeholder:text-ink-400",
+          "transition-all duration-150",
+          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-yellow focus-visible:ring-offset-1",
+          "disabled:cursor-not-allowed disabled:bg-surface-100 disabled:text-ink-400",
           error
-            ? "border-danger focus-visible:outline-danger"
-            : "border-surface-300 hover:border-surface-400",
+            ? "border-danger/60 ring-1 ring-danger/20"
+            : "border-surface-300 hover:border-ink-400",
           className,
         )}
         {...props}
       />
       {hint && !error ? (
-        <p id={hintId} className="text-xs text-ink-500">
+        <p id={hintId} className="text-[0.7rem] text-ink-400">
           {hint}
         </p>
       ) : null}

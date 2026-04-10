@@ -4,11 +4,11 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Menu, X } from "lucide-react";
 import { PRIMARY_NAV, FOOTER_LEGAL_NAV } from "@/lib/nav";
+import { Button } from "@/components/ui/Button";
 
 export function MobileNav() {
   const [open, setOpen] = useState(false);
 
-  // Lock body scroll while the menu is open.
   useEffect(() => {
     if (open) {
       const previousOverflow = document.body.style.overflow;
@@ -19,7 +19,6 @@ export function MobileNav() {
     }
   }, [open]);
 
-  // Close on Escape.
   useEffect(() => {
     if (!open) return;
     const onKey = (event: KeyboardEvent) => {
@@ -34,7 +33,7 @@ export function MobileNav() {
       <button
         type="button"
         onClick={() => setOpen(true)}
-        className="inline-flex h-10 w-10 items-center justify-center rounded-sm text-ink-800 hover:bg-surface-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-yellow"
+        className="inline-flex h-10 w-10 items-center justify-center rounded-md text-ink-800 hover:bg-surface-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-yellow"
         aria-label="Open menu"
         aria-expanded={open}
         aria-controls="mobile-menu"
@@ -49,12 +48,20 @@ export function MobileNav() {
           role="dialog"
           aria-modal="true"
         >
-          <div className="flex h-16 items-center justify-between border-b border-surface-200 px-5">
-            <span className="font-bold tracking-tight text-ink-800">Menu</span>
+          {/* Yellow accent bar */}
+          <div
+            aria-hidden="true"
+            className="h-[2px] bg-gradient-to-r from-brand-yellow to-brand-yellow-end"
+          />
+
+          <div className="flex h-16 items-center justify-between px-5">
+            <span className="font-display font-bold tracking-tight text-ink-800">
+              Menu
+            </span>
             <button
               type="button"
               onClick={() => setOpen(false)}
-              className="inline-flex h-10 w-10 items-center justify-center rounded-sm text-ink-800 hover:bg-surface-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-yellow"
+              className="inline-flex h-10 w-10 items-center justify-center rounded-md text-ink-800 hover:bg-surface-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-yellow"
               aria-label="Close menu"
             >
               <X className="h-6 w-6" />
@@ -70,11 +77,22 @@ export function MobileNav() {
                 key={item.href}
                 href={item.href}
                 onClick={() => setOpen(false)}
-                className="rounded-sm px-4 py-4 text-lg font-semibold text-ink-800 transition-colors hover:bg-surface-100"
+                className="rounded-md px-4 py-4 font-display text-lg font-semibold text-ink-800 transition-colors hover:bg-surface-100"
               >
                 {item.label}
               </Link>
             ))}
+
+            <div className="mt-4 px-4">
+              <Button
+                href="/calculate"
+                size="lg"
+                className="w-full"
+                onClick={() => setOpen(false)}
+              >
+                Calculate energy
+              </Button>
+            </div>
           </nav>
 
           <div className="mt-2 border-t border-surface-200 px-5 py-6">

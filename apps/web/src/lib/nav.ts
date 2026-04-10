@@ -13,7 +13,6 @@ export const PRIMARY_NAV: readonly NavItem[] = [
   { label: "Calculator", href: "/calculate" },
   { label: "Research", href: "/research" },
   { label: "Model", href: "/model" },
-  { label: "About", href: "/about" },
 ] as const;
 
 export const FOOTER_LEGAL_NAV: readonly NavItem[] = [

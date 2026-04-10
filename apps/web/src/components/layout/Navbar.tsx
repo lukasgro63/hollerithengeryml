@@ -1,50 +1,52 @@
 import Link from "next/link";
-import { Zap } from "lucide-react";
 import { Container } from "@/components/ui/Container";
+import { Button } from "@/components/ui/Button";
 import { MobileNav } from "@/components/layout/MobileNav";
-import { PRIMARY_NAV } from "@/lib/nav";
+import { NavLinks, NavWrapper } from "@/components/layout/NavLinks";
 
 export function Navbar() {
   return (
-    <header className="sticky top-0 z-40 w-full border-b border-surface-200 bg-surface-0/95 backdrop-blur-sm">
+    <NavWrapper>
       <Container size="wide">
-        <div className="flex h-16 items-center justify-between gap-6">
+        <div className="flex h-[4.25rem] items-center justify-between gap-8">
+          {/* Typographic logo */}
           <Link
             href="/"
-            className="flex items-center gap-2.5 text-ink-800 transition-colors hover:text-ink-600"
+            className="flex items-center gap-1.5 transition-opacity hover:opacity-80"
             aria-label="HollerithEnergyML — home"
           >
+            <span className="font-display text-[0.95rem] font-bold tracking-tight text-ink-900">
+              Hollerith
+            </span>
+            <span className="font-display text-[0.95rem] font-medium tracking-tight text-ink-900">
+              EnergyML
+            </span>
             <span
-              className="flex h-9 w-9 items-center justify-center rounded-sm bg-brand-yellow"
               aria-hidden="true"
-            >
-              <Zap className="h-5 w-5 text-ink-900" strokeWidth={2.5} />
-            </span>
-            <span className="font-bold tracking-tight text-base sm:text-lg">
-              HollerithEnergyML
-            </span>
+              className="inline-block h-1.5 w-1.5 rounded-[1px] bg-brand-yellow"
+            />
           </Link>
 
+          {/* Desktop nav links */}
           <nav className="hidden md:block" aria-label="Primary">
-            <ul className="flex items-center gap-1">
-              {PRIMARY_NAV.map((item) => (
-                <li key={item.href}>
-                  <Link
-                    href={item.href}
-                    className="rounded-sm px-3 py-2 text-sm font-medium text-ink-700 transition-colors hover:bg-surface-100 hover:text-ink-900"
-                  >
-                    {item.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
+            <NavLinks />
           </nav>
 
-          <div className="md:hidden">
-            <MobileNav />
+          {/* Desktop CTA + Mobile menu */}
+          <div className="flex items-center gap-3">
+            <Button
+              href="/calculate"
+              size="sm"
+              className="hidden md:inline-flex"
+            >
+              Calculate
+            </Button>
+            <div className="md:hidden">
+              <MobileNav />
+            </div>
           </div>
         </div>
       </Container>
-    </header>
+    </NavWrapper>
   );
 }

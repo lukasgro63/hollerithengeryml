@@ -1,19 +1,13 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowLeft, ExternalLink, FileText } from "lucide-react";
+import { ArrowLeft, ExternalLink } from "lucide-react";
 import { Container } from "@/components/ui/Container";
+import { DataTable, TH_CLASS, TR_CLASS } from "@/components/ui/DataTable";
+import { TableOfContents } from "@/components/ui/TableOfContents";
 import { PageHeader } from "@/components/marketing/PageHeader";
-import {
-  GITHUB_URL,
-  PAPER_AUTHORS,
-  PAPER_DOI,
-  PAPER_DOI_URL,
-  PAPER_PAGES,
-  PAPER_PDF_URL,
-  PAPER_TITLE,
-  PAPER_VENUE,
-  PAPER_YEAR,
-} from "@/lib/site";
+import { CitationBlock } from "@/components/research/CitationBlock";
+import { PipelineOverview } from "@/components/research/PipelineOverview";
+import { GITHUB_URL } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Research",
@@ -24,26 +18,26 @@ export const metadata: Metadata = {
 
 export default function ResearchPage() {
   return (
-    <Container size="wide">
-      <article className="py-section-lg lg:py-section-xl">
-        <PageHeader
-          eyebrow="Research"
-          title="How the meta-model was built"
-          lede={
-            <>
-              A 2024 baseline-measurement campaign at the{" "}
-              <span className="font-semibold text-ink-800">Herman Hollerith Zentrum</span>{" "}
-              that asked a simple question — <em>how much energy does it actually
-              take to train a classical ML model?</em> — and turned the answer into
-              a meta-model you can query in real time.
-            </>
-          }
-        />
+    <article>
+      <PageHeader
+        eyebrow="Research"
+        title="How the meta-model was built"
+        lede={
+          <>
+            A 2024 baseline-measurement campaign at the{" "}
+            <span className="font-semibold text-ink-800">Herman Hollerith Zentrum</span>{" "}
+            that asked a simple question — <em>how much energy does it actually
+            take to train a classical ML model?</em> — and turned the answer into
+            a meta-model you can query in real time.
+          </>
+        }
+      />
 
-        <div className="mt-section-lg grid gap-section-md lg:grid-cols-[minmax(0,1fr)_18rem]">
+      <Container size="wide">
+        <div className="mt-section-md grid gap-section-md pb-section-lg lg:grid-cols-[minmax(0,1fr)_18rem] lg:pb-section-xl">
           <div className="max-w-3xl space-y-section-md text-ink-700">
             <section>
-              <h2 className="text-h3 font-bold tracking-tight text-ink-900">
+              <h2 className="font-display text-h3 font-extrabold tracking-tight text-ink-950">
                 The question
               </h2>
               <p className="mt-4 leading-relaxed">
@@ -60,63 +54,65 @@ export default function ResearchPage() {
                 count, and number of rows — and the energy it takes to train five
                 classical scikit-learn classifiers under identical conditions.
               </p>
+
+              <PipelineOverview />
             </section>
 
             <section>
-              <h2 className="text-h3 font-bold tracking-tight text-ink-900">
+              <h2 className="font-display text-h3 font-extrabold tracking-tight text-ink-950">
                 The baseline campaign
               </h2>
               <p className="mt-4 leading-relaxed">
-                Five classifiers were measured on three public tabular datasets
-                with progressive subsampling of features and rows, producing
-                dense energy-versus-shape curves.
+                Five classifiers — LogisticRegression, KNeighborsClassifier,
+                DecisionTreeClassifier, RandomForestClassifier, and XGBoost —
+                were measured on three public tabular datasets with progressive
+                subsampling of features and rows, producing dense
+                energy-versus-shape curves.
               </p>
 
-              <div className="mt-6 grid gap-6 sm:grid-cols-2">
-                <div>
-                  <h3 className="text-sm font-bold uppercase tracking-wide text-ink-500">
-                    Classifiers
-                  </h3>
-                  <ul className="mt-3 space-y-1.5 text-sm">
-                    <li>LogisticRegression</li>
-                    <li>KNeighborsClassifier</li>
-                    <li>DecisionTreeClassifier</li>
-                    <li>RandomForestClassifier</li>
-                    <li>XGBoost</li>
-                  </ul>
-                  <p className="mt-3 text-xs text-ink-500">
-                    These five classifiers are the ones named in the published
-                    paper. The production meta-model serves a slightly
-                    different set — it replaces XGBoost with GaussianNB for
-                    scikit-learn-API consistency — but the measurement archive
-                    under{" "}
-                    <code className="rounded-sm bg-surface-100 px-1 text-xs">
-                      research/baseline-tests/results/
-                    </code>{" "}
-                    contains emission CSVs for all six.
-                  </p>
-                </div>
-                <div>
-                  <h3 className="text-sm font-bold uppercase tracking-wide text-ink-500">
-                    Datasets
-                  </h3>
-                  <ul className="mt-3 space-y-1.5 text-sm">
-                    <li>Diabetes Health Indicators — ~250,000 rows, 22 features (Kaggle)</li>
-                    <li>Bank Marketing — ~11,000 rows, 17 features (UCI)</li>
-                    <li>Heart Disease 2020 — ~320,000 rows, 17 features (Kaggle / CDC)</li>
-                  </ul>
-                  <p className="mt-3 text-xs text-ink-500">
-                    Every dataset was sampled at 100 %, 80 %, 60 %, 40 %, and
-                    20 % of its original row count, with features reduced
-                    randomly step by step, producing dense energy-versus-shape
-                    curves per classifier.
-                  </p>
-                </div>
-              </div>
+              <DataTable number="Table 1" caption="Datasets used in the baseline campaign">
+                <thead>
+                  <tr className="border-b-2 border-ink-900/10 text-left">
+                    <th className={TH_CLASS}>Dataset</th>
+                    <th className={TH_CLASS}>Rows</th>
+                    <th className={TH_CLASS}>Features</th>
+                    <th className={`${TH_CLASS} !pr-0`}>Source</th>
+                  </tr>
+                </thead>
+                <tbody className="text-ink-700">
+                  {[
+                    { name: "Diabetes Health Indicators", rows: "~250,000", features: "22", href: "https://www.kaggle.com/datasets/alexteboul/diabetes-health-indicators-dataset", source: "Kaggle" },
+                    { name: "Bank Marketing", rows: "~11,000", features: "17", href: "https://archive.ics.uci.edu/dataset/222/bank+marketing", source: "UCI" },
+                    { name: "Heart Disease 2020", rows: "~320,000", features: "17", href: "https://www.kaggle.com/datasets/kamilpytlak/personal-key-indicators-of-heart-disease", source: "Kaggle / CDC" },
+                  ].map(({ name, rows, features, href, source }) => (
+                    <tr key={name} className={TR_CLASS}>
+                      <td className="py-3 pr-6 font-semibold text-ink-900">{name}</td>
+                      <td className="py-3 pr-6 font-mono text-xs tabular-nums">{rows}</td>
+                      <td className="py-3 pr-6 font-mono text-xs tabular-nums">{features}</td>
+                      <td className="py-3">
+                        <a href={href} target="_blank" rel="noopener noreferrer" className="font-semibold text-ink-700 underline decoration-brand-yellow decoration-2 underline-offset-4 hover:text-ink-900">{source}</a>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </DataTable>
+
+              <p className="mt-4 leading-relaxed">
+                Every dataset was sampled at 100 %, 80 %, 60 %, 40 %, and
+                20 % of its original row count, with features reduced randomly
+                step by step. The paper measured XGBoost alongside the other
+                four, but the production meta-model replaces it with GaussianNB
+                for scikit-learn-API consistency. The measurement archive under{" "}
+                <code className="bg-surface-100 px-1.5 py-0.5 text-sm text-ink-800">
+                  research/baseline-tests/results/
+                </code>{" "}
+                contains emission CSVs for all six classifiers.
+              </p>
+
             </section>
 
             <section>
-              <h2 className="text-h3 font-bold tracking-tight text-ink-900">
+              <h2 className="font-display text-h3 font-extrabold tracking-tight text-ink-950">
                 Measurement
               </h2>
               <p className="mt-4 leading-relaxed">
@@ -139,7 +135,7 @@ export default function ResearchPage() {
                 Intel Xeon at 2.20 GHz with 12.6 GB of RAM — a typical free-tier
                 cloud notebook. The per-algorithm emission CSVs live in the
                 research archive under{" "}
-                <code className="rounded-sm bg-surface-100 px-1.5 py-0.5 text-sm text-ink-800">
+                <code className="bg-surface-100 px-1.5 py-0.5 text-sm text-ink-800">
                   research/baseline-tests/results/
                 </code>
                 .
@@ -147,7 +143,7 @@ export default function ResearchPage() {
             </section>
 
             <section>
-              <h2 className="text-h3 font-bold tracking-tight text-ink-900">
+              <h2 className="font-display text-h3 font-extrabold tracking-tight text-ink-950">
                 Experiment tracking
               </h2>
               <p className="mt-4 leading-relaxed">
@@ -160,7 +156,7 @@ export default function ResearchPage() {
             </section>
 
             <section>
-              <h2 className="text-h3 font-bold tracking-tight text-ink-900">
+              <h2 className="font-display text-h3 font-extrabold tracking-tight text-ink-950">
                 The meta-model
               </h2>
               <p className="mt-4 leading-relaxed">
@@ -180,42 +176,34 @@ export default function ResearchPage() {
                 the response.
               </p>
 
-              <div className="mt-6 overflow-hidden rounded-sm border border-surface-200">
-                <table className="w-full text-sm">
-                  <thead className="bg-surface-50 text-left text-xs font-bold uppercase tracking-wide text-ink-600">
-                    <tr>
-                      <th className="px-4 py-3">#</th>
-                      <th className="px-4 py-3">Feature</th>
-                      <th className="px-4 py-3">Type</th>
+              <DataTable number="Table 2" caption="Meta-model input features">
+                <thead>
+                  <tr className="border-b-2 border-ink-900/10 text-left">
+                    <th className={TH_CLASS}>#</th>
+                    <th className={TH_CLASS}>Feature</th>
+                    <th className={`${TH_CLASS} !pr-0`}>Type</th>
+                  </tr>
+                </thead>
+                <tbody className="text-ink-700">
+                  {[
+                    { idx: "0", name: "num_num_features", type: "int" },
+                    { idx: "1", name: "num_cat_features", type: "int" },
+                    { idx: "2", name: "number_of_instances", type: "int" },
+                    { idx: "3–7", name: "model_0 – model_4", type: "one-hot" },
+                  ].map(({ idx, name, type }) => (
+                    <tr key={idx} className={TR_CLASS}>
+                      <td className="py-3 pr-6 font-mono text-xs tabular-nums text-ink-400">{idx}</td>
+                      <td className="py-3 pr-6 font-mono text-xs text-ink-800">{name}</td>
+                      <td className="py-3">
+                        <span className="bg-surface-100 px-1.5 py-0.5 font-mono text-xs text-ink-600">{type}</span>
+                      </td>
                     </tr>
-                  </thead>
-                  <tbody className="divide-y divide-surface-200 text-ink-700">
-                    <tr>
-                      <td className="px-4 py-2.5 tabular-nums">0</td>
-                      <td className="px-4 py-2.5 font-mono text-xs">num_num_features</td>
-                      <td className="px-4 py-2.5">int</td>
-                    </tr>
-                    <tr>
-                      <td className="px-4 py-2.5 tabular-nums">1</td>
-                      <td className="px-4 py-2.5 font-mono text-xs">num_cat_features</td>
-                      <td className="px-4 py-2.5">int</td>
-                    </tr>
-                    <tr>
-                      <td className="px-4 py-2.5 tabular-nums">2</td>
-                      <td className="px-4 py-2.5 font-mono text-xs">number_of_instances</td>
-                      <td className="px-4 py-2.5">int</td>
-                    </tr>
-                    <tr>
-                      <td className="px-4 py-2.5 tabular-nums">3–7</td>
-                      <td className="px-4 py-2.5 font-mono text-xs">model_0 – model_4</td>
-                      <td className="px-4 py-2.5">one-hot flag</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
+                  ))}
+                </tbody>
+              </DataTable>
 
               <p className="mt-4 leading-relaxed">
-                The five <code className="rounded-sm bg-surface-100 px-1.5 py-0.5 text-sm">model_*</code>{" "}
+                The five <code className="bg-surface-100 px-1.5 py-0.5 text-sm">model_*</code>{" "}
                 columns one-hot encode the algorithm being predicted. At inference
                 time the API runs one forward pass per algorithm and returns the
                 full five-way comparison in a single response.
@@ -239,113 +227,54 @@ export default function ResearchPage() {
             </section>
 
             <section>
-              <h2 className="text-h3 font-bold tracking-tight text-ink-900">
+              <h2 className="font-display text-h3 font-extrabold tracking-tight text-ink-950">
                 Known limitations
               </h2>
               <ul className="mt-4 space-y-3 leading-relaxed">
-                <li className="flex gap-3">
-                  <span
-                    aria-hidden="true"
-                    className="mt-2 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-brand-yellow"
-                  />
-                  <p>
-                    <strong>Hardware dependence.</strong> The baseline was
-                    measured on a single CPU class. Training on GPUs or different
-                    CPU architectures will deviate from the predictions.
-                  </p>
-                </li>
-                <li className="flex gap-3">
-                  <span
-                    aria-hidden="true"
-                    className="mt-2 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-brand-yellow"
-                  />
-                  <p>
-                    <strong>Python stack dependence.</strong> Predictions are
-                    calibrated against scikit-learn 1.2.2 defaults with no
-                    hyperparameter tuning. Different sklearn versions or custom
-                    hyperparameters may produce different energy profiles.
-                  </p>
-                </li>
-                <li className="flex gap-3">
-                  <span
-                    aria-hidden="true"
-                    className="mt-2 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-brand-yellow"
-                  />
-                  <p>
-                    <strong>Small-data tail.</strong> The training set is sparse
-                    for very small datasets (under a few hundred rows), so
-                    predictions in that regime carry more uncertainty.
-                  </p>
-                </li>
-                <li className="flex gap-3">
-                  <span
-                    aria-hidden="true"
-                    className="mt-2 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-brand-yellow"
-                  />
-                  <p>
-                    <strong>Extrapolation.</strong> The linear fallback is
-                    exactly that — a linear extrapolation beyond the measured
-                    envelope. Treat predictions beyond the Random Forest
-                    thresholds as rough guidance rather than precise estimates.
-                  </p>
-                </li>
+                {[
+                  { title: "Hardware dependence.", text: "The baseline was measured on a single CPU class. Training on GPUs or different CPU architectures will deviate from the predictions." },
+                  { title: "Python stack dependence.", text: "Predictions are calibrated against scikit-learn 1.2.2 defaults with no hyperparameter tuning. Different sklearn versions or custom hyperparameters may produce different energy profiles." },
+                  { title: "Small-data tail.", text: "The training set is sparse for very small datasets (under a few hundred rows), so predictions in that regime carry more uncertainty." },
+                  { title: "Extrapolation.", text: "The linear fallback is exactly that — a linear extrapolation beyond the measured envelope. Treat predictions beyond the Random Forest thresholds as rough guidance rather than precise estimates." },
+                ].map(({ title, text }) => (
+                  <li key={title} className="flex gap-3">
+                    <span
+                      aria-hidden="true"
+                      className="mt-2 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-brand-yellow"
+                    />
+                    <p>
+                      <strong>{title}</strong> {text}
+                    </p>
+                  </li>
+                ))}
               </ul>
             </section>
 
             <section>
-              <h2 className="text-h3 font-bold tracking-tight text-ink-900">
+              <h2 className="font-display text-h3 font-extrabold tracking-tight text-ink-950">
                 Citation
               </h2>
               <p className="mt-4 leading-relaxed">
-                The research behind HollerithEnergyML was peer-reviewed and
-                published as a prototype demo paper at INFORMATIK 2024 in
-                Bonn. If you cite this work, please cite the paper:
+                Peer-reviewed and published at INFORMATIK 2024 in Bonn.
+                If you reference this work:
               </p>
-              <blockquote className="mt-5 rounded-sm border-l-4 border-brand-yellow bg-surface-50 p-5 text-sm leading-relaxed text-ink-700">
-                <p>
-                  {PAPER_AUTHORS.slice(0, -1).join(", ")}, and{" "}
-                  {PAPER_AUTHORS[PAPER_AUTHORS.length - 1]} ({PAPER_YEAR}).{" "}
-                  <em>{PAPER_TITLE}.</em> In {PAPER_VENUE}, pp.{" "}
-                  {PAPER_PAGES}.
-                </p>
-                <p className="mt-3 font-mono text-xs text-ink-600">
-                  DOI:{" "}
-                  <a
-                    href={PAPER_DOI_URL}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="font-semibold text-ink-800 underline decoration-brand-yellow decoration-2 underline-offset-4 hover:text-ink-900"
-                  >
-                    {PAPER_DOI}
-                  </a>
-                </p>
-              </blockquote>
-              <p className="mt-6">
-                <a
-                  href={PAPER_PDF_URL}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1.5 text-sm font-semibold text-ink-700 underline decoration-brand-yellow decoration-2 underline-offset-4 hover:text-ink-900"
-                >
-                  <FileText className="h-4 w-4" aria-hidden="true" />
-                  Download the paper (PDF, 5 pp.)
-                </a>
-              </p>
+
+              <CitationBlock />
             </section>
 
             <section>
-              <h2 className="text-h3 font-bold tracking-tight text-ink-900">
+              <h2 className="font-display text-h3 font-extrabold tracking-tight text-ink-950">
                 Source material
               </h2>
               <p className="mt-4 leading-relaxed">
                 The full research archive — baseline notebooks, per-algorithm
                 emission CSVs, the aggregated training data, and the original
                 methodology docs — lives under{" "}
-                <code className="rounded-sm bg-surface-100 px-1.5 py-0.5 text-sm">
+                <code className="bg-surface-100 px-1.5 py-0.5 text-sm">
                   research/
                 </code>{" "}
                 in the repository. See{" "}
-                <code className="rounded-sm bg-surface-100 px-1.5 py-0.5 text-sm">
+                <code className="bg-surface-100 px-1.5 py-0.5 text-sm">
                   research/README.md
                 </code>{" "}
                 for the directory layout.
@@ -364,68 +293,30 @@ export default function ResearchPage() {
             </section>
           </div>
 
-          {/* Sticky table of contents on desktop */}
-          <aside className="hidden lg:block">
-            <div className="sticky top-24 rounded-sm border border-surface-200 bg-surface-50 p-5">
-              <h2 className="text-xs font-bold uppercase tracking-wide text-ink-500">
-                On this page
-              </h2>
-              <ol className="mt-3 space-y-2 text-sm">
-                <li>
-                  <a href="#" className="text-ink-600 hover:text-ink-900">
-                    The question
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="text-ink-600 hover:text-ink-900">
-                    The baseline campaign
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="text-ink-600 hover:text-ink-900">
-                    Measurement
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="text-ink-600 hover:text-ink-900">
-                    Experiment tracking
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="text-ink-600 hover:text-ink-900">
-                    The meta-model
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="text-ink-600 hover:text-ink-900">
-                    Known limitations
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="text-ink-600 hover:text-ink-900">
-                    Citation
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="text-ink-600 hover:text-ink-900">
-                    Source material
-                  </a>
-                </li>
-              </ol>
-            </div>
-          </aside>
+          <TableOfContents
+            items={[
+              "The question",
+              "The baseline campaign",
+              "Measurement",
+              "Experiment tracking",
+              "The meta-model",
+              "Known limitations",
+              "Citation",
+              "Source material",
+            ]}
+          />
         </div>
 
-        <footer className="mt-section-lg border-t border-surface-200 pt-8">
+        <footer className="border-t border-surface-100 pb-section-lg pt-8">
           <Link
             href="/"
-            className="inline-flex items-center gap-1.5 text-sm font-semibold text-ink-700 hover:text-ink-900 hover:underline underline-offset-4"
+            className="inline-flex items-center gap-1.5 text-sm font-semibold text-ink-600 hover:text-ink-900 transition-colors"
           >
             <ArrowLeft className="h-4 w-4" aria-hidden="true" />
             Back to home
           </Link>
         </footer>
-      </article>
-    </Container>
+      </Container>
+    </article>
   );
 }

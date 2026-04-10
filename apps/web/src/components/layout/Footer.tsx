@@ -11,28 +11,41 @@ export function Footer() {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="mt-auto border-t border-surface-200 bg-surface-50">
+    <footer className="mt-auto bg-ink-950 text-surface-300">
       <Container size="wide" as="div">
-        <div className="grid gap-10 py-section-md md:grid-cols-12 md:py-section-lg">
+        <div className="grid gap-12 py-14 md:grid-cols-12 md:py-16">
+          {/* Brand column */}
           <div className="md:col-span-5">
-            <p className="text-base font-bold text-ink-800">HollerithEnergyML</p>
-            <p className="mt-3 max-w-md text-sm leading-relaxed text-ink-600">
-              Predict the energy consumption of ML model training before you train.
-              A research project of the Herman Hollerith Zentrum at Reutlingen
-              University.
+            <div className="flex items-center gap-1.5">
+              <span className="font-display text-sm font-bold text-surface-0">
+                Hollerith
+              </span>
+              <span className="font-display text-sm font-medium text-surface-0">
+                EnergyML
+              </span>
+              <span
+                aria-hidden="true"
+                className="inline-block h-1.5 w-1.5 rounded-[1px] bg-brand-yellow"
+              />
+            </div>
+            <p className="mt-5 max-w-sm text-sm leading-relaxed text-surface-400">
+              Predict the energy consumption of ML model training before you
+              train. A peer-reviewed research project of the Herman Hollerith
+              Zentrum at Reutlingen University.
             </p>
           </div>
 
+          {/* Site navigation */}
           <nav className="md:col-span-3" aria-label="Footer primary">
-            <h2 className="mb-3 text-sm font-semibold uppercase tracking-wide text-ink-500">
-              Site
+            <h2 className="mb-4 text-[0.65rem] font-bold uppercase tracking-[0.2em] text-surface-500">
+              Navigate
             </h2>
-            <ul className="flex flex-col gap-2">
+            <ul className="flex flex-col gap-2.5">
               {PRIMARY_NAV.map((item) => (
                 <li key={item.href}>
                   <Link
                     href={item.href}
-                    className="text-sm text-ink-700 hover:text-ink-900 hover:underline underline-offset-4"
+                    className="text-sm text-surface-400 transition-colors hover:text-brand-yellow"
                   >
                     {item.label}
                   </Link>
@@ -41,21 +54,22 @@ export function Footer() {
             </ul>
           </nav>
 
+          {/* External links */}
           <nav className="md:col-span-4" aria-label="Footer external">
-            <h2 className="mb-3 text-sm font-semibold uppercase tracking-wide text-ink-500">
+            <h2 className="mb-4 text-[0.65rem] font-bold uppercase tracking-[0.2em] text-surface-500">
               Elsewhere
             </h2>
-            <ul className="flex flex-col gap-2">
+            <ul className="flex flex-col gap-2.5">
               {FOOTER_EXTERNAL_NAV.map((item) => (
                 <li key={item.href}>
                   <a
                     href={item.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1.5 text-sm text-ink-700 hover:text-ink-900 hover:underline underline-offset-4"
+                    className="inline-flex items-center gap-1.5 text-sm text-surface-400 transition-colors hover:text-brand-yellow"
                   >
                     {item.label}
-                    <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" />
+                    <ExternalLink className="h-3 w-3 opacity-50" aria-hidden="true" />
                   </a>
                 </li>
               ))}
@@ -63,14 +77,15 @@ export function Footer() {
           </nav>
         </div>
 
-        <div className="flex flex-col gap-4 border-t border-surface-200 py-6 text-xs text-ink-500 sm:flex-row sm:items-center sm:justify-between">
-          <p>© {year} HollerithEnergyML contributors. MIT License.</p>
-          <ul className="flex items-center gap-5">
+        {/* Bottom bar */}
+        <div className="flex flex-col gap-4 border-t border-surface-0/10 py-6 text-xs text-surface-500 sm:flex-row sm:items-center sm:justify-between">
+          <p>&copy; {year} HollerithEnergyML contributors. MIT License.</p>
+          <ul className="flex items-center gap-6">
             {FOOTER_LEGAL_NAV.map((item) => (
               <li key={item.href}>
                 <Link
                   href={item.href}
-                  className="hover:text-ink-800 hover:underline underline-offset-4"
+                  className="transition-colors hover:text-surface-300"
                 >
                   {item.label}
                 </Link>

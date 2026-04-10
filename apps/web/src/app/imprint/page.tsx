@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, AlertTriangle } from "lucide-react";
 import { Container } from "@/components/ui/Container";
 import { PageHeader } from "@/components/marketing/PageHeader";
 
@@ -13,29 +13,32 @@ export const metadata: Metadata = {
 
 export default function ImprintPage() {
   return (
-    <Container size="wide">
-      <article className="py-section-lg lg:py-section-xl">
-        <PageHeader
-          eyebrow="Legal"
-          title="Imprint"
-          lede={
-            <>
-              Legal imprint according to <strong>§ 5 TMG</strong> and editorial
-              responsibility according to <strong>§ 18 Abs. 2 MStV</strong>.
-            </>
-          }
-        />
+    <article>
+      <PageHeader
+        eyebrow="Legal"
+        title="Imprint"
+        lede={
+          <>
+            Legal imprint according to <strong>§ 5 TMG</strong> and editorial
+            responsibility according to <strong>§ 18 Abs. 2 MStV</strong>.
+          </>
+        }
+      />
 
-        <div className="mt-section-lg max-w-3xl space-y-section-md text-ink-700">
-          <aside className="rounded-sm border border-warning/40 bg-warning/10 p-5 text-sm">
-            <p className="font-semibold text-ink-800">
-              Template — not yet legally binding.
-            </p>
-            <p className="mt-2 leading-relaxed">
-              The values in square brackets below are placeholders that must be
-              replaced with the real legally responsible party before this site
-              goes live in production. A qualified legal review is recommended.
-            </p>
+      <Container size="wide">
+        <div className="max-w-3xl space-y-section-md pb-section-lg pt-section-md text-ink-700 lg:pb-section-xl">
+          <aside className="flex gap-3 rounded-xl border border-warning/30 bg-warning/5 p-5 text-sm">
+            <AlertTriangle className="mt-0.5 h-4 w-4 flex-shrink-0 text-warning" aria-hidden="true" />
+            <div>
+              <p className="font-semibold text-ink-800">
+                Template — not yet legally binding.
+              </p>
+              <p className="mt-2 leading-relaxed">
+                The values in square brackets below are placeholders that must be
+                replaced with the real legally responsible party before this site
+                goes live in production. A qualified legal review is recommended.
+              </p>
+            </div>
           </aside>
 
           <section>
@@ -109,7 +112,7 @@ export default function ImprintPage() {
             <p className="mt-4 leading-relaxed">
               The source code of this application is published under the MIT
               License; see the{" "}
-              <code className="rounded-sm bg-surface-100 px-1.5 py-0.5 text-sm">
+              <code className="rounded-md bg-surface-100 px-1.5 py-0.5 text-sm">
                 LICENSE
               </code>{" "}
               file in the repository for the full terms. Content, text, and
@@ -121,16 +124,16 @@ export default function ImprintPage() {
           </section>
         </div>
 
-        <footer className="mt-section-lg border-t border-surface-200 pt-8">
+        <footer className="border-t border-surface-100 pb-section-lg pt-8">
           <Link
             href="/"
-            className="inline-flex items-center gap-1.5 text-sm font-semibold text-ink-700 hover:text-ink-900 hover:underline underline-offset-4"
+            className="inline-flex items-center gap-1.5 text-sm font-semibold text-ink-600 hover:text-ink-900 transition-colors"
           >
             <ArrowLeft className="h-4 w-4" aria-hidden="true" />
             Back to home
           </Link>
         </footer>
-      </article>
-    </Container>
+      </Container>
+    </article>
   );
 }
