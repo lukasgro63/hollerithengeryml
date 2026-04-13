@@ -1,14 +1,3 @@
-# Production stack for the Hetzner CX22 host.
-#
-# Expected layout on the host:
-#   /opt/hollerith/docker-compose.prod.yml   (this file)
-#   /opt/hollerith/Caddyfile                 (reverse proxy config)
-#   /etc/hollerith/.env                      (runtime env, mode 640 root:hollerith)
-#
-# Usage:
-#   sudo docker compose -f /opt/hollerith/docker-compose.prod.yml --env-file /etc/hollerith/.env pull
-#   sudo docker compose -f /opt/hollerith/docker-compose.prod.yml --env-file /etc/hollerith/.env up -d
-
 name: hollerith
 
 services:
@@ -21,22 +10,18 @@ services:
       - api
     ports:
       - "80:80"
-      - "443:443"
-    env_file:
-      - /etc/hollerith/.env
     volumes:
       - ./Caddyfile:/etc/caddy/Caddyfile:ro
-      - caddy_data:/data
-      - caddy_config:/config
     networks:
       - hollerith
 
   web:
-    image: ghcr.io/lukasgro63/hollerithengeryml/web:${TAG:-latest}
+    image: ghcr.io/lukasgro63/hollerithengeryml/web:latest
     container_name: hollerith-web
     restart: unless-stopped
-    env_file:
-      - /etc/hollerith/.env
+    environment:
+      NEXT_PUBLIC_API_URL: http://46.224.134.32/api
+      NEXT_PUBLIC_SITE_URL: http://46.224.134.32
     expose:
       - "3000"
     networks:
@@ -45,18 +30,21 @@ services:
       test:
         - CMD-SHELL
         - >-
-          node -e "fetch('http://127.0.0.1:3000/api/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"
+          node -e "fetch('http://127.0.0.1:3000/').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"
       interval: 30s
       timeout: 5s
       retries: 3
       start_period: 15s
 
   api:
-    image: ghcr.io/lukasgro63/hollerithengeryml/api:${TAG:-latest}
+    image: ghcr.io/lukasgro63/hollerithengeryml/api:latest
     container_name: hollerith-api
     restart: unless-stopped
-    env_file:
-      - /etc/hollerith/.env
+    environment:
+      ENVIRONMENT: production
+      LOG_LEVEL: info
+      ALLOWED_ORIGINS: http://46.224.134.32
+      PREDICTIONS_RATE_LIMIT_PER_MINUTE: "30"
     expose:
       - "8000"
     read_only: true
@@ -79,7 +67,3 @@ networks:
   hollerith:
     name: hollerith
     driver: bridge
-
-volumes:
-  caddy_data:
-  caddy_config:
