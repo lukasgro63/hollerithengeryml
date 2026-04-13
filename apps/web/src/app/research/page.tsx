@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { ExternalLink } from "lucide-react";
 import { BackLink } from "@/components/ui/BackLink";
 import { Container } from "@/components/ui/Container";
+import { DataCards } from "@/components/ui/DataCards";
 import { DataTable, TH_CLASS, TR_CLASS } from "@/components/ui/DataTable";
 import { TableOfContents } from "@/components/ui/TableOfContents";
 import { PageHeader } from "@/components/marketing/PageHeader";
@@ -14,7 +15,59 @@ export const metadata: Metadata = {
   description:
     "The 2024 baseline-measurement campaign that underpins HollerithEnergyML: " +
     "datasets, algorithms, tooling, and the meta-model training methodology.",
+  openGraph: {
+    type: "article",
+    title: "Research · HollerithEnergyML",
+    description:
+      "How the meta-model was built: 2024 baseline campaign with CodeCarbon " +
+      "across five scikit-learn classifiers and three public tabular datasets.",
+  },
 };
+
+const DATASETS = [
+  {
+    name: "Diabetes Health Indicators",
+    rows: "~254,000",
+    features: "21",
+    href: "https://www.kaggle.com/datasets/alexteboul/diabetes-health-indicators-dataset",
+    source: "Kaggle",
+  },
+  {
+    name: "Bank Marketing",
+    rows: "~41,000",
+    features: "19",
+    href: "https://archive.ics.uci.edu/dataset/222/bank+marketing",
+    source: "UCI",
+  },
+  {
+    name: "Heart Disease 2020",
+    rows: "~320,000",
+    features: "17",
+    href: "https://www.kaggle.com/datasets/kamilpytlak/personal-key-indicators-of-heart-disease",
+    source: "Kaggle / CDC",
+  },
+] as const;
+
+const META_MODEL_FEATURES = [
+  { idx: "0", name: "num_num_features", type: "int" },
+  { idx: "1", name: "num_cat_features", type: "int" },
+  { idx: "2", name: "number_of_instances", type: "int" },
+  { idx: "3–7", name: "model_0 – model_4", type: "one-hot" },
+] as const;
+
+function SourceLink({ href, source }: { href: string; source: string }) {
+  return (
+    <a
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="inline-flex items-center gap-1 text-ink-500 transition-colors hover:text-ink-900"
+    >
+      {source}
+      <ExternalLink className="h-3 w-3" aria-hidden="true" />
+    </a>
+  );
+}
 
 export default function ResearchPage() {
   return (
@@ -81,25 +134,32 @@ export default function ResearchPage() {
                   </tr>
                 </thead>
                 <tbody className="text-ink-700">
-                  {[
-                    { name: "Diabetes Health Indicators", rows: "~254,000", features: "21", href: "https://www.kaggle.com/datasets/alexteboul/diabetes-health-indicators-dataset", source: "Kaggle" },
-                    { name: "Bank Marketing", rows: "~41,000", features: "19", href: "https://archive.ics.uci.edu/dataset/222/bank+marketing", source: "UCI" },
-                    { name: "Heart Disease 2020", rows: "~320,000", features: "17", href: "https://www.kaggle.com/datasets/kamilpytlak/personal-key-indicators-of-heart-disease", source: "Kaggle / CDC" },
-                  ].map(({ name, rows, features, href, source }) => (
+                  {DATASETS.map(({ name, rows, features, href, source }) => (
                     <tr key={name} className={TR_CLASS}>
                       <td className="py-3 pr-6 font-semibold text-ink-900">{name}</td>
                       <td className="py-3 pr-6 font-mono text-xs tabular-nums">{rows}</td>
                       <td className="py-3 pr-6 font-mono text-xs tabular-nums">{features}</td>
                       <td className="py-3">
-                        <a href={href} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-sm text-ink-500 transition-colors hover:text-ink-900">
-                          {source}
-                          <ExternalLink className="h-3 w-3" aria-hidden="true" />
-                        </a>
+                        <SourceLink href={href} source={source} />
                       </td>
                     </tr>
                   ))}
                 </tbody>
               </DataTable>
+
+              <DataCards
+                number="Table 1"
+                caption="Datasets used in the baseline campaign"
+                items={DATASETS.map(({ name, rows, features, href, source }) => ({
+                  key: name,
+                  title: name,
+                  fields: [
+                    { label: "Rows", value: <span className="font-mono tabular-nums">{rows}</span> },
+                    { label: "Features", value: <span className="font-mono tabular-nums">{features}</span> },
+                    { label: "Source", value: <SourceLink href={href} source={source} /> },
+                  ],
+                }))}
+              />
 
               <p className="mt-4 leading-relaxed">
                 Every dataset was sampled at 100 %, 80 %, 60 %, 40 %, and
@@ -146,19 +206,6 @@ export default function ResearchPage() {
             </section>
 
             <section>
-              <h2 id="experiment-tracking" className="font-display text-h3 font-extrabold tracking-tight text-ink-950">
-                Experiment tracking
-              </h2>
-              <p className="mt-4 leading-relaxed">
-                Runs were tracked in MLflow through GitLab&apos;s ML Experiments
-                integration on the Reutlingen University GitLab instance. Each
-                run logged the sklearn estimator parameters, duration metrics,
-                and the serialised model as an artefact so later analysis could
-                reference the exact configuration.
-              </p>
-            </section>
-
-            <section>
               <h2 id="the-meta-model" className="font-display text-h3 font-extrabold tracking-tight text-ink-950">
                 The meta-model
               </h2>
@@ -188,12 +235,7 @@ export default function ResearchPage() {
                   </tr>
                 </thead>
                 <tbody className="text-ink-700">
-                  {[
-                    { idx: "0", name: "num_num_features", type: "int" },
-                    { idx: "1", name: "num_cat_features", type: "int" },
-                    { idx: "2", name: "number_of_instances", type: "int" },
-                    { idx: "3–7", name: "model_0 – model_4", type: "one-hot" },
-                  ].map(({ idx, name, type }) => (
+                  {META_MODEL_FEATURES.map(({ idx, name, type }) => (
                     <tr key={idx} className={TR_CLASS}>
                       <td className="py-3 pr-6 font-mono text-xs tabular-nums text-ink-400">{idx}</td>
                       <td className="py-3 pr-6 font-mono text-xs text-ink-800">{name}</td>
@@ -204,6 +246,19 @@ export default function ResearchPage() {
                   ))}
                 </tbody>
               </DataTable>
+
+              <DataCards
+                number="Table 2"
+                caption="Meta-model input features"
+                items={META_MODEL_FEATURES.map(({ idx, name, type }) => ({
+                  key: name,
+                  title: <span className="font-mono">{name}</span>,
+                  fields: [
+                    { label: "#", value: <span className="font-mono tabular-nums">{idx}</span> },
+                    { label: "Type", value: <span className="bg-surface-100 px-1.5 py-0.5 font-mono">{type}</span> },
+                  ],
+                }))}
+              />
 
               <p className="mt-4 leading-relaxed">
                 The five <code className="bg-surface-100 px-1.5 py-0.5 text-sm">model_*</code>{" "}
@@ -292,7 +347,6 @@ export default function ResearchPage() {
               { label: "The question", id: "the-question" },
               { label: "The baseline campaign", id: "the-baseline-campaign" },
               { label: "Measurement", id: "measurement" },
-              { label: "Experiment tracking", id: "experiment-tracking" },
               { label: "The meta-model", id: "the-meta-model" },
               { label: "Known limitations", id: "known-limitations" },
               { label: "Citation", id: "citation" },

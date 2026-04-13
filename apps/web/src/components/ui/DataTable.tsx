@@ -16,7 +16,7 @@ export { TH_CLASS, TR_CLASS };
 
 export function DataTable({ number, caption, children }: DataTableProps) {
   return (
-    <figure className="mt-8">
+    <figure className="mt-8 hidden sm:block">
       <figcaption className="flex items-center gap-3">
         <span className="flex-shrink-0 label text-brand-yellow-press">
           {number}

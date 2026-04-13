@@ -1,21 +1,26 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { createPortal } from "react-dom";
 import Link from "next/link";
 import { Menu, X } from "lucide-react";
 import { PRIMARY_NAV, FOOTER_LEGAL_NAV } from "@/lib/nav";
 import { Button } from "@/components/ui/Button";
 
+const subscribe = () => () => {};
+function useIsClient(): boolean {
+  return useSyncExternalStore(
+    subscribe,
+    () => true,
+    () => false,
+  );
+}
+
 export function MobileNav() {
   const [open, setOpen] = useState(false);
-  const [mounted, setMounted] = useState(false);
+  const isClient = useIsClient();
   const closeRef = useRef<HTMLButtonElement>(null);
   const dialogRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
 
   useEffect(() => {
     if (open) {
@@ -136,12 +141,13 @@ export function MobileNav() {
         onClick={() => setOpen(true)}
         className="inline-flex h-10 w-10 items-center justify-center text-ink-800 hover:bg-surface-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-yellow"
         aria-label="Open menu"
+        aria-haspopup="dialog"
         aria-expanded={open}
         aria-controls="mobile-menu"
       >
         <Menu className="h-6 w-6" />
       </button>
-      {mounted && dialog ? createPortal(dialog, document.body) : null}
+      {isClient && dialog ? createPortal(dialog, document.body) : null}
     </>
   );
 }
