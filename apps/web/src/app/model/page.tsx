@@ -101,7 +101,7 @@ export default function ModelPage() {
 
       <Container size="wide">
         <div className="mt-section-md grid gap-section-md pb-section-lg lg:grid-cols-[minmax(0,1fr)_18rem] lg:pb-section-xl">
-          <div className="max-w-3xl space-y-section-md text-ink-700">
+          <div className="min-w-0 max-w-3xl space-y-section-md text-ink-700">
             <section>
               <h2 id="at-a-glance" className="font-display text-h3 font-extrabold tracking-tight text-ink-950">
                 At a glance

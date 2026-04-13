@@ -191,10 +191,11 @@ export function PipelineOverview() {
         </span>
       </figcaption>
 
-      <div className="overflow-x-auto">
+      <div className="w-full">
         <svg
           viewBox={`0 0 ${SVG_W} ${SVG_H}`}
-          className="w-full min-w-[600px]"
+          preserveAspectRatio="xMidYMid meet"
+          className="block h-auto w-full"
           style={{ maxHeight: "350px" }}
         >
 
