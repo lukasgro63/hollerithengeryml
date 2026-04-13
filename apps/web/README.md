@@ -25,16 +25,15 @@ lucide-react · clsx + tailwind-merge.
 
 ## Pages
 
-| Route         | Purpose                                              |
-|---------------|------------------------------------------------------|
-| `/`           | Landing (hero, how-it-works cards, call-to-action)   |
-| `/calculate`  | Deep-link to the calculator (Phase 3)                |
-| `/research`   | Baseline-campaign methodology (Phase 4)              |
-| `/model`      | Model card (Phase 4)                                 |
-| `/about`      | HHZ attribution and credits (Phase 4)                |
-| `/imprint`    | Legal imprint (Phase 4)                              |
-| `/privacy`    | Privacy policy (Phase 4)                             |
-| `/api/health` | Liveness probe consumed by the Docker HEALTHCHECK    |
+| Route         | Purpose                                            |
+|---------------|----------------------------------------------------|
+| `/`           | Landing (hero, how-it-works, research teaser, FAQ) |
+| `/calculate`  | Calculator form and results                        |
+| `/research`   | Baseline-campaign methodology                      |
+| `/model`      | Model card                                         |
+| `/imprint`    | Legal imprint                                      |
+| `/privacy`    | Privacy policy                                     |
+| `/api/health` | Liveness probe consumed by the Docker HEALTHCHECK  |
 
 ## Design tokens
 

@@ -27,18 +27,23 @@ docs/      Architecture, Model Card, Runbook, Contributing
 %%{init: {'theme': 'neutral'}}%%
 graph TB
     internet((Internet))
-    subgraph Hetzner Cloud CX22
-        caddy[Caddy 2 · :443 · Let's Encrypt]
+    subgraph Hetzner Cloud VPS
+        caddy[Caddy 2 · :80]
         web[Next.js 16 · :3000]
         api[FastAPI · gunicorn · :8000]
         model[(ml_model_package.pkl)]
     end
 
-    internet -- HTTPS --> caddy
+    internet -- HTTP --> caddy
     caddy -- /* --> web
     caddy -- /api/* --> api
     api -. read-only .-> model
 ```
+
+Production currently runs on a public IPv4 without a domain, so Caddy
+serves plain HTTP. Adding a domain is a one-line change in the Caddyfile
+(`:80` → `example.de`) — Caddy then provisions a Let's Encrypt
+certificate automatically on next restart.
 
 ## Prediction flow
 
@@ -117,15 +122,20 @@ graph LR
     push[git push main]
     ci[CI · lint · test · build]
     build[Docker Buildx → ghcr.io]
-    deploy[SSH → Hetzner]
-    health{Health check}
+    webhook[Portainer webhook]
+    pull[Portainer pulls images]
+    health{Smoke test}
     ok([Live])
-    rollback[Rollback]
+    fail[Alert]
 
-    push --> ci --> build --> deploy --> health
+    push --> ci --> build --> webhook --> pull --> health
     health -- pass --> ok
-    health -- fail --> rollback
+    health -- fail --> fail
 ```
+
+No SSH involved: GitHub Actions only calls a webhook URL. Portainer
+reconciles the stack from the Git repository and pulls new images from
+`ghcr.io`. See `infra/README.md` for the full flow.
 
 ## Technology choices
 
@@ -145,20 +155,25 @@ graph LR
 
 ## Security posture
 
-- HTTPS only — Caddy auto-renews Let's Encrypt certificates.
-- HSTS with `preload`, strict CSP, `X-Frame-Options: DENY`,
-  `Referrer-Policy: strict-origin-when-cross-origin`, `Permissions-Policy`
-  locking out camera, microphone, geolocation.
-- CORS allowlist — no wildcards.
-- Pydantic v2 bounded inputs to prevent resource exhaustion.
-- Rate limiting on `/api/v1/predictions` (slowapi).
-- Docker containers run as a non-root user with a read-only root filesystem.
-- The joblib-serialised model is loaded from an immutable model volume at
-  startup only — never from user input — to neutralise the
-  deserialisation-RCE attack surface.
-- Secrets live in `/etc/hollerith/.env` (chmod 600) on the host, outside git.
-- Runtime dependencies are version-pinned for model-load compatibility
-  with the 2024 meta-model artefact.
+- **Transport**: HTTP on port 80. No HTTPS until a domain is assigned;
+  the Caddyfile will auto-provision Let's Encrypt once a hostname
+  replaces the `:80` listener.
+- **Headers**: `X-Content-Type-Options: nosniff`, `X-Frame-Options:
+  SAMEORIGIN`, `Referrer-Policy: strict-origin-when-cross-origin`,
+  `Permissions-Policy` locking out camera/microphone/geolocation —
+  all applied by Caddy for every response.
+- **CORS**: explicit allowlist, no wildcards.
+- **Input validation**: Pydantic v2 with bounded integer ranges prevents
+  resource exhaustion.
+- **Rate limiting**: slowapi (30 requests per minute per IP on the
+  predictions endpoint).
+- **Container hardening**: api runs read-only with `tmpfs /tmp`, web
+  runs as non-root, Caddy publishes only port 80.
+- **Model loading**: joblib artefact loaded once at startup from the
+  image layer — never from user input — so deserialisation-RCE is
+  off the table at request time.
+- **Pinned dependencies**: runtime versions match the 2024 training
+  environment exactly so the serialised model loads deterministically.
 
 ## What lives where
 

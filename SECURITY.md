@@ -10,9 +10,9 @@ Please report vulnerabilities **privately** via GitHub Security Advisories:
 
 > https://github.com/lukasgro63/hollerithengeryml/security/advisories/new
 
-If for any reason you cannot use GitHub Security Advisories, email
-`security@REPLACE_WITH_DOMAIN` instead. (The production domain is pending
-go-live; once it is set, this address will resolve.)
+If for any reason you cannot use GitHub Security Advisories, contact the
+Herman Hollerith Zentrum at Reutlingen University through the imprint
+listed on the deployed site or on <https://www.hhz.de/impressum>.
 
 Do **not** open public GitHub issues for security findings.
 
@@ -57,10 +57,13 @@ list is non-exhaustive but covers the load-bearing controls:
 - The joblib model artefact is baked into the api image at build time and
   loaded read-only at startup — never from user input — eliminating the
   deserialisation-RCE exposure to untrusted data
-- HSTS preload, strict Content-Security-Policy, `X-Frame-Options: DENY`,
-  `Referrer-Policy`, and a `Permissions-Policy` locking out camera,
-  microphone, and geolocation are applied globally by Caddy
-- HTTPS only, with automatic Let's Encrypt certificate renewal via Caddy
+- `X-Content-Type-Options: nosniff`, `X-Frame-Options: SAMEORIGIN`,
+  `Referrer-Policy: strict-origin-when-cross-origin`, and a
+  `Permissions-Policy` locking out camera, microphone, and geolocation
+  are applied globally by Caddy
+- Production currently serves HTTP only because no domain is assigned;
+  the Caddyfile switches to HTTPS with automatic Let's Encrypt renewal
+  as soon as the `:80` listener is replaced with a hostname
 - CORS allowlist (no wildcards), configured per environment via the
   `ALLOWED_ORIGINS` environment variable
 - No user data is stored: no database, no cookies, no third-party

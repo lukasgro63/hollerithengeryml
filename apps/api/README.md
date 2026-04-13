@@ -15,7 +15,7 @@ uv run uvicorn hollerith_api.main:app --reload --port 8000
 
 ## Stack
 
-Python 3.11 · FastAPI 0.115 · Pydantic v2 · scikit-learn 1.2.2 (pinned) ·
+Python 3.11 · FastAPI 0.135 · Pydantic v2 · scikit-learn 1.2.2 (pinned) ·
 joblib · structlog · slowapi · uv · ruff · pytest.
 
 > **Note:** Python is pinned to 3.11 because scikit-learn 1.2.2 (required to

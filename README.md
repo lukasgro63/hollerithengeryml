@@ -93,12 +93,13 @@ npm run dev
 | Frontend    | Next.js 16 · React 19 · TypeScript · Tailwind CSS 4 |
 | UI kit      | lucide-react · Recharts · clsx + tailwind-merge     |
 | Forms       | react-hook-form · zod                               |
-| Backend     | FastAPI 0.115 · Python 3.11 · Pydantic v2           |
+| Backend     | FastAPI 0.135 · Python 3.11 · Pydantic v2           |
 | ML runtime  | scikit-learn 1.2.2 (pinned) · joblib                |
 | Tooling     | uv · ruff · pytest                                  |
 | Container   | Docker · Docker Compose v2                          |
-| Proxy       | Caddy 2 (automatic HTTPS)                           |
-| Hosting     | Hetzner Cloud (Nuremberg)                           |
+| Proxy       | Caddy 2                                             |
+| Orchestrator| Portainer CE (GitOps)                               |
+| Hosting     | Hetzner Cloud                                       |
 | CI/CD       | GitHub Actions · ghcr.io                            |
 
 ## Model preservation
