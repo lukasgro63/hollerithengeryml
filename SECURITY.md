@@ -65,9 +65,11 @@ list is non-exhaustive but covers the load-bearing controls:
   `ALLOWED_ORIGINS` environment variable
 - No user data is stored: no database, no cookies, no third-party
   analytics, no session state
-- Dependabot opens weekly pull requests across pip, npm, docker, and
-  github-actions ecosystems; Trivy image scanning is planned for
-  post-handoff
+- Dependency versions are pinned to exactly the values that the 2024
+  meta-model artefact was serialised with (`scikit-learn==1.2.2`,
+  `numpy==1.23.5`, `pandas==1.5.3`, `joblib==1.3.2`). Automatic
+  dependency updates are disabled to protect model-load compatibility;
+  future maintainers should re-enable them after retraining.
 
 ## Response expectations
 

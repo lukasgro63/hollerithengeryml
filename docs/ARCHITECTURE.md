@@ -157,7 +157,8 @@ graph LR
   startup only — never from user input — to neutralise the
   deserialisation-RCE attack surface.
 - Secrets live in `/etc/hollerith/.env` (chmod 600) on the host, outside git.
-- Dependency scanning via Dependabot.
+- Runtime dependencies are version-pinned for model-load compatibility
+  with the 2024 meta-model artefact.
 
 ## What lives where
 
@@ -170,4 +171,3 @@ graph LR
 | CI-triggered deploy      | `infra/deploy/deploy.sh`          |
 | CI checks                | `.github/workflows/ci.yml`        |
 | Build, push, deploy      | `.github/workflows/deploy.yml`    |
-| Dependency updates        | `.github/dependabot.yml`          |

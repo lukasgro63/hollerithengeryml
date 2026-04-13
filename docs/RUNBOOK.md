@@ -151,16 +151,16 @@ Decision tree, top to bottom:
 
 ## Update dependencies
 
-Dependabot opens pull requests every Monday across four ecosystems: pip
-(`apps/api/`), npm (`apps/web/`), `github-actions`, and `docker`. The
-workflow:
+Automated dependency updates are disabled. The reason: the deployed
+meta-model was serialised with exactly `scikit-learn==1.2.2`,
+`numpy==1.23.5`, `pandas==1.5.3`, and `joblib==1.3.2`; bumping any of
+those versions will either break model loading or silently change
+prediction output. The other dependencies ride along under the same
+policy to keep the snapshot reproducible.
 
-1. Review the diff on the Dependabot PR.
-2. Wait for `.github/workflows/ci.yml` to go green.
-3. Merge.
-
-Major-version bumps for Next.js and React are intentionally ignored because
-they require a manual migration pass.
+If you retrain the meta-model or export it to a version-agnostic
+format (ONNX), re-enable updates by committing a `.github/dependabot.yml`
+and re-running the rebuild pipeline.
 
 ## Restore from backup
 
