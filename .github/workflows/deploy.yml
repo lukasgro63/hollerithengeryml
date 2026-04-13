@@ -6,6 +6,12 @@ on:
       - main
     tags:
       - "v*.*.*"
+    paths:
+      - "apps/api/**"
+      - "apps/web/**"
+      - "infra/docker-compose.prod.yml"
+      - ".github/workflows/deploy.yml"
+      - ".github/workflows/ci.yml"
 
 concurrency:
   group: deploy
