@@ -19,8 +19,8 @@ services:
     container_name: hollerith-web
     restart: unless-stopped
     environment:
-      NEXT_PUBLIC_API_URL: http://46.224.134.32/api
-      NEXT_PUBLIC_SITE_URL: http://46.224.134.32
+      NEXT_PUBLIC_API_URL: http://${SITE_DOMAIN}/api
+      NEXT_PUBLIC_SITE_URL: http://${SITE_DOMAIN}
     expose:
       - "3000"
     networks:
@@ -39,7 +39,7 @@ services:
     environment:
       ENVIRONMENT: production
       LOG_LEVEL: info
-      ALLOWED_ORIGINS: http://46.224.134.32
+      ALLOWED_ORIGINS: http://${SITE_DOMAIN}
       PREDICTIONS_RATE_LIMIT_PER_MINUTE: "30"
     expose:
       - "8000"
