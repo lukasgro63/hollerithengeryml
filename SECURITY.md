@@ -27,7 +27,7 @@ long-term support branches.
 
 ## In scope
 
-- The deployed production service at the configured domain
+- The deployed production service (currently reachable on a bare Hetzner IPv4 address; a domain will be added later)
 - The FastAPI backend source under `apps/api/`
 - The Next.js frontend source under `apps/web/`
 - The model artefact loading path (joblib archive baked into the api image)
