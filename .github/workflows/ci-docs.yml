@@ -1,0 +1,26 @@
+name: CI
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths-ignore:
+      - "apps/**"
+      - ".github/workflows/**"
+      - "Makefile"
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
+
+jobs:
+  api:
+    name: api
+    runs-on: ubuntu-24.04
+    steps:
+      - run: echo "docs/config-only PR — skipping api CI"
+
+  web:
+    name: web
+    runs-on: ubuntu-24.04
+    steps:
+      - run: echo "docs/config-only PR — skipping web CI"
