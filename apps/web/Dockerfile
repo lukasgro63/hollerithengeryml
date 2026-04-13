@@ -3,7 +3,7 @@
 # ============================================================================
 # Stage 1 — deps: install node_modules from lockfile.
 # ============================================================================
-FROM node:22-alpine AS deps
+FROM node:25-alpine AS deps
 
 WORKDIR /app
 
@@ -16,7 +16,7 @@ RUN npm ci --prefer-offline --no-audit --no-fund
 # ============================================================================
 # Stage 2 — builder: compile the Next.js standalone output.
 # ============================================================================
-FROM node:22-alpine AS builder
+FROM node:25-alpine AS builder
 
 WORKDIR /app
 
@@ -35,7 +35,7 @@ RUN npm run build
 # ============================================================================
 # Stage 3 — runner: minimal runtime with non-root user.
 # ============================================================================
-FROM node:22-alpine AS runner
+FROM node:25-alpine AS runner
 
 WORKDIR /app
 
