@@ -12,7 +12,7 @@ authors = [{ name = "HollerithEnergyML contributors" }]
 # it does not. Do not bump scikit-learn, numpy, pandas, or joblib without
 # re-verifying that `apps/api/models/ml_model_package.pkl` still loads.
 dependencies = [
-    "fastapi>=0.135,<0.136",
+    "fastapi>=0.135.3,<0.136",
     "uvicorn[standard]>=0.44,<0.45",
     "gunicorn>=25.3,<26",
     "pydantic>=2.12,<3",
