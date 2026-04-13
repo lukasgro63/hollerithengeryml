@@ -3,6 +3,20 @@
 All notable changes to this project will be documented in this file.
 Format based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [1.0.1](https://github.com/lukasgro63/hollerithengeryml/compare/v1.0.0...v1.0.1) (2026-04-13)
+
+
+### Bug Fixes
+
+* mobile layout overflow, tables-as-cards, portal mobile menu ([#29](https://github.com/lukasgro63/hollerithengeryml/issues/29)) ([6626310](https://github.com/lukasgro63/hollerithengeryml/commit/66263105235e966d3321222637f46badc9144912))
+
+
+### CI/CD
+
+* introduce release-please for changelog and semver tagging ([#30](https://github.com/lukasgro63/hollerithengeryml/issues/30)) ([735f65a](https://github.com/lukasgro63/hollerithengeryml/commit/735f65a5937d5cdbd3e3bfd0bd72546f88041a19))
+* revert PAT for release-please ([#33](https://github.com/lukasgro63/hollerithengeryml/issues/33)) ([b21c157](https://github.com/lukasgro63/hollerithengeryml/commit/b21c157cdaa462c448a0a14b6642dd22a8ba78c0))
+* use PAT for release-please so its PRs trigger CI checks ([#32](https://github.com/lukasgro63/hollerithengeryml/issues/32)) ([cb6eb41](https://github.com/lukasgro63/hollerithengeryml/commit/cb6eb41b66d5238b950fe48a27cbea4a31ca7211))
+
 ## [1.0.0] - 2026-04-10
 
 ### Added
