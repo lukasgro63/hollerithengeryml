@@ -15,7 +15,7 @@ dependencies = [
     "fastapi>=0.135,<0.136",
     "uvicorn[standard]>=0.44,<0.45",
     "gunicorn>=25.3,<26",
-    "pydantic>=2.12,<3",
+    "pydantic>=2.12.5,<3",
     "pydantic-settings>=2.13,<3",
     "scikit-learn==1.2.2",
     "numpy==1.23.5",
