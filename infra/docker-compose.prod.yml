@@ -19,7 +19,7 @@ services:
     container_name: hollerith-web
     restart: unless-stopped
     environment:
-      NEXT_PUBLIC_API_URL: http://${SITE_DOMAIN}/api
+      NEXT_PUBLIC_API_URL: http://${SITE_DOMAIN}
       NEXT_PUBLIC_SITE_URL: http://${SITE_DOMAIN}
     expose:
       - "3000"

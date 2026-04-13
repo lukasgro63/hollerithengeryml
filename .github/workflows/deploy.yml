@@ -71,7 +71,7 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           build-args: |
-            NEXT_PUBLIC_API_URL=http://${{ vars.SITE_DOMAIN }}/api
+            NEXT_PUBLIC_API_URL=http://${{ vars.SITE_DOMAIN }}
             NEXT_PUBLIC_SITE_URL=http://${{ vars.SITE_DOMAIN }}
           cache-from: type=gha,scope=web
           cache-to: type=gha,mode=max,scope=web
