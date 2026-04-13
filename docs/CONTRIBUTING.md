@@ -32,10 +32,75 @@ We follow GitHub-flow:
 
 ## Commit messages
 
-- Present tense, imperative mood: "Add health endpoint", not "Added" or
-  "Adds".
-- First line under 70 characters.
-- If the change closes an issue, add `Closes #123` at the bottom.
+We use [Conventional Commits](https://www.conventionalcommits.org). The
+release pipeline (`release-please`) reads commit messages on `main` to
+generate the changelog, bump the version, and tag Docker images.
+
+Format:
+
+```
+<type>: <short imperative summary>
+
+<optional body>
+
+<optional footer, e.g. Closes #123>
+```
+
+Allowed types and how they affect releases:
+
+| Type       | Section in changelog | Triggers version bump |
+|------------|----------------------|-----------------------|
+| `feat`     | Features             | minor (1.0.0 → 1.1.0) |
+| `fix`      | Bug Fixes            | patch (1.0.0 → 1.0.1) |
+| `perf`     | Performance          | patch                 |
+| `refactor` | Refactoring          | patch                 |
+| `docs`     | Documentation        | patch                 |
+| `deps`     | Dependencies         | patch                 |
+| `build`    | Build                | patch                 |
+| `ci`       | CI/CD                | patch                 |
+| `test`     | (hidden)             | patch                 |
+| `chore`    | (hidden)             | patch                 |
+| `style`    | (hidden)             | patch                 |
+
+A breaking change is signalled by a `!` after the type or a
+`BREAKING CHANGE:` footer; that triggers a major bump.
+
+Rules:
+
+- First line under 70 characters, imperative mood: "Add health endpoint",
+  not "Added" or "Adds".
+- One logical change per commit.
+- Reference issues in the footer: `Closes #123`.
+
+Example:
+
+```
+feat: add domain-aware Caddy config
+
+The reverse proxy now provisions a Let's Encrypt certificate
+automatically when SITE_DOMAIN is a hostname instead of an IP.
+
+Closes #42
+```
+
+## How releases work
+
+`release-please` runs on every push to `main`. It groups your commits
+since the last release and opens a **Release PR** with:
+
+- An updated `CHANGELOG.md`
+- A version bump in `.release-please-manifest.json`
+
+When you merge the Release PR:
+
+1. A git tag (e.g. `v1.1.0`) is created.
+2. A GitHub Release is published with the changelog body.
+3. The deploy workflow re-tags the Docker images with `1.1.0`, `1.1`,
+   and `1` so historical versions remain pullable from `ghcr.io`.
+
+The `:latest` tag still points at the head of `main`, so production
+keeps deploying continuously. Tagged versions are there for rollback
+and for any future stable-channel deployment.
 
 ## Code style
 

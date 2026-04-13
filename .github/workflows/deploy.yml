@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - main
+    tags:
+      - "v*.*.*"
 
 concurrency:
   group: deploy
@@ -48,8 +50,11 @@ jobs:
         with:
           images: ghcr.io/lukasgro63/hollerithengeryml/${{ matrix.service }}
           tags: |
-            type=raw,value=latest
+            type=raw,value=latest,enable={{is_default_branch}}
             type=sha,format=long,prefix=
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
+            type=semver,pattern={{major}}
 
       - name: Build and push (api)
         if: matrix.service == 'api'
@@ -79,6 +84,7 @@ jobs:
   deploy:
     name: deploy
     needs: build-push
+    if: github.ref_type == 'branch'
     runs-on: ubuntu-24.04
     env:
       PORTAINER_WEBHOOK_URL: ${{ secrets.PORTAINER_WEBHOOK_URL }}
