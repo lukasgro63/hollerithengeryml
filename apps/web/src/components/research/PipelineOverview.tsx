@@ -1,15 +1,3 @@
-/**
- * Horizontal neural-network-style pipeline diagram.
- *
- * Four "layers" of nodes connected by bezier curves:
- *   Datasets (3) → Reduction levels (5) → Classifiers (5) → Output (1)
- *
- * Each connection line represents the fact that every dataset was
- * subsampled at every level and measured for every classifier.
- */
-
-/* ── Layout constants ──────────────────────────────────────────── */
-
 const NODE_H = 46;
 const NODE_W = 108;
 const SMALL_W = 72;
@@ -34,8 +22,6 @@ const LAYERS = {
   classifiers: yCenters(5),
   output: yCenters(1),
 };
-
-/* ── SVG bezier helper ─────────────────────────────────────────── */
 
 function bezier(
   x1: number, y1: number,
@@ -62,9 +48,9 @@ function Connections({
   }
   return (
     <>
-      {paths.map((d, i) => (
+      {paths.map((d) => (
         <path
-          key={i}
+          key={d}
           d={d}
           fill="none"
           stroke={color}
@@ -76,7 +62,6 @@ function Connections({
   );
 }
 
-/* ── Node components ───────────────────────────────────────────── */
 
 function DatasetNode({ x, y, name, detail }: {
   x: number; y: number; name: string; detail: string;
@@ -163,8 +148,6 @@ function ColLabel({ x, y, children }: {
   );
 }
 
-/* ── Main component ────────────────────────────────────────────── */
-
 const DATASETS_DATA = [
   { name: "Diabetes", detail: "254k × 21" },
   { name: "Bank", detail: "41k × 19" },
@@ -191,10 +174,11 @@ export function PipelineOverview() {
         </span>
       </figcaption>
 
-      <div className="overflow-x-auto">
+      <div className="w-full">
         <svg
           viewBox={`0 0 ${SVG_W} ${SVG_H}`}
-          className="w-full min-w-[600px]"
+          preserveAspectRatio="xMidYMid meet"
+          className="block h-auto w-full"
           style={{ maxHeight: "350px" }}
         >
 

@@ -52,10 +52,6 @@ export function CitationBlock() {
         <p className="mt-2 font-display text-h4 font-bold leading-snug tracking-tight text-ink-950">
           {PAPER_TITLE}
         </p>
-
-        <p className="mt-4 text-sm leading-relaxed text-ink-600">
-          {PAPER_AUTHORS.join(", ")}
-        </p>
       </div>
 
 

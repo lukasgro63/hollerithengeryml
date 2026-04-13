@@ -3,6 +3,7 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { BackLink } from "@/components/ui/BackLink";
 import { Container } from "@/components/ui/Container";
+import { DataCards } from "@/components/ui/DataCards";
 import { DataTable, TH_CLASS, TR_CLASS } from "@/components/ui/DataTable";
 import { TableOfContents } from "@/components/ui/TableOfContents";
 import { PageHeader } from "@/components/marketing/PageHeader";
@@ -12,6 +13,13 @@ export const metadata: Metadata = {
   description:
     "Technical details about the HollerithEnergyML meta-model: framework, " +
     "feature layout, model-selection rule, intended use, and known limitations.",
+  openGraph: {
+    type: "article",
+    title: "Model card · HollerithEnergyML",
+    description:
+      "scikit-learn meta-model: 8-feature input, RandomForest path inside the " +
+      "envelope, linear fallback outside. Training data, intended use, limitations.",
+  },
 };
 
 type FeatureRow = {
@@ -101,7 +109,7 @@ export default function ModelPage() {
 
       <Container size="wide">
         <div className="mt-section-md grid gap-section-md pb-section-lg lg:grid-cols-[minmax(0,1fr)_18rem] lg:pb-section-xl">
-          <div className="max-w-3xl space-y-section-md text-ink-700">
+          <div className="min-w-0 max-w-3xl space-y-section-md text-ink-700">
             <section>
               <h2 id="at-a-glance" className="font-display text-h3 font-extrabold tracking-tight text-ink-950">
                 At a glance
@@ -161,7 +169,7 @@ export default function ModelPage() {
                     <th className={TH_CLASS}>#</th>
                     <th className={TH_CLASS}>Name</th>
                     <th className={TH_CLASS}>Type</th>
-                    <th className={`hidden ${TH_CLASS} !pr-0 sm:table-cell`}>Description</th>
+                    <th className={`${TH_CLASS} !pr-0`}>Description</th>
                   </tr>
                 </thead>
                 <tbody className="text-ink-700">
@@ -172,11 +180,25 @@ export default function ModelPage() {
                       <td className="py-3 pr-6">
                         <span className="bg-surface-100 px-1.5 py-0.5 font-mono text-xs text-ink-600">{feature.type}</span>
                       </td>
-                      <td className="hidden py-3 text-xs text-ink-500 sm:table-cell">{feature.description}</td>
+                      <td className="py-3 text-xs text-ink-500">{feature.description}</td>
                     </tr>
                   ))}
                 </tbody>
               </DataTable>
+
+              <DataCards
+                number="Table 1"
+                caption="Regressor input features"
+                items={FEATURES.map((feature) => ({
+                  key: feature.name,
+                  title: <span className="font-mono">{feature.name}</span>,
+                  fields: [
+                    { label: "#", value: <span className="font-mono tabular-nums">{feature.index}</span> },
+                    { label: "Type", value: <span className="bg-surface-100 px-1.5 py-0.5 font-mono">{feature.type}</span> },
+                    { label: "Description", value: feature.description },
+                  ],
+                }))}
+              />
 
               <p className="mt-4 text-sm text-ink-500">
                 The enum order is load-bearing — it matches the 2024 training
