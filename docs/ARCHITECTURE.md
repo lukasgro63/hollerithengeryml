@@ -177,12 +177,12 @@ reconciles the stack from the Git repository and pulls new images from
 
 ## What lives where
 
-| Concern                  | File                              |
-|--------------------------|-----------------------------------|
-| Local dev stack          | `infra/docker-compose.yml`        |
-| Production stack         | `infra/docker-compose.prod.yml`   |
-| Reverse proxy + HTTPS    | `infra/Caddyfile`                 |
-| One-time host bootstrap  | `infra/deploy/provision.sh`       |
-| CI-triggered deploy      | `infra/deploy/deploy.sh`          |
-| CI checks                | `.github/workflows/ci.yml`        |
-| Build, push, deploy      | `.github/workflows/deploy.yml`    |
+| Concern                  | File                                       |
+|--------------------------|--------------------------------------------|
+| Local dev stack          | `infra/docker-compose.yml`                 |
+| Production stack         | `infra/docker-compose.prod.yml`            |
+| Reverse proxy            | `infra/Caddyfile`                          |
+| CI checks (code)         | `.github/workflows/ci.yml`                 |
+| CI checks (docs no-op)   | `.github/workflows/ci-docs.yml`            |
+| Build, push, deploy      | `.github/workflows/deploy.yml`             |
+| Auto changelog + tags    | `.github/workflows/release-please.yml`     |
