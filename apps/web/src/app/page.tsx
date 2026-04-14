@@ -8,7 +8,7 @@ import { CallToAction } from "@/components/marketing/CallToAction";
 export const metadata: Metadata = {
   title: "HollerithEnergyML — Predict ML training energy consumption",
   description:
-    "Estimate kilowatt-hours for five classical scikit-learn algorithms before you train. " +
+    "Compare the relative training-energy share of five classical scikit-learn algorithms before you train. " +
     "A peer-reviewed research tool from the Herman Hollerith Zentrum at Reutlingen University.",
 };
 

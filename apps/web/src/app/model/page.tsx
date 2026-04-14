@@ -140,11 +140,15 @@ export default function ModelPage() {
                 Intended use
               </h2>
               <p className="mt-4 leading-relaxed">
-                Predicts the energy consumption (in kilowatt-hours) of training one
-                of five classical scikit-learn classifiers on a tabular dataset of
-                a given shape. Intended as a <strong>decision-support tool</strong>{" "}
-                for students, researchers, and practitioners evaluating algorithm
-                choice for their training workloads before they burn the watts.
+                Predicts the <strong>relative training-energy share</strong> (0–100,
+                normalised to the highest-consuming algorithm) for five classical
+                scikit-learn classifiers on a tabular dataset of a given shape.
+                The relative format is intentional: it lets you compare algorithms
+                at a glance without implying false precision in the absolute
+                kilowatt-hour magnitudes the underlying meta-model produces.
+                Intended as a <strong>decision-support tool</strong> for students,
+                researchers, and practitioners evaluating algorithm choice for
+                their training workloads before they burn the watts.
               </p>
               <p className="mt-4 leading-relaxed">
                 Not intended for: production capacity planning, financial
@@ -239,12 +243,14 @@ export default function ModelPage() {
                 Output
               </h2>
               <p className="mt-4 leading-relaxed">
-                One floating-point number per algorithm, representing predicted
-                training energy in kilowatt-hours. The API returns all five
-                numbers in a single response, sorted from highest to lowest
-                predicted energy with a one-based rank attached. The UI
-                automatically picks the most readable display unit (kWh, Wh, mWh,
-                or µWh) based on the magnitude of the values.
+                One integer per algorithm in the range <strong>0–100</strong>,
+                representing the predicted training-energy share relative to the
+                highest-consuming algorithm in the same response — so the worst
+                algorithm is always exactly <code>100</code>. The API returns all
+                five values in a single response, sorted descending by share with
+                a one-based rank attached. No absolute kilowatt-hour values leave
+                the API: the meta-model still works in kilowatt-hours internally,
+                but the public surface keeps the comparison unit-free.
               </p>
             </section>
 

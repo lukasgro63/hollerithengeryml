@@ -12,13 +12,13 @@ const FEATURES = [
     step: "02",
     icon: Gauge,
     title: "Model selection by threshold",
-    body: "The meta-model instantly ranks all five algorithms by predicted kilowatt-hours — no GPU time spent.",
+    body: "The meta-model instantly ranks all five algorithms by their relative training-energy share — no GPU time spent.",
   },
   {
     step: "03",
     icon: LineChart,
     title: "Compare five algorithms",
-    body: "See predicted kWh for Decision Tree, Gaussian NB, KNN, Logistic Regression, and Random Forest — ranked, side by side.",
+    body: "See the relative energy share of Decision Tree, Gaussian NB, KNN, Logistic Regression, and Random Forest — ranked, side by side.",
   },
 ] as const;
 

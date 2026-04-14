@@ -46,7 +46,7 @@ export const CALCULATOR_DEFAULTS: PredictionsRequest = {
 
 export const AlgorithmPredictionSchema = z.object({
   algorithm: z.string(),
-  energy_kwh: z.number(),
+  energy_percent: z.number().int().min(0).max(100),
   rank: z.number().int().min(1).max(5),
 });
 
@@ -65,7 +65,6 @@ export type ModelUsed = z.infer<typeof ModelUsedSchema>;
 
 export const PredictionsResponseSchema = z.object({
   predictions: z.array(AlgorithmPredictionSchema).length(5),
-  average_kwh: z.number(),
   model_used: ModelUsedSchema,
   thresholds_applied: ThresholdsAppliedSchema,
   out_of_training_range: z.boolean(),
