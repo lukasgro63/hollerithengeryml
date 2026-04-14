@@ -3,6 +3,30 @@
 All notable changes to this project will be documented in this file.
 Format based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [2.0.0](https://github.com/lukasgro63/hollerithengeryml/compare/v1.0.1...v2.0.0) (2026-04-14)
+
+
+### ⚠ BREAKING CHANGES
+
+* **calculator:** AlgorithmPrediction now exposes energy_percent (int 0..100) instead of energy_kwh, and PredictionsResponse no longer returns average_kwh. The meta-model still works in kilowatt-hours internally; only the public API and UI surface change. Frontend type helpers formatEnergy/pickScaleFor and apps/web/src/lib/units.ts are removed.
+
+### Bug Fixes
+
+* **calculator:** restore relative-share presentation matching legacy ([#40](https://github.com/lukasgro63/hollerithengeryml/issues/40)) ([228ef6a](https://github.com/lukasgro63/hollerithengeryml/commit/228ef6a91b0692d54cef34c04e7e2fd4e6f4cea9))
+* **research:** restore BibTeX copy button on non-HTTPS hosts ([#41](https://github.com/lukasgro63/hollerithengeryml/issues/41)) ([b8a2aff](https://github.com/lukasgro63/hollerithengeryml/commit/b8a2aff7c602910b8a94d76aa854bd9ac3265be7))
+
+
+### Documentation
+
+* drop CLAUDE.md/AGENTS.md and align stale references ([#39](https://github.com/lukasgro63/hollerithengeryml/issues/39)) ([9823e52](https://github.com/lukasgro63/hollerithengeryml/commit/9823e524ea9421cf55a83e2689be5015ed4b112e))
+* streamline README with calculator screenshot ([#37](https://github.com/lukasgro63/hollerithengeryml/issues/37)) ([0250f8f](https://github.com/lukasgro63/hollerithengeryml/commit/0250f8fb13d1d736ca9e7439bd37721c1830a73f))
+
+
+### CI/CD
+
+* add path filters to deploy workflow ([#35](https://github.com/lukasgro63/hollerithengeryml/issues/35)) ([7d56800](https://github.com/lukasgro63/hollerithengeryml/commit/7d5680062b008b8a4ac5ec21dd0f9df7a506ebd8))
+* skip real CI on docs-only PRs via mutually exclusive workflows ([#38](https://github.com/lukasgro63/hollerithengeryml/issues/38)) ([1fc35e5](https://github.com/lukasgro63/hollerithengeryml/commit/1fc35e559ba1d4d9df72db788c73a6d257f565c8))
+
 ## [1.0.1](https://github.com/lukasgro63/hollerithengeryml/compare/v1.0.0...v1.0.1) (2026-04-13)
 
 
