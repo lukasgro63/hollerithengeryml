@@ -3,8 +3,9 @@
 ## Goals
 
 HollerithEnergyML is a single-feature web application: take three integers
-describing a machine learning dataset shape, return predicted energy
-consumption (in kWh) for training each of five classical scikit-learn
+describing a machine learning dataset shape, return the predicted
+training-energy share — as an integer 0–100 normalised to the
+highest-consuming algorithm — for each of five classical scikit-learn
 algorithms on data of that shape.
 
 **Non-goals:** authentication, multi-tenancy, persisting user data, retraining
@@ -66,7 +67,7 @@ sequenceDiagram
     end
     A->>P: predict_all(estimator, num, cat, rows)
     P->>P: Build 5×8 DataFrame
-    P-->>A: 5 predictions (kWh)
+    P-->>A: 5 predictions (kWh, internal)
     A-->>W: JSON ranked response
     W-->>U: Bar chart + ranking
 ```
@@ -87,17 +88,22 @@ Request:
 Response 200:
 {
   "predictions": [
-    {"algorithm": "RandomForest",       "energy_kwh": 0.000035, "rank": 1},
-    {"algorithm": "LogisticRegression", "energy_kwh": 0.000012, "rank": 2},
-    {"algorithm": "DecisionTree",       "energy_kwh": 0.000002, "rank": 3},
-    {"algorithm": "KNN",                "energy_kwh": 0.0000004, "rank": 4},
-    {"algorithm": "GaussianNB",         "energy_kwh": 0.0000002, "rank": 5}
+    {"algorithm": "RandomForest",       "energy_percent": 100, "rank": 1},
+    {"algorithm": "LogisticRegression", "energy_percent":  34, "rank": 2},
+    {"algorithm": "DecisionTree",       "energy_percent":   5, "rank": 3},
+    {"algorithm": "KNN",                "energy_percent":   1, "rank": 4},
+    {"algorithm": "GaussianNB",         "energy_percent":   0, "rank": 5}
   ],
-  "average_kwh": 0.0000099,
   "model_used": "random_forest",
   "thresholds_applied": { "num_features": 25, "cat_features": 25, "dataset_size": 350000 },
   "out_of_training_range": false
 }
+
+`energy_percent` is the integer share (0–100) of each algorithm's predicted
+training energy relative to the highest-consuming algorithm in the same
+response. The rank-1 entry is always exactly `100`. The meta-model still
+predicts in kilowatt-hours internally; the public API normalises to keep
+the comparison resolution-independent.
 
 GET /api/v1/health
   → { "status": "ok", "model_loaded": true, "version": "1.0.0" }

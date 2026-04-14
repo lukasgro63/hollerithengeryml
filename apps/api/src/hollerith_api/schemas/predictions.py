@@ -40,7 +40,15 @@ class PredictionsRequest(BaseModel):
 
 class AlgorithmPrediction(BaseModel):
     algorithm: str = Field(description="Algorithm display name.")
-    energy_kwh: float = Field(description="Predicted training energy in kWh.")
+    energy_percent: int = Field(
+        ge=0,
+        le=100,
+        description=(
+            "Predicted training energy as an integer share (0-100) of the "
+            "highest-consuming algorithm in the same response. The worst "
+            "algorithm is always exactly 100."
+        ),
+    )
     rank: int = Field(ge=1, le=5, description="1 = highest predicted energy, 5 = lowest.")
 
 
@@ -54,7 +62,6 @@ class PredictionsResponse(BaseModel):
     model_config = ConfigDict(protected_namespaces=())
 
     predictions: list[AlgorithmPrediction]
-    average_kwh: float = Field(description="Arithmetic mean of the five predictions in kWh.")
     model_used: ModelUsed = Field(description="Which sub-model the selector picked.")
     thresholds_applied: ThresholdsApplied
     out_of_training_range: bool = Field(

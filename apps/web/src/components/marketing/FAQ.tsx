@@ -13,7 +13,7 @@ const FAQ_ITEMS: readonly FAQItem[] = [
     question:
       "How is energy consumption predicted with the HollerithEnergyML model?",
     answer:
-      "Energy consumption is estimated based on the known training data of the model. The predictor uses a Random Forest Regressor to estimate kilowatt-hours from dataset shape (numerical features, categorical features, row count) and algorithm choice.",
+      "Energy consumption is estimated based on the known training data of the model. The predictor uses a Random Forest Regressor to derive a relative training-energy share (0–100, normalised to the highest-consuming algorithm) from dataset shape (numerical features, categorical features, row count) and algorithm choice.",
   },
   {
     question:

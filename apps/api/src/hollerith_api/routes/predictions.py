@@ -57,16 +57,15 @@ async def create_predictions(
     )
 
     ranked = sorted(raw, key=lambda p: p.energy_kwh, reverse=True)
+    max_kwh = ranked[0].energy_kwh if ranked else 0.0
     predictions = [
         AlgorithmPrediction(
             algorithm=p.algorithm,
-            energy_kwh=p.energy_kwh,
+            energy_percent=int((p.energy_kwh / max_kwh) * 100) if max_kwh > 0 else 0,
             rank=idx + 1,
         )
         for idx, p in enumerate(ranked)
     ]
-
-    average_kwh = sum(p.energy_kwh for p in raw) / len(raw)
 
     thresholds = selection.thresholds
     out_of_range = (
@@ -77,7 +76,6 @@ async def create_predictions(
 
     return PredictionsResponse(
         predictions=predictions,
-        average_kwh=average_kwh,
         model_used=selection.name,
         thresholds_applied=ThresholdsApplied(
             num_features=thresholds.max_numerical_features,

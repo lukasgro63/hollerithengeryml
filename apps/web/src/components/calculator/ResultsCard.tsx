@@ -17,7 +17,6 @@ import type {
   PredictionsRequest,
   PredictionsResponse,
 } from "@/lib/schemas";
-import { formatEnergy, pickScaleFor } from "@/lib/units";
 
 type ResultsCardProps = {
   readonly data: PredictionsResponse;
@@ -35,24 +34,21 @@ const AXIS_COLOR = "var(--color-surface-300)";
 const AVG_COLOR = "var(--color-ink-700)";
 
 export function ResultsCard({ data, input }: ResultsCardProps) {
-  const { predictions, average_kwh, model_used, thresholds_applied, out_of_training_range } = data;
-  const scale = pickScaleFor(
-    ...predictions.map((p) => p.energy_kwh),
-    average_kwh,
-  );
+  const { predictions, model_used, thresholds_applied, out_of_training_range } = data;
 
   const sorted = [...predictions].sort(
-    (a, b) => a.energy_kwh - b.energy_kwh,
+    (a, b) => a.energy_percent - b.energy_percent,
   );
 
-  const chartData = sorted.map((p) => ({
+  const chartData = sorted.map((p, idx) => ({
+    label: `${idx + 1}. ${p.algorithm}`,
     algorithm: p.algorithm,
-    value: p.energy_kwh * scale.factor,
-    rawKwh: p.energy_kwh,
-    rank: p.rank,
+    value: p.energy_percent,
+    rank: idx + 1,
   }));
 
-  const averageDisplay = average_kwh * scale.factor;
+  const averagePercent =
+    chartData.reduce((sum, d) => sum + d.value, 0) / chartData.length;
   const greenest = sorted[0];
 
   return (
@@ -63,7 +59,7 @@ export function ResultsCard({ data, input }: ResultsCardProps) {
       />
 
       <p className="mt-5 font-display text-h3 font-extrabold tracking-tight text-ink-950">
-        Predicted training energy
+        Energy consumed by Algorithm during Training
       </p>
       <p className="mt-2 text-sm leading-relaxed text-ink-500">
         Model:{" "}
@@ -100,7 +96,7 @@ export function ResultsCard({ data, input }: ResultsCardProps) {
             {greenest.algorithm}
           </span>
           <span className="font-mono text-sm tabular-nums text-ink-500">
-            {formatEnergy(greenest.energy_kwh, 3)}
+            {greenest.energy_percent}%
           </span>
         </div>
       ) : null}
@@ -108,7 +104,7 @@ export function ResultsCard({ data, input }: ResultsCardProps) {
       <div
         className="mt-10 h-72 min-h-[1px] w-full sm:h-80"
         role="img"
-        aria-label={`Horizontal bar chart of predicted training energy in ${scale.unit}`}
+        aria-label="Horizontal bar chart of relative training-energy share per algorithm"
       >
         <ResponsiveContainer width="100%" height="100%">
           <BarChart
@@ -123,13 +119,14 @@ export function ResultsCard({ data, input }: ResultsCardProps) {
             />
             <XAxis
               type="number"
-              tickFormatter={(value: number) => value.toFixed(2)}
+              domain={[0, 100]}
+              tickFormatter={(value: number) => `${value}`}
               stroke={AXIS_COLOR}
               tickLine={false}
               axisLine={false}
               style={{ fontSize: "11px", fontWeight: 500 }}
               label={{
-                value: scale.unit,
+                value: "Relative Energy Consumption (%)",
                 position: "insideBottom",
                 offset: -8,
                 style: {
@@ -143,11 +140,11 @@ export function ResultsCard({ data, input }: ResultsCardProps) {
             />
             <YAxis
               type="category"
-              dataKey="algorithm"
+              dataKey="label"
               stroke={AXIS_COLOR}
               tickLine={false}
               axisLine={false}
-              width={130}
+              width={150}
               style={{ fontSize: "12px", fontWeight: 600 }}
             />
             <Tooltip
@@ -160,19 +157,17 @@ export function ResultsCard({ data, input }: ResultsCardProps) {
               }}
               labelStyle={{ color: "var(--color-ink-950)", fontWeight: 700 }}
               cursor={{ fill: "var(--color-brand-yellow-subtle)" }}
-              formatter={(value) => {
-                if (typeof value !== "number") return ["—", "Energy"];
-                const kwh = value / scale.factor;
-                return [formatEnergy(kwh, 3), "Energy"];
-              }}
+              formatter={(value) =>
+                typeof value === "number" ? [`${value}%`, "Energy"] : ["—", "Energy"]
+              }
             />
             <ReferenceLine
-              x={averageDisplay}
+              x={averagePercent}
               stroke={AVG_COLOR}
               strokeDasharray="6 4"
               strokeWidth={1.5}
               label={{
-                value: `avg ${averageDisplay.toFixed(2)} ${scale.unit}`,
+                value: `Average: ${averagePercent.toFixed(2)}%`,
                 position: "top",
                 fill: AVG_COLOR,
                 fontSize: 10,
@@ -190,28 +185,30 @@ export function ResultsCard({ data, input }: ResultsCardProps) {
         </ResponsiveContainer>
       </div>
 
+      {greenest ? (
+        <p className="mt-8 text-sm leading-relaxed text-ink-700">
+          According to the measured values and the prediction,{" "}
+          <strong className="text-ink-950">{greenest.algorithm}</strong> is the
+          most energy-efficient algorithm.
+        </p>
+      ) : null}
+
       <div className="mt-10 grid gap-x-10 gap-y-8 sm:grid-cols-3 lg:gap-x-14">
         <dl>
-          <dt className="label text-ink-400">
-            Average
-          </dt>
+          <dt className="label text-ink-400">Average</dt>
           <dd className="mt-3 border-b-2 border-surface-200 pb-3 font-mono text-2xl font-medium tabular-nums text-ink-900">
-            {formatEnergy(average_kwh)}
+            {averagePercent.toFixed(2)}%
           </dd>
         </dl>
         <dl>
-          <dt className="label text-ink-400">
-            Thresholds
-          </dt>
+          <dt className="label text-ink-400">Thresholds</dt>
           <dd className="mt-3 border-b-2 border-surface-200 pb-3 text-base text-ink-700">
             ≤ {thresholds_applied.num_features} features · ≤{" "}
             {thresholds_applied.dataset_size.toLocaleString()} rows
           </dd>
         </dl>
         <dl>
-          <dt className="label text-ink-400">
-            Model path
-          </dt>
+          <dt className="label text-ink-400">Model path</dt>
           <dd className="mt-3 border-b-2 border-surface-200 pb-3 text-base font-semibold text-ink-700">
             {MODEL_LABEL[model_used]}
           </dd>
@@ -236,7 +233,7 @@ export function ResultsCard({ data, input }: ResultsCardProps) {
               {p.algorithm}
             </span>
             <span className="font-mono text-xs tabular-nums text-ink-400">
-              {formatEnergy(p.energy_kwh, 3)}
+              {p.energy_percent}%
             </span>
           </li>
         ))}

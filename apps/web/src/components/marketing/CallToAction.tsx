@@ -11,9 +11,9 @@ export function CallToAction() {
               R² = 0.996 on held-out data.
             </h2>
             <p className="mt-2 text-sm leading-relaxed text-ink-700 sm:text-base">
-              The meta-model is peer-reviewed and open-source. Estimate
-              kilowatt-hours for five classical ML algorithms before you
-              spend the watts.
+              The meta-model is peer-reviewed and open-source. Compare the
+              relative training-energy share of five classical ML algorithms
+              before you spend the watts.
             </p>
           </div>
           <Button href="/calculate" variant="secondary" size="lg" className="flex-shrink-0">

@@ -2,8 +2,6 @@
 
 from __future__ import annotations
 
-import math
-
 from fastapi.testclient import TestClient
 
 
@@ -29,6 +27,7 @@ def test_small_input_uses_random_forest_and_returns_five_ranked_predictions(
         "dataset_size": 350_000,
     }
     assert body["out_of_training_range"] is False
+    assert "average_kwh" not in body
 
     predictions = body["predictions"]
     assert len(predictions) == 5
@@ -43,11 +42,14 @@ def test_small_input_uses_random_forest_and_returns_five_ranked_predictions(
     }
 
     assert [p["rank"] for p in predictions] == [1, 2, 3, 4, 5]
-    energies = [p["energy_kwh"] for p in predictions]
-    assert energies == sorted(energies, reverse=True)
 
-    expected_average = sum(energies) / len(energies)
-    assert math.isclose(body["average_kwh"], expected_average, rel_tol=1e-9)
+    percents = [p["energy_percent"] for p in predictions]
+    assert all(isinstance(value, int) for value in percents)
+    assert all(0 <= value <= 100 for value in percents)
+    assert percents[0] == 100
+    assert percents == sorted(percents, reverse=True)
+    for prediction in predictions:
+        assert "energy_kwh" not in prediction
 
 
 def test_large_input_falls_back_to_linear_regression(client: TestClient) -> None:
@@ -171,7 +173,7 @@ def test_rejects_missing_fields(client: TestClient) -> None:
     assert response.status_code == 422
 
 
-def test_predictions_are_finite_and_numeric(client: TestClient) -> None:
+def test_predictions_are_integer_percent_within_bounds(client: TestClient) -> None:
     response = client.post(
         "/api/v1/predictions",
         json={
@@ -182,7 +184,11 @@ def test_predictions_are_finite_and_numeric(client: TestClient) -> None:
     )
 
     assert response.status_code == 200
-    for prediction in response.json()["predictions"]:
-        energy = prediction["energy_kwh"]
-        assert isinstance(energy, (int, float))
-        assert math.isfinite(energy)
+    body = response.json()
+    assert "average_kwh" not in body
+
+    percents = [p["energy_percent"] for p in body["predictions"]]
+    assert len(percents) == 5
+    assert all(isinstance(value, int) for value in percents)
+    assert all(0 <= value <= 100 for value in percents)
+    assert max(percents) == 100

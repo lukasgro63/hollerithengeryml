@@ -10,8 +10,12 @@
 
 ## Intended use
 
-Predicts the energy consumption (in kWh) of training one of five classical
-scikit-learn algorithms on a tabular dataset of a given shape. Intended as a
+Predicts the relative training-energy share (0–100, normalised to the
+highest-consuming algorithm) for five classical scikit-learn algorithms
+on a tabular dataset of a given shape. The meta-model still works in
+kilowatt-hours internally; the public API normalises the result so that
+the comparison stays resolution-independent across the wide range of
+dataset shapes the service has to cover. Intended as a
 **decision-support tool** for students and researchers evaluating algorithm
 choice for their training workloads.
 
@@ -47,8 +51,12 @@ graph LR
 
 ## Output
 
-Single float: predicted training energy in kWh (can be sub-kWh, displayed in
-Wh / mWh / µWh depending on magnitude).
+One integer in the range 0–100 per algorithm — the predicted training-energy
+share relative to the highest-consuming algorithm in the same response (so
+the worst algorithm is always exactly `100`). The five values are returned
+in a single response sorted descending by share with a one-based rank
+attached. The underlying meta-model still produces kilowatt-hour floats; the
+API normalises them away on the response boundary.
 
 ## Training data
 
