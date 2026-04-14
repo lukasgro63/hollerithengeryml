@@ -32,10 +32,32 @@ export function CitationBlock() {
   }, []);
 
   const handleCopy = useCallback(async () => {
-    await navigator.clipboard.writeText(BIBTEX);
-    if (timerRef.current) clearTimeout(timerRef.current);
-    setCopied(true);
-    timerRef.current = setTimeout(() => setCopied(false), 2000);
+    try {
+      if (window.isSecureContext && navigator.clipboard?.writeText) {
+        await navigator.clipboard.writeText(BIBTEX);
+      } else {
+        const textarea = document.createElement("textarea");
+        textarea.value = BIBTEX;
+        textarea.setAttribute("readonly", "");
+        textarea.style.position = "fixed";
+        textarea.style.top = "0";
+        textarea.style.left = "0";
+        textarea.style.opacity = "0";
+        textarea.style.pointerEvents = "none";
+        document.body.appendChild(textarea);
+        textarea.focus();
+        textarea.select();
+        textarea.setSelectionRange(0, textarea.value.length);
+        const ok = document.execCommand("copy");
+        document.body.removeChild(textarea);
+        if (!ok) throw new Error("execCommand('copy') returned false");
+      }
+      if (timerRef.current) clearTimeout(timerRef.current);
+      setCopied(true);
+      timerRef.current = setTimeout(() => setCopied(false), 2000);
+    } catch (err) {
+      console.error("[CitationBlock] failed to copy BibTeX to clipboard", err);
+    }
   }, []);
 
   return (
